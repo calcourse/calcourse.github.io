@@ -17,10 +17,6 @@ $(() => {
     $(".toggle-button").on("click", () => {
         $("#about-container").toggleClass("hidden");
     });
-    $(".card").on("click", (e) => {
-        let card = e.currentTarget;
-        window.location.href = $(card).data("url");
-    });
 });
 
 let ids=[];
@@ -39,6 +35,12 @@ function addCard(id, name, url) {
         colorLight : "#da8388",
         correctLevel : QRCode.CorrectLevel.H
     })
+    newCard.on("click", cardClick);
+}
+
+function cardClick(e) {
+    let card = e.currentTarget;
+    window.location.href = $(card).data("url");
 }
 
 function filter(substring) {
