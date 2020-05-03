@@ -5,8 +5,9 @@
     <title>Cal Course - Add</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
-    <script src="qrcode.min.js"></script>
+    <script src="assets/jsQR.js"></script>
     <script src="add.js"></script>
+    
 </head>
 <body>
     <div id="main-container">
@@ -19,7 +20,8 @@
         <input id="qr" type="file" accept="image/jpg,image/png,image/jpeg"></input>
         <button class="preview-button" onclick="loadPreview()">Preview</button>
         <div id = "img-container">
-            <img id="qr-preview" src="src/qr-place-holder.png" style = "max-width: 150px; max-height: 150px">
+            <canvas id="canv" width=0 height=0></canvas>
+            <div id="upload-text"></div>
         </div>
         <button class="submit-button" onclick="loadPreview()">Submit</button>
     </div>
