@@ -41,6 +41,32 @@ h1 {
     color: var(--p-fg);
 }
 
+#course-code {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px var(--accent);
+    font-size: 18px;
+    color: var(--p-fg);
+}
+
+#course-name {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px var(--accent);
+    font-size: 18px;
+    color: var(--p-fg);
+}
+
+#qr {
+    display: block;
+    background-color: transparent;
+    outline: none;
+    font-size: 18px;
+    color: var(--accent);
+}
+
 #card-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -182,7 +208,7 @@ h1 {
 #about-container {
     position: fixed;
     top: 10vh;
-    height: 200px;
+    height: 220px;
     width: 300px;
     left: calc(50vw - 150px);
     background-color: var(--p-bg);
@@ -265,4 +291,30 @@ h1 {
 .button:hover {
     background-color: var(--accent);
     color: var(--p-fg);
+}
+
+.submit-button {
+    display: block;
+    border: solid 2px var(--accent);
+    padding: 3px;
+    background-color: var(--accent);
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    margin: 0px;
+}
+
+.preview-button {
+    display: block;
+    border: solid 2px var(--accent);
+    padding: 3px;
+    background-color: white;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 15px;
+    margin-bottom: 35px;
+}
+
+.img-container {
+    margin: 0px;
 }
