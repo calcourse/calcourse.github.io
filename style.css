@@ -10,7 +10,7 @@
 html, body {
     background-color: var(--p-bg);
     color: var(--p-fg);
-    font-family: -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
     font-size: 18px;
 }
 
@@ -35,19 +35,25 @@ h1 {
     background-color: transparent;
     border: none;
     outline: none;
-    border-bottom: solid 1px var(--accent);
+    border-radius: 0;
+    border-bottom: solid 2px var(--accent);
     font-size: 18px;
     color: var(--p-fg);
 }
 
 #card-container {
     display: grid;
-    grid-gap: 32px;
+    grid-template-columns: 1fr;
+}
+
+#card-container.loaded {
     grid-template-columns: repeat(3, 1fr);
+    grid-gap: 32px;
 }
 
 @media screen and (max-width: 450px) {
-    #card-container {
+    #card-container.loaded {
+        display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 16px;
     }
@@ -56,7 +62,7 @@ h1 {
 .card {
     background-color: var(--s-bg);
     box-shadow: var(--shadow) 0 0 8px;
-    border-radius: 16px;
+    border-radius: 8px;
     box-sizing: border-box;
     overflow: hidden;
     animation: show 0.5s;
@@ -79,49 +85,98 @@ h1 {
     display: none;
 }
 
+.card>.id-wrapper {
+    position: relative;
+    height: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.card .id {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.card .id::after {
+    content: "";
+    display: block;
+    line-height: 0;
+    padding-bottom: 100%;
+}
+
+.card .id>span {
+    position: absolute;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 24px;
+    line-height: 20px;
+    font-weight: 400;
+}
+
+.card .id>span>span {
+    font-weight: 800;
+}
+
 .card>.qrcode {
     height: 0;
     padding-bottom: 100%;
     background-color: var(--accent);
+    overflow: hidden;
 }
 
 .card img {
     width: 100%;
-    padding: 16px;
+    padding: 8px;
     box-sizing: border-box;
+    filter: blur(24px);
+    transition: filter 0.2s;
 }
 
 .card .desc {
-    font-weight: 300;
-    width: 90%;
+    color: var(--p-fg);
+    font-size: 12px;
     text-align: center;
     box-sizing: border-box;
-    padding: 8px;
-    height: 40px;
+    padding: 4px;
+    padding-right: 12px;
+    height: 32px;
     line-height: 24px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.card::after {
+.card .desc::after {
     display: block;
     content: "⟩";
+    font-weight: 400;
     position: relative;
-    margin-top: calc(-32px);
-    margin-right: 20px;
-    height: 32px;
+    margin-top: -24px;
+    margin-right: 4px;
+    line-height: 24px;
+    font-size: 12px;
     text-align: right;
     color: var(--s-fg);
     transition: margin-right 0.1s;
 }
 
-.card:hover::after {
-    margin-right: 16px;
+.card:hover .id {
+    display: none;
+}
+
+.card:hover .desc::after {
+    margin-right: 0;
 }
 
 .card:hover {
     box-shadow: var(--shadow) 0 0 32px;
+}
+
+.card:hover img {
+    filter: none;
 }
 
 #about-container {
@@ -166,4 +221,48 @@ h1 {
     color: var(--accent);
     cursor: pointer;
     font-size: 14px;
+}
+
+#login-wrapper {
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 0 auto;
+}
+
+#login-button {
+    display: inline-flex;
+    flex-flow: row nowrap;
+    height: 40px;
+    width: 220px;
+    border-radius: 8px;
+    line-height: 36px;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+#login-button>img {
+    position: relative;
+    top: 2px;
+    left: 6px;
+    height: 32px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+#login-button>span {
+    flex-grow: 1;
+    text-align: center;
+    margin-left: -6px;
+}
+
+.button {
+    background-color: var(--p-bg);
+    border: solid var(--accent) 2px;
+    color: var(--accent);
+    box-sizing: border-box;
+}
+
+.button:hover {
+    background-color: var(--accent);
+    color: var(--p-fg);
 }

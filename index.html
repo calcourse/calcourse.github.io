@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Cal Course</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="style.css"></link>
         <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
         <script src="qrcode.min.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
         <script src="index.js"></script>
     </head>
     <body>
-        <div id="main-container">
+        <div id="main-container" class="logged-in">
             <h1>Cal Course</h1>
             <input id="search-input" placeholder="搜索课号"></input>
             <div id="card-container">
-                加加加加加加载中
+                <div id="login-wrapper">
+                    <div id="login-button" class="customGPlusSignIn button">
+                        <img src="google.svg" />
+                        <span>用Berkeley邮箱登陆</span>
+                    </div>
+                </div>
             </div>
-            <button class="toggle-button">i</button>
+            <button class="button toggle-button">i</button>
         </div>
         <div id="about-container" class="hidden">
             Made with ♥️ by ... <br /><br />
             Prototype: Yufeng Chi <br />
             Front end: Ruohan Yan <br />
             Back end: Shufan Li
-            <button class="toggle-button">&times;</button>
+            <button class="button toggle-button">&times;</button>
         </div>
     </body>
 </html>
