@@ -4,29 +4,37 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Cal Course</title>
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="styles/style.css"></link>
-        <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+        <script src="scripts/jquery-3.5.0.min.js"></script>
         <script src="scripts/qrcode.min.js"></script>
-        <script src="scripts/index.js"></script>
+        <script src="https://apis.google.com/js/platform.js"></script>
+        <script src="scripts/index.js?v=2"></script>
     </head>
     <body>
-        <div id="main-container" class="logged-in">
+        <div id="main-container">
             <h1>Cal Course</h1>
-            <input id="search-input" placeholder="搜索课号"></input>
-            <div id="term-container"></div>
-            <div id="card-container"></div>
+            <div id="filter-container" class="deferred">
+                <input id="search-input" class="deferred" placeholder="搜索课号"></input>
+                <div id="term-container"></div>
+            </div>
+            <div id="login-wrapper">
+                <div>我们需要验证你的学生身份。</div>
+                <div id="login-button" class="customGPlusSignIn button">
+                    <img src="assets/google.svg" />
+                    <span>用Berkeley邮箱登陆</span>
+                </div>
+            </div>
+            <div id="card-container">
+            </div>
             <div id="footer">
-                <button id="add-button" onclick="window.open('add.html');return false;">Add a New Course</button>
                 <button class="button toggle-button">i</button>
             </div>
         </div>
         <div id="about-container" class="hidden">
-            Made with ♥️ by ... <br /><br />
+            Made with ♥️ by ... <br />
             Prototype: Yufeng Chi <br />
             Front end: Ruohan Yan<br />
             Front end: Yuanhan Li<br />
-            Front end: Baigei Xu<br />
             Back end: Shufan Li
             <button class="button toggle-button">&times;</button>
         </div>

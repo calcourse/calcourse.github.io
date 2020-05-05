@@ -32,6 +32,57 @@ h1 {
     min-height: 100%;
 }
 
+#login-wrapper {
+    display: flex;
+    position: absolute;
+    margin: 0 auto;
+    top: calc(50vh - 90px);
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 1;
+    flex-flow: column nowrap;
+    align-items: center;
+    background-color: var(--p-bg);
+    width: 90vw;
+    max-width: 400px;
+    padding: 36px 0 36px 0;
+    box-sizing: border-box;
+    border-radius: 16px;
+    box-shadow: var(--shadow) 0 0 16px;
+}
+
+#main-container.logged-in>#login-wrapper {
+    display: none;
+}
+
+#login-button {
+    display: inline-flex;
+    flex-flow: row nowrap;
+    margin-top: 20px;
+    height: 40px;
+    width: 220px;
+    border-radius: 8px;
+    line-height: 36px;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+#login-button>img {
+    position: relative;
+    top: 2px;
+    left: 6px;
+    height: 32px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+#login-button>span {
+    flex-grow: 1;
+    text-align: center;
+    margin-left: -6px;
+}
+
 #search-input {
     background-color: transparent;
     width: 100%;
@@ -41,32 +92,6 @@ h1 {
     border-bottom: solid 2px var(--accent);
     font-size: 18px;
     color: var(--p-fg);
-}
-
-#course-code {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    border-bottom: solid 1px var(--accent);
-    font-size: 18px;
-    color: var(--p-fg);
-}
-
-#course-name {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    border-bottom: solid 1px var(--accent);
-    font-size: 18px;
-    color: var(--p-fg);
-}
-
-#qr {
-    display: block;
-    background-color: transparent;
-    outline: none;
-    font-size: 18px;
-    color: var(--accent);
 }
 
 #filter-container {
@@ -263,14 +288,26 @@ h1 {
 }
 
 #add-button {
-    display: block;
-    border: solid 2px var(--accent);
-    padding: 3px;
-    background-color: var(--accent);
-    color: white;
-    cursor: pointer;
-    font-size: 20px;
-    margin-bottom: 10px;
+    position: relative;
+    height: 0;
+    padding-bottom: calc(100% + 32px);
+}
+
+#add-button>div {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 20px;
+    flex-flow: column nowrap;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+#add-button>div>div:first-child {
+    font-size: 60px;
 }
 
 #about-container {
@@ -286,6 +323,7 @@ h1 {
     animation: show 0.2s;
     box-shadow: var(--shadow) 0 0 16px;
     font-weight: lighter;
+    z-index: 3;
 }
 
 #about-container::first-line {

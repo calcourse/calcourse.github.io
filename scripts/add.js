@@ -4,7 +4,7 @@ let courseURL = '';
 window.onload = function() {
     token = readCookie("token");
     if (!token) {
-        window.location.href = 'signin.html';
+        window.location.href = 'index.html?redirect=add';
     }
 };
 
@@ -154,7 +154,6 @@ function isLegalCode(code) {
         console.log("Wrong course code.");
         return false;
     }
-
 }
 
 function getLegalCourse() {

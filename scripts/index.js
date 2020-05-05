@@ -1,30 +1,53 @@
-let api = 'http://118.25.79.158:3000/api/v1/';
-let ids=[];
+let api = "http://118.25.79.158:3000/api/v1/";
 
-window.onload = function() {
-    $(() => {
-        $("#search-input").on("input", () => {
-            filter();
-        });
-        $(".toggle-button").on("click", () => {
-            $("#about-container").toggleClass("hidden");
-        });
+$(() => {
+    $("#search-input").on("input", () => {
+        filter();
+    });
+    $(".toggle-button").on("click", () => {
+        $("#about-container").toggleClass("hidden");
     });
 
-    let token = readCookie("token");
+    $.urlParam = (name) => {
+        let results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results && results.length >= 2) {
+            return results[1] || 0;
+        }
+    }
 
+    if ($.urlParam("timeout")) {
+        $("#login-wrapper>div:first-child").text("会话过期，请重新登陆。");
+    }
+
+    /*   DEBUG   */
+    //createCookie("token", "hilfinger", 60);
+    /* END DEBUG */
+
+    let token = readCookie("token");
     if (token) {
         loadCourses(token);
     } else {
-        window.location.href = 'signin.html';
+        gapi.load('auth2', () => {
+            auth2 = gapi.auth2.init({
+                client_id: '707915550129-7l94p2dpplaoub3d6clhrjpivki6dqpe.apps.googleusercontent.com',
+                cookiepolicy: 'single_host_origin'
+            });
+            auth2.attachClickHandler($("#login-button")[0], {}, onSignIn, (error) => {
+                if (error.error.indexOf("closed by user") == -1) {
+                    alert("无法登陆，请稍后再试。");
+                    console.log(error.error);
+                }
+            });
+        });    
     }
-};
+});
 
+let ids=[];
 
 function addCard(id, name, url, term) {
     ids.push(id);
     let lastSpace = id.lastIndexOf(" ");
-    let codePart = lastSpace === -1 ? "" : id.substring(0, lastSpace);
+    let codePart = lastSpace == -1 ? "" : id.substring(0, lastSpace);
     let numPart = id.substring(lastSpace + 1, id.length);
     let newCard = $(
         `<div class="card" data-id="${id}" data-name="${name}"
@@ -55,13 +78,13 @@ function cardClick(e) {
 }
 
 function filter() {
-    substring = $("#search-input").val().toLowerCase();
+    substring = $("#search-input").val().toLowerCase()
     let term = $("input[type='radio']:checked").data("term");
     for (let id of ids) {
         let card = $(`.card[data-id="${id}"]`);
-        if ((id.toLowerCase().indexOf(substring) === -1) &&
-            ((card.data("name").toLowerCase().indexOf(substring)) === -1) ||
-            (term !== card.data("term"))) {
+        if ((id.toLowerCase().indexOf(substring) == -1) &&
+                ((card.data("name").toLowerCase().indexOf(substring)) == -1) ||
+                (term !== card.data("term"))) {
             card.addClass("hidden");
         } else {
             card.removeClass("hidden");
@@ -69,74 +92,104 @@ function filter() {
     }
 }
 
+function onSignIn(googleUser) {
+    let profile = googleUser.getBasicProfile();
+    let email = profile.getEmail();
+    $.ajax({url: api + "auth/", type: "POST",
+            data: {email: email}, success: (response) => {
+        createCookie("token", response.token, 10);
+        if ($.urlParam("redirect") === "add") {
+            window.location.href = "add.html";
+        } else {
+            loadCourses(response.token);
+        }
+    }, error: (response) => {
+        alert("你的邮箱不是Berkeley邮箱，请换为Berkeley邮箱登陆。");
+    }});
+}
+
 function loadCourses(token) {
+    $("#main-container").addClass("logged-in");
     $("#card-container").html("加加加加加加载中");
-    $.ajax({
-        url: 'http://118.25.79.158:3000/api/v1/courses/',
-        type: 'GET',
-        headers: {
-            "Authorization": "Bearer " + token,
-        },
-        success: (response) => {
-            $("#card-container").html("");
-            $("#main-container").addClass("loaded");
-            let allTerms = new Set();
-            for (let course of response) {
-                addCard(course.code, course.name, course.qr_code, course.term);
-                allTerms.add(course.term);
+    $.ajax({url: api + "courses/", headers: {
+        "Authorization": `Bearer ${token}`
+    }, success: (response) => {
+        $("#card-container").html("");
+        $("#main-container").addClass("loaded");
+        let allTerms = new Set();
+        for (let course of response) {
+            addCard(course.code, course.name, course.qr_code, course.term);
+            allTerms.add(course.term);
+        }
+        let addButton = $(`
+            <div id="add-button" class="card">
+                <div>
+                    <div>+</div>
+                    <div>添加条目</div>
+                </div>
+            </div>`);
+        $("#card-container").append(addButton);
+        addButton.on("click", () => {
+            if (readCookie("token")) {
+                window.location.href = "add.html";
+            } else {
+                window.location.replace("index.html?redirect=add&timeout=1");
             }
-            let termsArray = [];
-            for (let x of allTerms) {
-                termsArray.push(x);
-            }
-            let termToInt = (x) => {
-                let separator = x.indexOf(" ");
-                if (separator == -1) {
-                    return -1;
-                } else {
-                    let season = x.substring(0, separator);
-                    let year = x.substring(separator + 1, x.length);
-                    let seasonInt;
-                    switch (season.toLowerCase()) {
-                        case "spring":
-                            seasonInt = 0;
-                            break;
-                        case "summer":
-                            seasonInt = 1;
-                            break;
-                        case "fall":
-                            seasonInt = 2;
-                            break;
-                        default:
-                            return -1;
-                    }
-                    return year * 3 + seasonInt;
+        })
+        let termsArray = [];
+        for (let x of allTerms) {
+            termsArray.push(x);
+        }
+        let termToInt = (x) => {
+            let separator = x.indexOf(" ");
+            if (separator == -1) {
+                return -1;
+            } else {
+                let season = x.substring(0, separator);
+                let year = x.substring(separator + 1, x.length);
+                let seasonInt;
+                switch (season.toLowerCase()) {
+                    case "spring":
+                        seasonInt = 0;
+                        break;
+                    case "summer":
+                        seasonInt = 1;
+                        break;
+                    case "fall":
+                        seasonInt = 2;
+                        break;
+                    default:
+                        return -1;
                 }
-            };
-            termsArray.sort((a, b) => {
-                return termToInt(b) - termToInt(a);
-            });
-            for (let term of termsArray) {
-                let termId = replaceAll(term," ", "-");
-                let radio = $(`
+                return year * 3 + seasonInt;
+            }
+        };
+        termsArray.sort((a, b) => {
+            return termToInt(b) - termToInt(a);
+        });
+        for (let term of termsArray) {
+            let termId = term.replace(/ /gi, "-");
+            let radio = $(`
                 <input type="radio" name="term" id="term-${termId}" data-term="${term}" />
                 <label for="term-${termId}">${term}</label>
             `);
-                $("#term-container").append(radio);
-                $(radio[0]).on("change", (e) => {
-                    filter();
-                });
-            }
-            $(`#term-${replaceAll(termsArray[0], " ", "-")}`).attr("checked", "checked");
-            filter();},
-        error: (response) => {
+            $("#term-container").append(radio);
+            $(radio[0]).on("change", (e) => {
+                filter();
+            });
+        }
+        $(`#term-${termsArray[0].replace(/ /gi, "-")}`).attr("checked", "checked");
+        filter();
+    }, error: (response) => {
         console.log(response);
     }});
 }
 
-function replaceAll(str, toBeReplaced, replacement) {
-    let reg = new RegExp(toBeReplaced, 'g');
-    return str.replace(reg, replacement);
+function createCookie(name, value, minutes) {
+    let date = new Date();
+    date.setTime(date.getTime() + minutes * 60 * 1000);
+    let expires = "; expires=" + date.toUTCString();
+    document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
 }
 
 function readCookie(name) {
