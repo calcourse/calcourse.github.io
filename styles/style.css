@@ -333,6 +333,7 @@ h1 {
 
 #about-container>button {
     position: absolute;
+    margin-left: calc(50% - 15px);
     bottom: 20px;
     left: 0;
 }
@@ -352,11 +353,17 @@ h1 {
     padding: 30px 0 30px 0;
 }
 
-.toggle-button {
+#footer>div {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+.small-button {
     display: block;
     width: 30px;
     height: 30px;
-    margin-left: calc(50% - 15px);
+    margin: 8px;
     border-radius: 15px;
     border: solid 2px var(--accent);
     padding: 0;
@@ -364,6 +371,15 @@ h1 {
     color: var(--accent);
     cursor: pointer;
     font-size: 14px;
+}
+
+.small-button>span {
+    filter: grayscale(1) brightness(1.6) contrast(5) brightness(0.8) sepia(1)
+            brightness(0.626) saturate(2.095) hue-rotate(295deg);
+}
+
+.small-button:hover>span {
+    filter: grayscale(1) brightness(1.6) contrast(5);
 }
 
 .button {

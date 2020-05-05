@@ -7,6 +7,9 @@ $(() => {
     $(".toggle-button").on("click", () => {
         $("#about-container").toggleClass("hidden");
     });
+    $("#cookie-button").on("click", () => {
+        window.location.href = "policy.html";
+    });
 
     $.urlParam = (name) => {
         let results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
