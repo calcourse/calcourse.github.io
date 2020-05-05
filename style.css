@@ -97,10 +97,48 @@ h1 {
 #filter-container {
     position: sticky;
     top: 0;
+    width: 100%;
     margin-left: -5vw;
     padding: 10px 5vw 10px 5vw;
     background-color: var(--p-bg);
     z-index: 2;
+}
+
+#term-container {
+    display: flex;
+    flex-flow: row nowrap;
+    overflow-x: scroll;
+    padding: 16px 0 0 0;
+}
+
+#term-container::-webkit-scrollbar {
+    display: none;
+}
+
+#term-container label {
+    width: 140px;
+    min-width: 140px;
+    background-color: var(--p-bg);
+    transition: background-color 0.2s;
+    border: solid var(--accent) 2px;
+    color: var(--accent);
+    padding: 4px;
+    border-radius: 16px;
+    margin-right: 16px;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#term-container input:checked + label {
+    background-color: var(--accent);
+    color: var(--p-fg);
+}
+
+#term-container input {
+    display: none;
 }
 
 #card-container {
