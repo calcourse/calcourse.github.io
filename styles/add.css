@@ -1,0 +1,94 @@
+* {
+    --p-bg: #333;
+    --s-bg: #555;
+    --p-fg: #fff;
+    --s-fg: #ccc;
+    --accent: #da8388;
+    --shadow: rgba(0, 0, 0, 0.5);
+}
+
+html, body {
+    background-color: var(--p-bg);
+    color: var(--p-fg);
+    font-family: -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 18px;
+}
+
+h1 {
+    font-weight: 800;
+    margin-top: 10vh;
+}
+
+#main-container {
+    max-width: 800px;
+    width: 90vw;
+    margin: 0 auto;
+    padding-bottom: 30px;
+}
+
+#main-container>div, #main-container>input, #main-container>h1 {
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+#search-input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px var(--accent);
+    font-size: 18px;
+    color: var(--p-fg);
+}
+
+#course-code {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px var(--accent);
+    font-size: 18px;
+    color: var(--p-fg);
+}
+
+#course-name {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px var(--accent);
+    font-size: 18px;
+    color: var(--p-fg);
+}
+
+#qr {
+    display: block;
+    background-color: transparent;
+    outline: none;
+    font-size: 18px;
+    color: var(--accent);
+}
+
+
+.submit-button {
+    display: block;
+    border: solid 2px var(--accent);
+    padding: 3px;
+    background-color: var(--accent);
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    margin: 0px;
+}
+
+.preview-button {
+    display: block;
+    border: solid 2px var(--accent);
+    padding: 3px;
+    background-color: white;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 15px;
+    margin-bottom: 35px;
+}
+
+.img-container {
+    margin: 0px;
+}

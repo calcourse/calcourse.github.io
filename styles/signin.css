@@ -1,0 +1,65 @@
+#policy-container {
+    border: solid 2px var(--accent);
+    margin-top: 35px;
+    padding: 5px 15px 30px;
+}
+
+#policy-button {
+    display: block;
+    border: solid 2px var(--accent);
+    padding: 3px;
+    background-color: var(--accent);
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    margin: 0px;
+}
+
+#login-wrapper {
+    display: flex;
+    text-align: center;
+    z-index: 1;
+    flex-flow: column nowrap;
+    align-items: center;
+    background-color: var(--p-bg);
+    width: 90vw;
+    max-width: 400px;
+    padding: 36px 0 36px 0;
+    box-sizing: border-box;
+    border-radius: 16px;
+    box-shadow: var(--shadow) 0 0 16px;
+    margin: 20px auto 0;
+}
+
+#login-button {
+    display: inline-flex;
+    flex-flow: row nowrap;
+    margin-top: 0px;
+    height: 40px;
+    width: 220px;
+    border-radius: 8px;
+    line-height: 36px;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+#login-button>img {
+    position: relative;
+    top: 2px;
+    left: 6px;
+    height: 32px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+#login-button>span {
+    flex-grow: 1;
+    text-align: center;
+    margin-left: -6px;
+}
+
+#login-msg {
+    text-align: center;
+    size: 15px;
+    margin-top: 20px;
+}
