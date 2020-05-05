@@ -41,32 +41,6 @@ h1 {
     color: var(--p-fg);
 }
 
-#course-code {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    border-bottom: solid 1px var(--accent);
-    font-size: 18px;
-    color: var(--p-fg);
-}
-
-#course-name {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    border-bottom: solid 1px var(--accent);
-    font-size: 18px;
-    color: var(--p-fg);
-}
-
-#qr {
-    display: block;
-    background-color: transparent;
-    outline: none;
-    font-size: 18px;
-    color: var(--accent);
-}
-
 #card-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -294,6 +268,8 @@ h1 {
     color: var(--p-fg);
 }
 
+/* BEGIN add.html */
+
 .submit-button {
     display: block;
     border: solid 2px var(--accent);
@@ -319,3 +295,35 @@ h1 {
 .img-container {
     margin: 0px;
 }
+
+.sel-container option {
+    font-size: 20px;
+}
+
+#course-code {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px var(--accent);
+    font-size: 18px;
+    color: var(--p-fg);
+}
+
+#course-name {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px var(--accent);
+    font-size: 18px;
+    color: var(--p-fg);
+}
+
+#qr {
+    display: block;
+    background-color: transparent;
+    outline: none;
+    font-size: 18px;
+    color: var(--accent);
+}
+
+/* END add.html */

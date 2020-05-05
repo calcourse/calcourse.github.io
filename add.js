@@ -1,16 +1,15 @@
-var token = '';
+let token = '';
+let courseURL = '';
 
 $(() => {
     $.ajax({
         type: 'POST',
         url: "http://118.25.79.158:3000/api/v1/auth/",
-        contentType: 'application/json',
-        dataType: 'json',
         data: {
             email: "oski@berkeley.edu",
         },
         success: (response) => {
-            token = concat(response.token);
+            token = response.token;
             console.log(response);
         },
         error: (response) => {
@@ -20,31 +19,40 @@ $(() => {
 });
 
 function submitInfo() {
-    $.ajax({
-        type: 'POST',
-        url: 'http://118.25.79.158:3000/api/v1/courses/',
-        headers: {
-            'Authorization': 'Bearer: ' + token,
-        },
-        contentType: 'application/json',
-        dataType: 'json',
-        data: {
-            code: $("#course-code").val(),
-            name: $("#course-name").val(),
-            // TODO: a check need to be performed somewhere
-            qr_code: (getURL()),
-        },
-        success: (response) => {
-            console.log(response);
-        },
-        error: (response) => {
-            console.log(response);
-        },
-    })
+    if (getLegalCourse()) {
+        $.ajax({
+            type: 'POST',
+            url: 'http://118.25.79.158:3000/api/v1/courses/',
+            // FIXME： change to actual token
+            headers: {
+                'Authorization': 'Bearer hilfinger',
+            },
+            dataType: "json",
+            data: {
+                code: $("#course-code").val(),
+                name: $("#course-name").val(),
+                qr_code: courseURL,
+                term: $("#term").val(),
+            },
+            success: (response) => {
+                console.log(response);
+                document.getElementById("submit-text").textContent = "Submit Success.";
+            },
+            error: (response) => {
+                console.log(response);
+            },
+        })
+    } else {
+        document.getElementById("submit-text").textContent = "Illegal Info.";
+    }
 }
 
 function loadPreview() {
     let qrCodeFile = document.getElementById('qr').files[0];
+    if (qrCodeFile === null || qrCodeFile === undefined) {
+        document.getElementById("upload-text").textContent = "No image upload.";
+        return;
+    }
     // This could be changed to just loading to Image for simplicity, but why change if the current one works
     let previewer = new FileReader();
     previewer.onload = function (e) {
@@ -55,21 +63,20 @@ function loadPreview() {
         let canv = document.getElementById("canv");
         let context = canv.getContext("2d")
         // Magic number here for 260 and 780
-        fitImageOntoCanvasAndDisplay(context, qrCodeImg, 360, 780); 
+        fitImageOntoCanvasAndDisplay(context, qrCodeImg, 360, 780);
         // This is messy, but if such wrapping does not exist shitty things might happen with jsQR
-        // TODO: Now loading img_data might require clicking twice and idk waht's going on
         try {
         let img_data = new ImageData(
             context.getImageData(
                 0, 0, canv.width, canv.height).data,
-                canv.width, 
+                canv.width,
                 canv.height);
         updatePageURLWithImageUploaded(img_data);
         }
         catch (err) {
-            document.getElementById("upload-text").textContent = 
-            "Loading failed. This is either because your browser screwd things up" + 
-            "or because you clicked preview too fast.\n" + 
+            document.getElementById("upload-text").textContent =
+            "Loading failed. This is either because your browser screwd things up" +
+            "or because you clicked preview too fast.\n" +
             "plz click preview again in a few seconds.";
         }
     };
@@ -97,6 +104,7 @@ function updatePageURLWithImageUploaded(image_data){
         // No break here as we want to display it anyways
     default:
         document.getElementById("upload-text").textContent += url;
+        courseURL = url;
     }
 }
 
@@ -122,4 +130,41 @@ function getURL(image_data) {
     else {
         return 2;
     }
+}
+
+function isNotEmpty(value) {
+    if (value === undefined || value === null) {
+        console.log("No input");
+        return false;
+    } else if (value.replace(/(^s*)|(s*$)/g, "").length === 0) {
+        console.log("Empty input");
+        return false;
+    }
+    return true;
+}
+
+function isLegalCode(code) {
+    let regex = new RegExp("^([a-zA-Z]+ [0-9]+[a-zA-Z]*)$");
+    if (regex.test(code)) {
+        return true;
+    } else {
+        console.log("Wrong course code.");
+        return false;
+    }
+
+}
+
+function getLegalCourse() {
+    let codeInputField = document.getElementById("course-code");
+    let codeInput = codeInputField.value;
+    let nameInputField = document.getElementById("course-name");
+    let nameInput = nameInputField.value;
+    if (isNotEmpty(codeInput) && isNotEmpty(nameInput) && isLegalCode(codeInput)) {
+        loadPreview();
+        if (isLegalURL(courseURL)) {
+            return true;
+        }
+        console.log("no image");
+    }
+    return false;
 }
