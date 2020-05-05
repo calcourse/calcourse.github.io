@@ -91,11 +91,13 @@ function onSignIn(googleUser) {
 }
 
 function loadCourses(token) {
+    $("#main-container").addClass("logged-in");
     $("#card-container").html("加加加加加加载中");
     $.ajax({url: api + "courses/", headers: {
         "Authorization": `Bearer ${token}`
     }, success: (response) => {
-        $("#card-container").html("").addClass("loaded");
+        $("#card-container").html("");
+        $("#main-container").addClass("loaded");
         for (let course of response) {
             addCard(course.code, course.name, course.qr_code);
         }
@@ -107,7 +109,7 @@ function loadCourses(token) {
 function createCookie(name, value, minutes) {
     let date = new Date();
     date.setTime(date.getTime() + minutes * 60 * 1000);
-    let expires = "; expires=" + date.toGMTString();
+    let expires = "; expires=" + date.toUTCString();
     document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
 }
 

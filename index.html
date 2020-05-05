@@ -4,7 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Cal Course</title>
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="style.css"></link>
         <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
         <script src="qrcode.min.js"></script>
@@ -12,18 +11,27 @@
         <script src="index.js"></script>
     </head>
     <body>
-        <div id="main-container" class="logged-in">
+        <div id="main-container">
             <h1>Cal Course</h1>
-            <input id="search-input" placeholder="搜索课号"></input>
-            <div id="card-container">
-                <div id="login-wrapper">
-                    <div id="login-button" class="customGPlusSignIn button">
-                        <img src="google.svg" />
-                        <span>用Berkeley邮箱登陆</span>
-                    </div>
+            <div id="filter-container" class="deferred">
+                <input id="search-input" class="deferred" placeholder="搜索课号"></input>
+                <!--<div id="term-container">
+                    <label><input type="checkbox" name="a" />Fall 2020</label>
+                    <label><input type="checkbox" name="b" />Spring 2020</label>
+                </div>-->
+            </div>
+            <div id="login-wrapper">
+                <div>我们需要验证你的学生身份。</div>
+                <div id="login-button" class="customGPlusSignIn button">
+                    <img src="google.svg" />
+                    <span>用Berkeley邮箱登陆</span>
                 </div>
             </div>
-            <button class="button toggle-button">i</button>
+            <div id="card-container">
+            </div>
+            <div id="footer">
+                <button class="button toggle-button">i</button>
+            </div>
         </div>
         <div id="about-container" class="hidden">
             Made with ♥️ by ... <br /><br />
