@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cal Course - Add</title>
+    <title>Cal Course - 添加条目</title>
     <link rel="stylesheet" type="text/css" href="styles/add.css"></link>
     <script src="scripts/jquery-3.5.0.min.js"></script>
     <script src="scripts/jsQR.js" defer async></script>
@@ -12,24 +12,23 @@
 <body>
     <div id="main-container">
         <h1>Cal Course</h1>
-        <pre> </pre>
-        <h2>- Add Course Info</h2>
+        <h2>- 添加条目</h2>
         <div id="sel-container">
             <select id="term">
                 <option value="Summer 2020">Summer 2020</option>
                 <option value="Fall 2020">Fall 2020</option>
             </select>
         </div>
-        <input id="course-code" type="text" placeholder="COMPSCI 61"></input>
+        <input id="dep-code" type="text" placeholder="COMPSCI"></input>
+        <input id="course-code" type="text" placeholder="61"></input>
         <input id="course-name" type="text" placeholder="Structure and Interpretation of Crafted Procrastination"></input>
-        <h3>Select QR Code</h3>
-        <input id="qr" type="file" accept="image/jpg,image/png,image/jpeg"></input>
-        <button class="preview-button" onclick="loadPreview(); loadPreview();" onload="">Preview</button>
+        <input id="qr" type="file" accept="image/jpg,image/png,image/jpeg"/>
+        <button class="preview-button" onclick="loadPreview()">上传二维码</button>
         <div id = "img-container">
             <canvas id="canv" width=0 height=0></canvas>
             <div id="upload-text"></div>
         </div>
-        <button class="submit-button" onclick="submitInfo()">Submit</button>
+        <button class="submit-button" onclick="processSubmit()">添加</button>
         <h3 id="submit-text"></h3>
     </div>
 </body>

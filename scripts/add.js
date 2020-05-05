@@ -19,34 +19,45 @@ function readCookie(name) {
     return null;
 }
 
-function submitInfo() {
-    if (getLegalCourse()) {
-        $.ajax({
-            type: 'POST',
-            url: 'http://118.25.79.158:3000/api/v1/courses/',
-            // FIXME： change to actual token
-            headers: {
-                "Authorization": "Bearer hilfinger",
-                "Content-Type": 'application/json',
-            },
-            dataType: 'json',
-            data: JSON.stringify({
-                "name": $("#course-name").val(),
-                "code": $("#course-code").val(),
-                "term": $("#term").val(),
-                "qr_code": courseURL
-            }),
-            success: (response) => {
-                console.log(response);
-                document.getElementById("submit-text").textContent = "Submit Success.";
-            },
-            error: (response) => {
-                console.log(response);
-            },
-        })
+function processSubmit() {
+    if (isLegalCourse()) {
+        let term = $("#term").val();
+        let depCode = $("#dep-code").val().toUpperCase();
+        let courseCode = $("#course-code").val().toUpperCase();
+        findDuplicate(term, depCode, courseCode, courseURL);
     } else {
-        document.getElementById("submit-text").textContent = "Illegal Info.";
+        document.getElementById("submit-text").textContent = "课程信息不正确";
     }
+}
+
+
+function submitInfo(name, code, term) {
+    $.ajax({
+        type: 'POST',
+        url: 'http://118.25.79.158:3000/api/v1/courses/',
+        // FIXME： change to actual token
+        headers: {
+            "Authorization": "Bearer hilfinger",
+            "Content-Type": 'application/json',
+        },
+        dataType: 'json',
+        data: JSON.stringify({
+            "name": name,
+            "code": code,
+            "term": term,
+            "qr_code": courseURL
+        }),
+        success: (response) => {
+            console.log(response);
+            document.getElementById("submit-text").textContent = "添加成功！";
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 3000);
+        },
+        error: (response) => {
+            console.log(response);
+        },
+    });
 }
 
 function loadPreview() {
@@ -57,41 +68,36 @@ function loadPreview() {
     }
     // This could be changed to just loading to Image for simplicity, but why change if the current one works
     let previewer = new FileReader();
-    previewer.onload = function (e) {
+    previewer.onload = function(e) {
         let qrCodeImg = new Image;
         qrCodeImg.src = e.target.result;
         qrCodeImg.style = "max-width: 150px; max-height: 150px";
-        // Instead of just loading the image, draw it onto canvas for easier conversion
-        let canv = document.getElementById("canv");
-        let context = canv.getContext("2d")
-        // Magic number here for 260 and 780
-        fitImageOntoCanvasAndDisplay(context, qrCodeImg, 360, 780);
-        // This is messy, but if such wrapping does not exist shitty things might happen with jsQR
-        try {
-        let img_data = new ImageData(
-            context.getImageData(
-                0, 0, canv.width, canv.height).data,
-                canv.width,
-                canv.height);
-        updatePageURLWithImageUploaded(img_data);
+        qrCodeImg.onload = function() {
+            let canv = document.getElementById("canv");
+            let context = canv.getContext("2d");
+            fitImageOntoCanvasAndDisplay(context, qrCodeImg, 360, 780);
+            try {
+                let img_data = new ImageData(
+                    context.getImageData(
+                        0, 0, canv.width, canv.height).data,
+                    canv.width,
+                    canv.height);
+                updatePageURLWithImageUploaded(img_data);
+            }
+            catch (err) {
+                document.getElementById("upload-text").textContent = "加载预览失败。";
+            }
         }
-        catch (err) {
-            document.getElementById("upload-text").textContent =
-            "Loading failed. This is either because your browser screwd things up" +
-            "or because you clicked preview too fast.\n" +
-            "plz click preview again in a few seconds.";
-        }
+
     };
     previewer.readAsDataURL(qrCodeFile);
 }
 
 
 function fitImageOntoCanvasAndDisplay(ctx, image, width, height) {
-    // Scale the canvas to acceptable size to display stuff, if image is small then don't scale
     let scale = Math.min((width / image.width), (height / image.height), 1);
     canv.width = image.width * scale;
     canv.height = image.height * scale;
-    // Then scale the image so that it fits canvas
     ctx.drawImage(image, 0, 0, canv.width, canv.height);
 }
 
@@ -135,6 +141,50 @@ function getURL(image_data) {
     }
 }
 
+
+function getCode() {
+    return $("#dep-code").val() + " " + $("#course-code").val();
+}
+
+function findDuplicate(term, depCode, couCode, url) {
+    $.ajax({
+        url: 'http://118.25.79.158:3000/api/v1/courses/',
+        headers: {
+            "Authorization": 'Bearer ' + token,
+        },
+        success: (response) => {
+            let found = findInResponse(response, term, depCode, couCode, url);
+            if (found) {
+                document.getElementById("submit-text").textContent = "该课程已存在。";
+            } else {
+                submitInfo($("#course-name").val(), depCode + " " + couCode, term);
+            }
+        },
+        error: (response) => {
+            document.getElementById("submit-text").textContent = "无法连接服务器。";
+        }
+    });
+}
+
+function findInResponse(response, term, depCode, couCode, url) {
+    let found = false;
+    for (let course of response) {
+        if (course.term === term) {
+            let courseCodeSplit = course.code.split(" ");
+            if (courseCodeSplit[0] === depCode && courseCodeSplit[1] === couCode) {
+                found = true;
+                break;
+            }
+        }
+        if (course.url === url) {
+            //FIXME
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+
 function isNotEmpty(value) {
     if (value === undefined || value === null) {
         console.log("No input");
@@ -147,7 +197,7 @@ function isNotEmpty(value) {
 }
 
 function isLegalCode(code) {
-    let regex = new RegExp("^([a-zA-Z]+ [0-9]+[a-zA-Z]*)$");
+    let regex = new RegExp("^([a-zA-Z]+ [a-zA-Z]?[0-9]+[a-zA-Z]*)$");
     if (regex.test(code)) {
         return true;
     } else {
@@ -156,18 +206,26 @@ function isLegalCode(code) {
     }
 }
 
-function getLegalCourse() {
-    let codeInputField = document.getElementById("course-code");
-    let codeInput = codeInputField.value;
+function isLegalCourse() {
+    let depCodeInputField = document.getElementById("dep-code");
+    let depCodeInput = depCodeInputField.value;
+    let couCodeInputField = document.getElementById("course-code");
+    let couCodeInput = couCodeInputField.value;
     let nameInputField = document.getElementById("course-name");
     let nameInput = nameInputField.value;
-    if (isNotEmpty(codeInput) && isNotEmpty(nameInput) && isLegalCode(codeInput)) {
-        loadPreview();
-        loadPreview();
-        if (isLegalURL(courseURL)) {
-            return true;
+    if (isNotEmpty(depCodeInput) && isNotEmpty(couCodeInput) && isNotEmpty(nameInput)) {
+        if (depCodeInput === "CS") {
+            depCodeInput = "COMPSCI";
         }
-        console.log("no image");
+        depCodeInput = depCodeInput.toUpperCase();
+        couCodeInput = couCodeInput.toUpperCase();
+        let code = depCodeInput + " " + couCodeInput;
+        if (isLegalCode(code)) {
+            if (isLegalURL(courseURL)) {
+                return true;
+            }
+            console.log("no image");
+        }
     }
     return false;
 }
