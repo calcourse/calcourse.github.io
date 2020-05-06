@@ -50,10 +50,7 @@ function submitInfo(name, code, term) {
         }),
         success: (response) => {
             console.log(response);
-            document.getElementById("submit-text").textContent = "添加成功！带你回到主页...";
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 3000);
+            document.getElementById("submit-text").textContent = "添加成功！";
         },
         error: (response) => {
             console.log(response);
