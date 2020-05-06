@@ -23,10 +23,6 @@ $(() => {
         $("#login-wrapper>div:first-child").text("会话过期，请重新登陆。");
     }
 
-    /*   DEBUG   */
-    //createCookie("token", "hilfinger", 60);
-    /* END DEBUG */
-
     let token = readCookie("token");
     if (token) {
         loadCourses(token);
