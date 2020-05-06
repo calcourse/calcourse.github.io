@@ -27,67 +27,180 @@ h1 {
 }
 
 #main-container>div, #main-container>input, #main-container>h1 {
-    width: 100%;
     margin-bottom: 50px;
 }
 
+#sel-container {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 16px 0 0 0;
+    margin-top: 20px;
+}
+
+#sel-container label {
+    margin-right: 20px;
+    background-color: transparent;
+    transition: 0.3s;
+    border: var(--accent) solid 2px;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+}
+
+#sel-container label:hover {
+    background-color: var(--accent);
+    color: white;
+    box-shadow: var(--shadow) 0 0 20px;
+}
+
+#sel-container input {
+    display: none;
+}
+
+#sel-container input:checked + label {
+    background-color: var(--accent);
+    color: var(--p-fg);
+}
+
+#dep-code-wrapper {
+    display: inline;
+}
+
+#course-code-wrapper {
+    display: inline;
+}
+
+#course-name-wrapper {
+    margin-top: 20px;
+}
+
 #dep-code {
+    width: 125px;
     background-color: transparent;
     border: none;
     outline: none;
-    border-bottom: solid 1px var(--accent);
-    font-size: 18px;
+    border-bottom: solid 2px var(--accent);
+    font-size: 20px;
+    padding: 6px;
     color: var(--p-fg);
 }
 
 #course-code {
+    width: 70px;
     background-color: transparent;
     border: none;
     outline: none;
-    border-bottom: solid 1px var(--accent);
-    font-size: 18px;
+    border-bottom: solid 2px var(--accent);
+    font-size: 20px;
+    padding: 6px;
     color: var(--p-fg);
 }
 
 #course-name {
+    width: 500px;
     background-color: transparent;
     border: none;
     outline: none;
-    border-bottom: solid 1px var(--accent);
-    font-size: 18px;
+    border-bottom: solid 2px var(--accent);
+    font-size: 20px;
+    padding: 6px;
     color: var(--p-fg);
 }
 
-#qr {
-    display: block;
-    background-color: transparent;
-    outline: none;
-    font-size: 18px;
+#overrall-wrapper {
+    display: inline-flex;
+}
+
+#qr-wrapper {
+    margin-top: 10px;
+    margin-right: 80px;
+    margin-bottom: 80px;
+}
+
+.qr-container {
+    background-color: var(--p-bg);
+    transition: 0.3s;
+    text-overflow: ellipsis;
+    border: solid var(--accent) 2px;
     color: var(--accent);
-}
-
-.submit-button {
-    display: block;
-    border: solid 2px var(--accent);
-    padding: 3px;
-    background-color: var(--accent);
-    color: white;
+    padding: 4px;
+    border-radius: 3px;
+    margin-right: 16px;
+    box-sizing: border-box;
+    text-align: center;
     cursor: pointer;
-    font-size: 20px;
-    margin: 0px;
 }
 
-.preview-button {
+.qr-container:hover {
+    box-shadow: var(--shadow) 0 0 20px;
+    color: white;
+    background-color: var(--accent);
+}
+
+.qr-container-contained {
+    background-color: var(--accent);
+    transition: 0.3s;
+    text-overflow: ellipsis;
+    border: solid var(--accent) 2px;
+    color: white;
+    padding: 4px;
+    border-radius: 3px;
+    margin-right: 16px;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: pointer;
+}
+
+.qr-container-contained:hover {
+    box-shadow: var(--shadow) 0 0 20px;
+}
+
+#qr {
+    width: 0.01px;
+    height: 0.01px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+#img-container {
+    box-shadow: var(--shadow) 0 0 20px;
+    max-width: 200px;
+    border-radius: 6px;
+    padding: 30px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+#img-container:hover {
+    box-shadow: var(--shadow) 0 0 30px;
+}
+
+#upload-text {
+    margin-top: 3px;
+}
+
+#submit-button {
+    margin-top: 10px;
     display: block;
     border: solid 2px var(--accent);
-    padding: 3px;
+    border-radius: 3px;
+    padding: 6px;
+    font-size: 20px;
+    transition: 0.3s;
     background-color: white;
     color: var(--accent);
     cursor: pointer;
-    font-size: 15px;
-    margin-bottom: 35px;
 }
 
-.img-container {
-    margin: 0px;
+#submit-button:hover {
+    box-shadow: var(--shadow) 0 0 20px;
+    background-color: var(--accent);
+    color: white;
+}
+
+#submit-text {
+    margin-top: 65px;
 }

@@ -21,7 +21,7 @@ function readCookie(name) {
 
 function processSubmit() {
     if (isLegalCourse()) {
-        let term = $("#term").val();
+        let term = getTerm();
         let depCode = $("#dep-code").val().toUpperCase();
         let courseCode = $("#course-code").val().toUpperCase();
         findDuplicate(term, depCode, courseCode, courseURL);
@@ -30,14 +30,13 @@ function processSubmit() {
     }
 }
 
-
 function submitInfo(name, code, term) {
     $.ajax({
         type: 'POST',
         url: 'http://118.25.79.158:3000/api/v1/courses/',
         // FIXME： change to actual token
         headers: {
-            "Authorization": "Bearer hilfinger",
+            "Authorization": "Bearer " + token,
             "Content-Type": 'application/json',
         },
         dataType: 'json',
@@ -45,11 +44,13 @@ function submitInfo(name, code, term) {
             "name": name,
             "code": code,
             "term": term,
-            "qr_code": courseURL
+            "qr_code": courseURL,
+            // FIXME: Uncomment to include time info
+            // "time": getTime()
         }),
         success: (response) => {
             console.log(response);
-            document.getElementById("submit-text").textContent = "添加成功！";
+            document.getElementById("submit-text").textContent = "添加成功！带你回到主页...";
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 3000);
@@ -61,21 +62,26 @@ function submitInfo(name, code, term) {
 }
 
 function loadPreview() {
+    updateQrCss("qr-container");
+    let imgContainer = $(`<div id="img-container">
+        <canvas id="canv" width=0 height=0></canvas>
+        <div id="upload-text"></div>
+        </div>`);
+    $("#img-wrapper").html("");
+    $("#img-wrapper").append(imgContainer);
     let qrCodeFile = document.getElementById('qr').files[0];
     if (qrCodeFile === null || qrCodeFile === undefined) {
-        document.getElementById("upload-text").textContent = "No image upload.";
+        document.getElementById("upload-text").textContent = "emm.. 还在盼着二维码";
         return;
     }
-    // This could be changed to just loading to Image for simplicity, but why change if the current one works
     let previewer = new FileReader();
     previewer.onload = function(e) {
         let qrCodeImg = new Image;
         qrCodeImg.src = e.target.result;
-        qrCodeImg.style = "max-width: 150px; max-height: 150px";
         qrCodeImg.onload = function() {
             let canv = document.getElementById("canv");
             let context = canv.getContext("2d");
-            fitImageOntoCanvasAndDisplay(context, qrCodeImg, 360, 780);
+            fitImageOntoCanvasAndDisplay(context, qrCodeImg, 150, 200);
             try {
                 let img_data = new ImageData(
                     context.getImageData(
@@ -85,7 +91,7 @@ function loadPreview() {
                 updatePageURLWithImageUploaded(img_data);
             }
             catch (err) {
-                document.getElementById("upload-text").textContent = "加载预览失败。";
+                document.getElementById("upload-text").textContent = "唔，出错了，请重试";
             }
         }
 
@@ -106,15 +112,37 @@ function updatePageURLWithImageUploaded(image_data){
     document.getElementById("upload-text").textContent = "";
     switch (url){
     case 2:
-        document.getElementById("upload-text").textContent = "No qr code found";
+        document.getElementById("upload-text").textContent = "哎？好像不是二维码";
         break;
     case 1:
-        document.getElementById("upload-text").textContent = "Bruh, wut qr code is this";
-        // No break here as we want to display it anyways
+        document.getElementById("upload-text").textContent = "确定这是微信二维码？？？";
+        break;
     default:
-        document.getElementById("upload-text").textContent += url;
+        updateQrCss("qr-container-contained");
         courseURL = url;
+        break;
     }
+}
+
+function updateQrCss(cssClass) {
+    let qrContainer = document.getElementById("qr-upload");
+    qrContainer.classList.remove("qr-container", "qr-container-contained");
+    qrContainer.classList.add(cssClass)
+}
+
+function getTime() {
+    let date = new Date();
+    return date.getTime();
+}
+
+function getTerm() {
+    let terms = document.getElementsByName("term");
+    for (let term of terms) {
+        if (term.checked) {
+            return term.value;
+        }
+    }
+    return null;
 }
 
 function isLegalURL(url) {
@@ -155,13 +183,13 @@ function findDuplicate(term, depCode, couCode, url) {
         success: (response) => {
             let found = findInResponse(response, term, depCode, couCode, url);
             if (found) {
-                document.getElementById("submit-text").textContent = "该课程已存在。";
+                document.getElementById("submit-text").textContent = "已经有了哦，回主页看看吧";
             } else {
-                submitInfo($("#course-name").val(), depCode + " " + couCode, term);
+                submitInfo($("#course-name").val(), getCode(), term);
             }
         },
         error: (response) => {
-            document.getElementById("submit-text").textContent = "无法连接服务器。";
+            document.getElementById("submit-text").textContent = "糟糕，服务器走丢了！";
         }
     });
 }
@@ -172,12 +200,18 @@ function findInResponse(response, term, depCode, couCode, url) {
         if (course.term === term) {
             let courseCodeSplit = course.code.split(" ");
             if (courseCodeSplit[0] === depCode && courseCodeSplit[1] === couCode) {
+                //FIXME: Uncomment to include time info
+                /*
+                if (course.time + 7*24*60*60*1000 > getTime()) {
+                    found = true;
+                    break;
+                }
+                */
                 found = true;
                 break;
             }
         }
         if (course.url === url) {
-            //FIXME
             found = true;
             break;
         }
@@ -213,6 +247,9 @@ function isLegalCourse() {
     let couCodeInput = couCodeInputField.value;
     let nameInputField = document.getElementById("course-name");
     let nameInput = nameInputField.value;
+    if (getTerm() === null) {
+        return false;
+    }
     if (isNotEmpty(depCodeInput) && isNotEmpty(couCodeInput) && isNotEmpty(nameInput)) {
         if (depCodeInput === "CS") {
             depCodeInput = "COMPSCI";

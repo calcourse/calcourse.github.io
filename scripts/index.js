@@ -8,7 +8,8 @@ $(() => {
         $("#about-container").toggleClass("hidden");
     });
     $("#cookie-button").on("click", () => {
-        window.location.href = "policy.html";
+        window.open("policy.html", "_blank");
+        return false;
     });
 
     $.urlParam = (name) => {
