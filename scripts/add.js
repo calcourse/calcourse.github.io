@@ -36,7 +36,7 @@ function submitInfo(name, code, term) {
         url: 'http://118.25.79.158:3000/api/v1/courses/',
         // FIXME： change to actual token
         headers: {
-            "Authorization": "Bearer " + token,
+            "Authorization": 'Bearer ' + token,
             "Content-Type": 'application/json',
         },
         dataType: 'json',
@@ -45,8 +45,6 @@ function submitInfo(name, code, term) {
             "code": code,
             "term": term,
             "qr_code": courseURL,
-            // FIXME: Uncomment to include time info
-            // "time": getTime()
         }),
         success: (response) => {
             console.log(response);
@@ -127,11 +125,6 @@ function updateQrCss(cssClass) {
     qrContainer.classList.add(cssClass)
 }
 
-function getTime() {
-    let date = new Date();
-    return date.getTime();
-}
-
 function getTerm() {
     let terms = document.getElementsByName("term");
     for (let term of terms) {
@@ -152,7 +145,6 @@ function isLegalURL(url) {
 
 // image_data is ImageData or Uint8ClampedArray, give it undecoded stuff shit will happen
 function getURL(image_data) {
-    // TODO: might be better ones than jsQR, this is just most recent (it's bigger)
     let qrCodeRead = jsQR(image_data.data, image_data.width, image_data.height);
     if (qrCodeRead) {
         url = qrCodeRead.data;
@@ -168,7 +160,7 @@ function getURL(image_data) {
 
 
 function getCode() {
-    return $("#dep-code").val() + " " + $("#course-code").val();
+    return $("#dep-code").val().toUpperCase() + " " + $("#course-code").val().toUpperCase();
 }
 
 function findDuplicate(term, depCode, couCode, url) {
@@ -180,7 +172,7 @@ function findDuplicate(term, depCode, couCode, url) {
         success: (response) => {
             let found = findInResponse(response, term, depCode, couCode, url);
             if (found) {
-                document.getElementById("submit-text").textContent = "已经有了哦，回主页看看吧";
+                document.getElementById("submit-text").textContent = "已经有了哦";
             } else {
                 submitInfo($("#course-name").val(), getCode(), term);
             }
@@ -197,18 +189,11 @@ function findInResponse(response, term, depCode, couCode, url) {
         if (course.term === term) {
             let courseCodeSplit = course.code.split(" ");
             if (courseCodeSplit[0] === depCode && courseCodeSplit[1] === couCode) {
-                //FIXME: Uncomment to include time info
-                /*
-                if (course.time + 7*24*60*60*1000 > getTime()) {
-                    found = true;
-                    break;
-                }
-                */
                 found = true;
                 break;
             }
         }
-        if (course.url === url) {
+        if (course.qr_code === url) {
             found = true;
             break;
         }
