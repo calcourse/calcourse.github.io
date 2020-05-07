@@ -108,6 +108,19 @@ function onSignIn(googleUser) {
     }});
 }
 
+function parseTerm(x) {
+    if (/^(FA|SP|SU)(\d\d)$/gi.test(x)) {
+        let season = {"FA": "Fall", "SP": "Spring", "SU": "Summer"};
+        let year = (y) => {
+            return String(2000 + parseInt(y));
+        }
+        return season[x.substring(0, 2)] + " " + year(x.substring(2));
+    } else {
+        let cap = x.substring(0, 1).toUpperCase();
+        return cap + x.substring(1).toLowerCase();
+    }
+}
+
 function loadCourses(token) {
     $("#main-container").addClass("logged-in");
     $("#card-container").html("加加加加加加载中");
@@ -118,8 +131,9 @@ function loadCourses(token) {
         $("#main-container").addClass("loaded");
         let allTerms = new Set();
         for (let course of response) {
-            addCard(course.code, course.name, course.qr_code, course.term);
-            allTerms.add(course.term);
+            let term = parseTerm(course.term);
+            addCard(course.code, course.name, course.qr_code, term);
+            allTerms.add(term);
         }
         let addButton = $(`
             <div id="add-button" class="card">
@@ -178,8 +192,10 @@ function loadCourses(token) {
                 filter();
             });
         }
-        $(`#term-${termsArray[0].replace(/ /gi, "-")}`).attr("checked", "checked");
-        filter();
+        if (termsArray[0]) {
+            $(`#term-${termsArray[0].replace(/ /gi, "-")}`).attr("checked", "checked");
+            filter();
+        }
     }, error: (response) => {
         console.log(response);
     }});

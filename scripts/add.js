@@ -1,12 +1,12 @@
-let token = '';
-let courseURL = '';
+let token = "";
+let courseURL = "";
 
-window.onload = function() {
+$(() => {
     token = readCookie("token");
     if (!token) {
         window.location.href = 'index.html?redirect=add';
     }
-};
+});
 
 function readCookie(name) {
     name = encodeURIComponent(name) + "=";
@@ -21,12 +21,12 @@ function readCookie(name) {
 
 function processSubmit() {
     if (isLegalCourse()) {
-        let term = getTerm();
+        let term = $("input[name='term']:checked").val();
         let depCode = $("#dep-code").val().toUpperCase();
         let courseCode = $("#course-code").val().toUpperCase();
         findDuplicate(term, depCode, courseCode, courseURL);
     } else {
-        document.getElementById("submit-text").textContent = "课程信息不正确";
+        $("#submit-text").text("课程信息不正确");
     }
 }
 
@@ -48,7 +48,7 @@ function submitInfo(name, code, term) {
         }),
         success: (response) => {
             console.log(response);
-            document.getElementById("submit-text").textContent = "添加成功！";
+            $("#submit-text").text("添加成功！");
         },
         error: (response) => {
             console.log(response);
@@ -58,23 +58,23 @@ function submitInfo(name, code, term) {
 
 function loadPreview() {
     updateQrCss("qr-container");
-    let imgContainer = $(`<div id="img-container">
-        <canvas id="canv" width=0 height=0></canvas>
-        <div id="upload-text"></div>
+    let imgContainer = $(
+        `<div id="img-container">
+            <canvas id="canv" width=0 height=0></canvas>
+            <div id="upload-text"></div>
         </div>`);
-    $("#img-wrapper").html("");
-    $("#img-wrapper").append(imgContainer);
-    let qrCodeFile = document.getElementById('qr').files[0];
-    if (qrCodeFile === null || qrCodeFile === undefined) {
-        document.getElementById("upload-text").textContent = "emm.. 还在盼着二维码";
+    $("#img-wrapper").html("").append(imgContainer);
+    let qrCodeFile = $("#qr")[0].files[0];
+    if (!qrCodeFile) {
+        $("#upload-text").text("emm.. 还在盼着二维码");
         return;
     }
     let previewer = new FileReader();
-    previewer.onload = function(e) {
-        let qrCodeImg = new Image;
+    previewer.onload = (e) => {
+        let qrCodeImg = new Image();
         qrCodeImg.src = e.target.result;
-        qrCodeImg.onload = function() {
-            let canv = document.getElementById("canv");
+        qrCodeImg.onload = () => {
+            let canv = $("#canv")[0];
             let context = canv.getContext("2d");
             fitImageOntoCanvasAndDisplay(context, qrCodeImg, 150, 200);
             try {
@@ -84,12 +84,10 @@ function loadPreview() {
                     canv.width,
                     canv.height);
                 updatePageURLWithImageUploaded(img_data);
-            }
-            catch (err) {
-                document.getElementById("upload-text").textContent = "唔，出错了，请重试";
+            } catch (err) {
+                $("#upload-text").text("唔，出错了，请重试");
             }
         }
-
     };
     previewer.readAsDataURL(qrCodeFile);
 }
@@ -104,13 +102,13 @@ function fitImageOntoCanvasAndDisplay(ctx, image, width, height) {
 
 function updatePageURLWithImageUploaded(image_data){
     let url = getURL(image_data);
-    document.getElementById("upload-text").textContent = "";
+    $("#upload-text").text("");
     switch (url){
     case 2:
-        document.getElementById("upload-text").textContent = "哎？好像不是二维码";
+        $("#upload-text").text("哎？好像不是二维码");
         break;
     case 1:
-        document.getElementById("upload-text").textContent = "确定这是微信二维码？？？";
+        $("#upload-text").text("确定这是微信二维码？？？");
         break;
     default:
         updateQrCss("qr-container-contained");
@@ -120,19 +118,9 @@ function updatePageURLWithImageUploaded(image_data){
 }
 
 function updateQrCss(cssClass) {
-    let qrContainer = document.getElementById("qr-upload");
-    qrContainer.classList.remove("qr-container", "qr-container-contained");
-    qrContainer.classList.add(cssClass)
-}
-
-function getTerm() {
-    let terms = document.getElementsByName("term");
-    for (let term of terms) {
-        if (term.checked) {
-            return term.value;
-        }
-    }
-    return null;
+    let qrContainer = $("#qr-upload");
+    qrContainer.removeClass("qr-container", "qr-container-contained");
+    qrContainer.addClass(cssClass)
 }
 
 function isLegalURL(url) {
@@ -167,18 +155,18 @@ function findDuplicate(term, depCode, couCode, url) {
     $.ajax({
         url: 'http://118.25.79.158:3000/api/v1/courses/',
         headers: {
-            "Authorization": 'Bearer ' + token,
+            "Authorization": "Bearer " + token,
         },
         success: (response) => {
             let found = findInResponse(response, term, depCode, couCode, url);
             if (found) {
-                document.getElementById("submit-text").textContent = "已经有了哦";
+                $("#submit-text").text("已经有了哦");
             } else {
                 submitInfo($("#course-name").val(), getCode(), term);
             }
         },
         error: (response) => {
-            document.getElementById("submit-text").textContent = "糟糕，服务器走丢了！";
+            $("#submit-text").text("糟糕，服务器走丢了！");
         }
     });
 }
@@ -202,7 +190,7 @@ function findInResponse(response, term, depCode, couCode, url) {
 }
 
 function isNotEmpty(value) {
-    if (value === undefined || value === null) {
+    if (!value) {
         console.log("No input");
         return false;
     } else if (value.replace(/(^s*)|(s*$)/g, "").length === 0) {
@@ -223,13 +211,13 @@ function isLegalCode(code) {
 }
 
 function isLegalCourse() {
-    let depCodeInputField = document.getElementById("dep-code");
-    let depCodeInput = depCodeInputField.value;
-    let couCodeInputField = document.getElementById("course-code");
-    let couCodeInput = couCodeInputField.value;
-    let nameInputField = document.getElementById("course-name");
-    let nameInput = nameInputField.value;
-    if (getTerm() === null) {
+    let depCodeInputField = $("#dep-code");
+    let depCodeInput = depCodeInputField.val();
+    let couCodeInputField = $("#course-code");
+    let couCodeInput = couCodeInputField.val();
+    let nameInputField = $("#course-name");
+    let nameInput = nameInputField.val();
+    if (!$("input[name='term']:checked").val()) {
         return false;
     }
     if (isNotEmpty(depCodeInput) && isNotEmpty(couCodeInput) && isNotEmpty(nameInput)) {
