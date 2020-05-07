@@ -3,7 +3,7 @@ let courseURL = '';
 
 window.onload = function() {
     token = readCookie("token");
-    if (!token) {
+    if (token) {
         window.location.href = 'index.html?redirect=add';
     }
 };
@@ -213,7 +213,7 @@ function isNotEmpty(value) {
 }
 
 function isLegalCode(code) {
-    let regex = new RegExp("^([a-zA-Z]+ [a-zA-Z]?[0-9]+[a-zA-Z]*)$");
+    let regex = new RegExp("^([a-zA-Z]+ [a-zA-Z]?[0-9]+[a-zA-Z]*-[0-9]{3})$");
     if (regex.test(code)) {
         return true;
     } else {
