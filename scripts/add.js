@@ -3,7 +3,7 @@ let courseURL = "";
 
 $(() => {
     token = readCookie("token");
-    if (token) {
+    if (!token) {
         window.location.href = 'index.html?redirect=add';
     }
 });
