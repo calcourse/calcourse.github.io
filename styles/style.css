@@ -240,6 +240,7 @@ h1 {
     padding: 8px;
     box-sizing: border-box;
     filter: blur(24px);
+    transform: translateZ(0);
     transition: filter 0.2s;
 }
 
