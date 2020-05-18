@@ -203,12 +203,13 @@ h1 {
 }
 
 .button {
+    position: relative;
     background-color: var(--p-bg);
     transition: background-color 0.2s;
     border: solid var(--accent) 2px;
     color: var(--accent);
     box-sizing: border-box;
-    font-size: 18px;
+    font-size: 42px;
     margin: 20px 10px 0 10px;
     height: 40px;
     width: 40px;
@@ -217,15 +218,27 @@ h1 {
     cursor: pointer;
 }
 
-.button>span {
+.button>div {
     filter: grayscale(1) brightness(1.6) contrast(5) brightness(0.8) sepia(1)
     brightness(0.626) saturate(2.095) hue-rotate(295deg);
+    /* The rest is workaround to chromium bug #551420 */
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    top: 0;
+    left: 0;
+    line-height: 48px;
+    text-align: center;
+    padding: 0;
+    margin-left: -6px;
+    margin-top: -6px;
+    transform: scale(0.5);
 }
 
 .button:hover {
     background-color: var(--accent);
 }
 
-.button:hover>span {
+.button:hover>div {
     filter: grayscale(1) brightness(2);
 }

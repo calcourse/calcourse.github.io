@@ -111,7 +111,7 @@ function findNext() {
     let x = getCurrent() + 1;
     while ((x < cards.length) && cards[x].completed) {
         x += 1;
-    }    console.log(x);
+    }
     return x < cards.length ? x : getCurrent();
 }
 

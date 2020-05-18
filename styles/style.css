@@ -362,6 +362,7 @@ h1 {
 
 .small-button {
     display: block;
+    position: relative;
     width: 30px;
     height: 30px;
     margin: 8px;
@@ -371,15 +372,27 @@ h1 {
     background-color: transparent;
     color: var(--accent);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 28px;
 }
 
-.small-button>span {
+.small-button>div {
     filter: grayscale(1) brightness(1.6) contrast(5) brightness(0.8) sepia(1)
             brightness(0.626) saturate(2.095) hue-rotate(295deg);
+    /* The rest is workaround to chromium bug #551420 */
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    top: 0;
+    left: 0;
+    line-height: 32px;
+    text-align: center;
+    padding: 0;
+    margin-left: -3px;
+    margin-top: -3px;
+    transform: scale(0.5);
 }
 
-.small-button:hover>span {
+.small-button:hover>div {
     filter: grayscale(1) brightness(1.6) contrast(5);
 }
 
