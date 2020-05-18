@@ -100,6 +100,8 @@ function onSignIn(googleUser) {
         createCookie("token", response.token, 10);
         if ($.urlParam("redirect") === "add") {
             window.location.href = "add.html";
+        } else if ($.urlParam("redirect") === "queue") {
+            window.location.href = "queue.html";
         } else {
             loadCourses(response.token);
         }

@@ -1,6 +1,7 @@
 * {
     --p-bg: #333;
     --s-bg: #555;
+    --t-bg: #222;
     --p-fg: #fff;
     --s-fg: #ccc;
     --accent: #da8388;
@@ -41,13 +42,16 @@ h1 {
     flex-grow: 1;
     flex-flow: column nowrap;
     justify-content: center;
-    padding-bottom: 10vh;
+    padding-bottom: 3vh;
 }
 
 #queue-scroll-container {
     width: 100vw;
     left: 0;
+    padding: 48px 0 48px 0;
     overflow-x: scroll;
+    background-color: var(--t-bg);
+    box-shadow: #000 0 0 8px inset;
 }
 
 #queue-scroll-container::-webkit-scrollbar {
@@ -82,7 +86,7 @@ h1 {
     box-sizing: border-box;
     box-shadow: #000 0 0 8px;
     margin: 0 10px 0 10px;
-    transition: width 0.2s, padding 0.2s;
+    transition: width 0.1s, padding 0.1s;
     background-color: var(--s-bg);
     overflow: hidden;
 }
@@ -95,9 +99,46 @@ h1 {
     background-color: transparent;
 }
 
+.card-message {
+    display: none;
+}
+
+.card.failed>.card-message {
+    display: block;
+    position: absolute;
+    background-color: #900;
+    left: 32px;
+    bottom: 0px;
+    right: 32px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    border-radius: 20px 20px 0 0;
+    box-shadow: #000 0 0 4px inset;
+    text-align: center;
+}
+
 .card.folded {
     width: 8px;
     padding: 0;
+    animation: processing 2s infinite;
+    transition: filter 0.2s, width 0.1s, padding 0.1s;
+}
+
+.card.folded.completed {
+    width: 0;
+    animation: disappear 0.1s;
+}
+
+@keyframes disappear {
+    from {
+        width: 8px;
+        display: block;
+    }
+    to {
+        width: 0;
+        display: none;
+    }
 }
 
 .card.folded>.card-info-container {
@@ -119,11 +160,6 @@ h1 {
 
 .card.blocked>.card-status {
     background-color: var(--blocked);    
-}
-
-.card.folded {
-    animation: processing 2s infinite;
-    transition: filter 0.2s;
 }
 
 @keyframes processing {
