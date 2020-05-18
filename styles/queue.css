@@ -195,11 +195,6 @@ h1 {
     text-decoration-thickness: 2px;
 }
 
-.card-info-link::after {
-    content: " ▶︎";
-    font-size: 12px;
-}
-
 #controls-container {
     display: flex;
     flex-flow: row nowrap;

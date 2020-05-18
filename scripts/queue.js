@@ -7,7 +7,7 @@ $(() => {
         window.location.href = 'index.html?redirect=queue';
     }
 
-    addCard("这是一条信息", "&nbsp;", "请稍等", "", "info", true);
+    addCard("", "&nbsp;", "正在加载审核队列", "", "info", true);
     addCard("CS 61A", "Spring 2020", "Structure and Interpretation of Computer Programs", "https://weixin.qq.com/blablabla");
     addCard("CS 61B", "Fall 2020", "Studying Paul Hilfinger's fingers Wow this is a long sentence blablabla", "https://weixin.qq.com/blablabla");
     addCard("CS 99Z", "Summer 2020", "AP Computer Science A", "https://weixin.qq.com/blablabla");
