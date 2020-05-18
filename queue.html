@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Cal Course - 审核</title>
+        <link rel="stylesheet" type="text/css" href="styles/queue.css"></link>
+        <script src="scripts/jquery-3.5.0.min.js"></script>
+        <script src="scripts/queue.js"></script>
+    </head>
+    <body>
+        <div id="main-container">
+            <h1>审核</h1>
+            <div id="centered-container">
+                <div id="queue-scroll-container">
+                    <div id="queue-container">
+                        <div class="queue-padding"></div>
+                        <div id="card-container">
+                            <div class="card">
+                                <div class="card-info-container">
+                                    <div>正在获取审核队列</div>
+                                    <div>请稍等...</div>
+                                </div>
+                            </div>
+                            <div class="card folded passed">
+                                <div class="card-status"></div>
+                                <div class="card-info-container">
+                                    <div>CS 61A</div>
+                                    <div>Structure and Interpretation of Programs</div>
+                                    <a href="#">https://weixin.qq.com/blablabla</a>
+                                </div>
+                            </div>
+                            <div class="card active">
+                                <div class="card-status"></div>
+                                <div class="card-info-container">
+                                    <div class="card-info-name">CS 61B</div>
+                                    <div class="card-info-term">Spring 2020</div>
+                                    <div class="card-info-desc">Studying Paul Hilfinger's fingers Wow this is a long sentence blablabla</div>
+                                    <a href="#" class="card-info-link">https://weixin.qq.com/blablabla</a>
+                                </div>
+                            </div>
+                            <div class="card folded blocked">
+                                <div class="card-status"></div>
+                                <div class="card-info-container">
+                                    <div>CS 99Z</div>
+                                    <div>AP Computer Science A</div>
+                                    <div>https://weixin.qq.com/blablabla</div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-status"></div>
+                                <div class="card-info-container">
+                                    <div>CS 61B</div>
+                                    <div>Studying Paul Hilfinger's fingers</div>
+                                    <div>https://weixin.qq.com/blablabla</div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-status"></div>
+                                <div class="card-info-container">
+                                    <div>CS 61B</div>
+                                    <div>Studying Paul Hilfinger's fingers</div>
+                                    <div>https://weixin.qq.com/blablabla</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="queue-padding"></div>
+                    </div>
+                </div>
+                <div id="controls-container">
+                    <button class="button" id="btn-left"><span>👈</span></button>
+                    <button class="button" id="btn-pass"><span>👌🏻</span></button>
+                    <button class="button" id="btn-block"><span>🤚🏻</span></button>
+                    <button class="button" id="btn-right"><span>👉</span></button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

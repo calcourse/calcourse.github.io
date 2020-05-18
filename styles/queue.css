@@ -1,0 +1,200 @@
+* {
+    --p-bg: #333;
+    --s-bg: #555;
+    --p-fg: #fff;
+    --s-fg: #ccc;
+    --accent: #da8388;
+    --passed: #74d4c0;
+    --blocked: #d9455f;
+    --pending: #f9d89c;
+    --shadow: rgba(61, 38, 38, 0.5);
+}
+
+html, body {
+    background-color: var(--p-bg);
+    color: var(--p-fg);
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+h1 {
+    font-weight: 800;
+    height: calc(10vh + 1em);
+    line-height: calc(20vh + 1em);
+    max-width: 800px;
+    width: 90vw;
+    margin: 0 auto;
+}
+
+#main-container {
+    display: flex;
+    position: relative;
+    flex-flow: column nowrap;
+    min-height: 100%;
+}
+
+#centered-container {
+    display: flex;
+    flex-grow: 1;
+    flex-flow: column nowrap;
+    justify-content: center;
+    padding-bottom: 10vh;
+}
+
+#queue-scroll-container {
+    width: 100vw;
+    left: 0;
+    overflow-x: scroll;
+}
+
+#queue-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+#queue-container {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 16px 0 16px 0;
+}
+
+.queue-padding {
+    min-width: calc(50vw - 400px);
+    width: 5vw;
+}
+
+#card-container {
+    display: flex;
+    flex-flow: row nowrap;
+    overflow-y: visible;
+}
+
+.card {
+    display: flex;
+    position: relative;
+    flex-flow: column nowrap;
+    padding: 20px 20px 20px 30px;
+    width: 320px;
+    height: 200px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    box-shadow: #000 0 0 8px;
+    margin: 0 10px 0 10px;
+    transition: width 0.2s, padding 0.2s;
+    background-color: var(--s-bg);
+    overflow: hidden;
+}
+
+.card.active {
+    background-color: var(--accent);
+}
+
+.card.active>.card-status {
+    background-color: transparent;
+}
+
+.card.folded {
+    width: 8px;
+    padding: 0;
+}
+
+.card.folded>.card-info-container {
+    display: none;
+}
+
+.card-status {
+    position: absolute;
+    width: 8px;
+    left: 0;
+    top: 0;
+    height: 200px;
+    background-color: var(--pending);
+}
+
+.card.passed>.card-status {
+    background-color: var(--passed);    
+}
+
+.card.blocked>.card-status {
+    background-color: var(--blocked);    
+}
+
+.card.folded {
+    animation: processing 2s infinite;
+    transition: filter 0.2s;
+}
+
+@keyframes processing {
+    0% {filter: brightness(1.0);}
+    50% {filter: brightness(1.0);}
+    60% {filter: brightness(1.5);}
+    70% {filter: brightness(1.0);}
+    80% {filter: brightness(1.5);}
+    90% {filter: brightness(1.0);}
+}
+
+.card-info-name {
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 64px;
+    height: 52px;
+}
+
+.card-info-term {
+    margin-top: -5px;
+    font-variant-caps: all-small-caps;
+}
+
+.card-info-desc {
+    max-height: calc(2em + 8px);
+    overflow-y: scroll;
+    margin: 5px 0 5px 0;
+}
+
+.card-info-link {
+    font-size: 16px;
+    color: var(--p-fg);
+    text-decoration-thickness: 2px;
+}
+
+.card-info-link::after {
+    content: " ▶︎";
+    font-size: 12px;
+}
+
+#controls-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin-top: 5vh;
+}
+
+.button {
+    background-color: var(--p-bg);
+    transition: background-color 0.2s;
+    border: solid var(--accent) 2px;
+    color: var(--accent);
+    box-sizing: border-box;
+    font-size: 18px;
+    margin: 20px 10px 0 10px;
+    height: 40px;
+    width: 40px;
+    border-radius: 8px;
+    line-height: 34px;
+    cursor: pointer;
+}
+
+.button>span {
+    filter: grayscale(1) brightness(1.6) contrast(5) brightness(0.8) sepia(1)
+    brightness(0.626) saturate(2.095) hue-rotate(295deg);
+}
+
+.button:hover {
+    background-color: var(--accent);
+}
+
+.button:hover>span {
+    filter: grayscale(1) brightness(2);
+}
