@@ -51,10 +51,10 @@ function loadTickets() {
         } else {
             addInfo("当前审核队列为空");
         }
-        addCard(0, "CS 61A", "Spring 2020", "Structure and Interpretation of Computer Programs", "https://weixin.qq.com/blablabla");
+        /*addCard(0, "CS 61A", "Spring 2020", "Structure and Interpretation of Computer Programs", "https://weixin.qq.com/blablabla");
         addCard(1, "CS 61B", "Fall 2020", "Studying Paul Hilfinger's fingers Wow this is a long sentence blablabla", "https://weixin.qq.com/blablabla");
         addCard(2, "CS 99Z", "Summer 2020", "AP Computer Science A", "https://weixin.qq.com/blablabla");
-        addCard(3, "CS 199Z", "Spring 2021", "AP Computer Science Principles", "https://weixin.qq.com/blablabla");
+        addCard(3, "CS 199Z", "Spring 2021", "AP Computer Science Principles", "https://weixin.qq.com/blablabla");*/
     }, error: (response) => {
         fail(0, "加载失败，请刷新重试");
     }});
