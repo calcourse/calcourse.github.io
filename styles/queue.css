@@ -14,7 +14,7 @@
 html, body {
     background-color: var(--p-bg);
     color: var(--p-fg);
-    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
     font-size: 18px;
     padding: 0;
     margin: 0;
@@ -86,7 +86,7 @@ h1 {
     box-sizing: border-box;
     box-shadow: #000 0 0 8px;
     margin: 0 10px 0 10px;
-    transition: width 0.1s, padding 0.1s;
+    transition: width 0.1s, padding 0.1s, background-color 0.2s;
     background-color: var(--s-bg);
     overflow: hidden;
 }
@@ -100,18 +100,22 @@ h1 {
 }
 
 .card-message {
-    display: none;
+    position: absolute;
+    visibility: hidden;
+    box-shadow: #000 0 0 0 inset;
+    transition: box-shadow 0.5s, bottom 0.5s;
+    bottom: -20px;
+    color: var(--p-fg);
 }
 
 .card.failed>.card-message {
-    display: block;
-    position: absolute;
+    visibility: visible;
     background-color: #900;
     left: 32px;
-    bottom: 0px;
+    bottom: 0;
     right: 32px;
     height: 20px;
-    line-height: 20px;
+    line-height: 22px;
     font-size: 14px;
     border-radius: 20px 20px 0 0;
     box-shadow: #000 0 0 4px inset;
@@ -121,12 +125,13 @@ h1 {
 .card.folded {
     width: 8px;
     padding: 0;
-    animation: processing 2s infinite;
+    animation: processing 1s infinite;
     transition: filter 0.2s, width 0.1s, padding 0.1s;
 }
 
 .card.folded.completed {
     width: 0;
+    margin: 0;
     animation: disappear 0.1s;
 }
 
@@ -139,6 +144,15 @@ h1 {
         width: 0;
         display: none;
     }
+}
+
+.card-info-container.card-message-container {
+    display: flex;
+    height: 240px;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-left: -5px;
 }
 
 .card.folded>.card-info-container {
@@ -164,11 +178,10 @@ h1 {
 
 @keyframes processing {
     0% {filter: brightness(1.0);}
+    25% {filter: brightness(1.5);}
     50% {filter: brightness(1.0);}
-    60% {filter: brightness(1.5);}
-    70% {filter: brightness(1.0);}
-    80% {filter: brightness(1.5);}
-    90% {filter: brightness(1.0);}
+    75% {filter: brightness(1.5);}
+    100% {filter: brightness(1.0);}
 }
 
 .card-info-name {

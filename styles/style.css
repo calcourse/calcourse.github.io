@@ -10,7 +10,7 @@
 html, body {
     background-color: var(--p-bg);
     color: var(--p-fg);
-    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
     font-size: 18px;
     padding: 0;
     margin: 0;
@@ -372,7 +372,6 @@ h1 {
     background-color: transparent;
     color: var(--accent);
     cursor: pointer;
-    font-size: 28px;
 }
 
 .small-button>div {
@@ -390,6 +389,7 @@ h1 {
     margin-left: -3px;
     margin-top: -3px;
     transform: scale(0.5);
+    font-size: 28px;
 }
 
 .small-button:hover>div {

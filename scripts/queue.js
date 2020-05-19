@@ -7,20 +7,8 @@ $(() => {
         window.location.href = 'index.html?redirect=queue';
     }
 
-    addCard("", "&nbsp;", "正在加载审核队列", "", "info", true);
-    addCard("CS 61A", "Spring 2020", "Structure and Interpretation of Computer Programs", "https://weixin.qq.com/blablabla");
-    addCard("CS 61B", "Fall 2020", "Studying Paul Hilfinger's fingers Wow this is a long sentence blablabla", "https://weixin.qq.com/blablabla");
-    addCard("CS 99Z", "Summer 2020", "AP Computer Science A", "https://weixin.qq.com/blablabla");
-    addCard("CS 199Z", "Spring 2021", "AP Computer Science Principles", "https://weixin.qq.com/blablabla");
-    moveTo(1);
-
-    $.ajax({url: api + "tickets/", headers: {
-        "Authorization": `Bearer ${token}`
-    }, success: (response) => {
-        console.log(response);
-    }, error: (response) => {
-        console.log(response);
-    }});
+    addInfo("正在加载审核队列");
+    loadTickets();
 
     $("#btn-left").on("click", () => {
         moveTo(findPrev());
@@ -33,7 +21,8 @@ $(() => {
     });
     $("#btn-block").on("click", () => {
         block(getCurrent());
-    });});
+    });
+});
 
 function readCookie(name) {
     name = encodeURIComponent(name) + "=";
@@ -47,10 +36,31 @@ function readCookie(name) {
 }
 
 function loadTickets() {
-
+    $.ajax({url: api + "tickets/", headers: {
+        "Authorization": `Bearer ${token}`
+    }, success: (response) => {
+        $("#card-container").html("");
+        for (let item of response.slice(0, 100)) {
+            addCard(item.id, item.code, item.term, item.name, item.qr_code);
+        }
+        if (response.length) {
+            moveTo(1);
+            if (response.length > 100) {
+                addInfo("请刷新页面以加载更多条目");
+            }
+        } else {
+            addInfo("当前审核队列为空");
+        }
+        addCard(0, "CS 61A", "Spring 2020", "Structure and Interpretation of Computer Programs", "https://weixin.qq.com/blablabla");
+        addCard(1, "CS 61B", "Fall 2020", "Studying Paul Hilfinger's fingers Wow this is a long sentence blablabla", "https://weixin.qq.com/blablabla");
+        addCard(2, "CS 99Z", "Summer 2020", "AP Computer Science A", "https://weixin.qq.com/blablabla");
+        addCard(3, "CS 199Z", "Spring 2021", "AP Computer Science Principles", "https://weixin.qq.com/blablabla");
+    }, error: (response) => {
+        fail(0, "加载失败，请刷新重试");
+    }});
 }
 
-function addCard(name, term, desc, link, type, completed) {
+function addCard(id, name, term, desc, link) {
     let cardElement = $(`
         <div class="card" data-id="${cards.length}">
             <div class="card-status"></div>
@@ -64,13 +74,31 @@ function addCard(name, term, desc, link, type, completed) {
         </div>`);
     $("#card-container").append(cardElement);
     let card = {
-        index: cards.length,
-        type: type ?? "pending",
-        completed: completed ?? false,
+        id: id,
+        type: "pending",
+        completed: false,
         element: cardElement
     }
     cards.push(card);
     return cards.length - 1;
+}
+
+function addInfo(message) {
+    let cardElement = $(`
+        <div class="card" data-id="${cards.length}">
+            <div class="card-info-container card-message-container">
+                <div>${message}</div>
+            </div>
+            <div class="card-message"></div>
+        </div>`);
+    $("#card-container").append(cardElement);
+    let card = {
+        id: -1,
+        type: "info",
+        completed: true,
+        element: cardElement
+    }
+    cards.push(card);
 }
 
 function getCurrent() {
@@ -82,7 +110,16 @@ function pass(index) {
                         .removeClass("blocked").addClass("passed");
     cards[index].completed = true;
     cards[index].type = "passed";
-    moveTo(findNext(), 110);    
+    moveTo(findNext(), 110);
+    $.ajax({url: api + `tickets/${cards[index].id}/confirm/`, headers: {
+        "Authorization": `Bearer ${token}`
+    }, success: (response) => {
+        console.log(index, response);
+        complete(index);
+    }, error: (response) => {
+        console.log(index, response);
+        fail(index, "无法提交请求，请重试");
+    }})
 }
 
 function block(index) {
@@ -91,12 +128,26 @@ function block(index) {
     cards[index].completed = true;
     cards[index].type = "blocked";
     moveTo(findNext(), 110);
+    $.ajax({url: api + `tickets/${cards[index].id}/`, method: "DELETE", headers: {
+        "Authorization": `Bearer ${token}`
+    }, success: (response) => {
+        console.log(index, response);
+        complete(index);
+    }, error: (response) => {
+        console.log(index, response);
+        fail(index, "无法提交请求，请重试");
+    }})
 }
 
 function fail(index, message) {
     cards[index].element.removeClass("folded").addClass("failed")
                         .find(".card-message").text(message);
     cards[index].completed = false;
+}
+
+function complete(index) {
+    cards[index].element.addClass("completed");
+    cards[index].completed = true;
 }
 
 function findPrev() {
