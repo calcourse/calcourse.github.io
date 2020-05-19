@@ -106,6 +106,9 @@ function getCurrent() {
 }
 
 function pass(index) {
+    if (isNaN(getCurrent())) {
+        return;
+    }
     cards[index].element.removeClass("failed").addClass("folded")
                         .removeClass("blocked").addClass("passed");
     cards[index].completed = true;
@@ -123,6 +126,9 @@ function pass(index) {
 }
 
 function block(index) {
+    if (isNaN(getCurrent())) {
+        return;
+    }
     cards[index].element.removeClass("failed").addClass("folded")
                         .removeClass("passed").addClass("blocked");
     cards[index].completed = true;
@@ -151,6 +157,9 @@ function complete(index) {
 }
 
 function findPrev() {
+    if (isNaN(getCurrent())) {
+        return;
+    }
     let x = getCurrent() - 1;
     while ((x >= 0) && cards[x].completed) {
         x -= 1;
@@ -159,6 +168,9 @@ function findPrev() {
 }
 
 function findNext() {
+    if (isNaN(getCurrent())) {
+        return;
+    }
     let x = getCurrent() + 1;
     while ((x < cards.length) && cards[x].completed) {
         x += 1;
@@ -167,7 +179,7 @@ function findNext() {
 }
 
 function moveTo(index, delay) {
-    if (index == getCurrent()) {
+    if (isNaN(getCurrent()) || index == getCurrent()) {
         return;
     }
     $(".card.active").removeClass("active");
