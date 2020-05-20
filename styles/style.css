@@ -22,6 +22,14 @@ h1 {
     margin-top: 10vh;
 }
 
+button:focus {
+    outline:0;
+}
+
+a {
+    color: white;
+}
+
 #main-container {
     display: flex;
     position: relative;
@@ -314,9 +322,9 @@ h1 {
 #about-container {
     position: fixed;
     top: 10vh;
-    height: 250px;
-    width: 300px;
-    left: calc(50vw - 150px);
+    height: 385px;
+    width: 350px;
+    left: calc(50vw - 175px);
     background-color: var(--p-bg);
     border-radius: 16px;
     padding: 24px;
@@ -340,6 +348,39 @@ h1 {
 }
 
 #about-container.hidden {
+    display: none;
+}
+
+#cookies-container {
+    position: fixed;
+    top: 10vh;
+    height: 600px;
+    width: 60%;
+    left: calc(50vw - 30%);
+    background-color: var(--p-bg);
+    border-radius: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+    animation: show 0.2s;
+    box-shadow: var(--shadow) 0 0 16px;
+    font-weight: lighter;
+    z-index: 3;
+}
+
+#cookies-container>button {
+    margin: 30px 10px 10px calc(50% - 15px);
+}
+
+#cookies-container.hidden {
+    display: none;
+}
+
+#cookies-container {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+#cookies-container::-webkit-scrollbar {
     display: none;
 }
 

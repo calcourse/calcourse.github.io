@@ -1,11 +1,22 @@
 let token = "";
 let courseURL = "";
+let helpLoaded = false;
 
 $(() => {
     token = readCookie("token");
     if (!token) {
         window.location.href = 'index.html?redirect=add';
     }
+    $("#help-button").on("click", () => {
+        if (!helpLoaded) {
+            $("#help-page-container").load("add-help.html");
+            helpLoaded = true;
+        }
+        $("#help-container").toggleClass("hidden");
+    });
+    $("#help-close-button").on("click", () => {
+        $("#help-container").toggleClass("hidden");
+    });
 });
 
 function readCookie(name) {

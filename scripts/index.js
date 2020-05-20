@@ -1,15 +1,25 @@
 let api = "http://118.25.79.158:3000/api/v1/";
+let loaded = false;
 
 $(() => {
     $("#search-input").on("input", () => {
         filter();
     });
-    $(".toggle-button").on("click", () => {
+    $("#about-button").on("click", () => {
         $("#about-container").toggleClass("hidden");
     });
-    $("#cookie-button").on("click", () => {
-        window.open("policy.html", "_blank");
-        return false;
+    $("#about-close-button").on("click", () => {
+        $("#about-container").toggleClass("hidden");
+    });
+    $("#cookies-button").on("click", () => {
+        if (!loaded) {
+            $("#cookies-page-container").load("policy.html");
+            loaded = true;
+        }
+        $("#cookies-container").toggleClass("hidden");
+    });
+    $("#cookies-close-button").on("click", () => {
+        $("#cookies-container").toggleClass("hidden");
     });
 
     $.urlParam = (name) => {

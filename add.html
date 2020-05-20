@@ -12,7 +12,10 @@
 <body>
     <div id="main-container">
         <h1>Cal Course</h1>
-        <h2 id="header">- 添加条目</h2>
+        <div id="headers">
+            <h2 id="header">- 添加条目</h2>
+            <button id="help-button">?</button>
+        </div>
         <div id="sel-container">
             <input type="radio" name="term" id="term1" value="SU20" />
             <label for="term1">Summer 2020</label>
@@ -39,7 +42,10 @@
             </div>
             <div id="img-wrapper"></div>
         </div>
-
+        <div id="help-container" class="hidden">
+            <div id="help-page-container"></div>
+            <button id="help-close-button"><div>X</div></button>
+        </div>
     </div>
 </body>
 </html>

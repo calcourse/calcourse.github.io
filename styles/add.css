@@ -19,6 +19,10 @@ h1 {
     margin-top: 10vh;
 }
 
+button:focus {
+    outline:0;
+}
+
 #main-container {
     max-width: 800px;
     width: 90vw;
@@ -28,6 +32,75 @@ h1 {
 
 #main-container>div, #main-container>input, #main-container>h1 {
     margin-bottom: 50px;
+}
+
+#header {
+    display: inline;
+}
+
+#help-button {
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
+    border-radius: 15px;
+    border: solid 2px var(--accent);
+    padding: 0;
+    background-color: transparent;
+    color: var(--accent);
+    cursor: pointer;
+}
+
+#help-button:hover {
+    color: white;
+}
+
+#help-close-button {
+    width: 25px;
+    height: 25px;
+    align-self: end;
+    border-radius: 15px;
+    border: solid 2px var(--accent);
+    padding: 0;
+    background-color: transparent;
+    color: var(--accent);
+    cursor: pointer;
+}
+
+#help-close-button:hover {
+    color: white;
+}
+
+#help-container {
+    position: fixed;
+    top: 10vh;
+    height: 600px;
+    width: 60%;
+    left: calc(50vw - 30%);
+    background-color: var(--p-bg);
+    border-radius: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+    animation: show 0.2s;
+    box-shadow: var(--shadow) 0 0 16px;
+    font-weight: lighter;
+    z-index: 3;
+}
+
+#help-container>button {
+    margin: 30px 10px 10px calc(50% - 15px);
+}
+
+#help-container.hidden {
+    display: none;
+}
+
+#help-container {
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+#help-container::-webkit-scrollbar {
+    display: none;
 }
 
 #sel-container {
