@@ -44,7 +44,7 @@ function processSubmit() {
 function submitInfo(name, code, term) {
     $.ajax({
         type: 'POST',
-        url: 'http://118.25.79.158:3000/api/v1/courses/',
+        url: 'http://118.25.79.158:3000/api/v1/tickets/',
         headers: {
             "Authorization": 'Bearer ' + token,
             "Content-Type": 'application/json',
@@ -58,10 +58,11 @@ function submitInfo(name, code, term) {
         }),
         success: (response) => {
             console.log(response);
-            $("#submit-text").text("添加成功！");
+            $("#submit-text").text("添加成功！审核通过后二维码就会出现啦");
         },
         error: (response) => {
             console.log(response);
+            $("#submit-text").text("添加失败，请稍后重试");
         },
     });
 }
@@ -125,7 +126,7 @@ function updatePageURLWithImageUploaded(image_data){
 }
 
 function isLegalURL(url) {
-    let regex = new RegExp("^https://weixin.qq.com/g/([a-zA-Z0-9-_]{16})$");
+    let regex = new RegExp("^https://weixin.qq.com/g/([a-zA-Z0-9-_]+)$");
     if (regex.test(url)) {
         return true;
     }
