@@ -1,11 +1,22 @@
 let token = "";
 let courseURL = "";
+let helpLoaded = false;
 
 $(() => {
     token = readCookie("token");
     if (!token) {
         window.location.href = 'index.html?redirect=add';
     }
+    $("#help-button").on("click", () => {
+        if (!helpLoaded) {
+            $("#help-page-container").load("add-help.html");
+            helpLoaded = true;
+        }
+        $("#help-container").toggleClass("hidden");
+    });
+    $("#help-close-button").on("click", () => {
+        $("#help-container").toggleClass("hidden");
+    });
 });
 
 function readCookie(name) {
@@ -34,7 +45,6 @@ function submitInfo(name, code, term) {
     $.ajax({
         type: 'POST',
         url: 'http://118.25.79.158:3000/api/v1/courses/',
-        // FIXME： change to actual token
         headers: {
             "Authorization": 'Bearer ' + token,
             "Content-Type": 'application/json',
@@ -57,13 +67,12 @@ function submitInfo(name, code, term) {
 }
 
 function loadPreview() {
-    updateQrCss("qr-container");
-    let imgContainer = $(
+    let imgContainer =
         `<div id="img-container">
-            <canvas id="canv" width=0 height=0></canvas>
+            <canvas id="canv" width="0" height="0"></canvas>
             <div id="upload-text"></div>
-        </div>`);
-    $("#img-wrapper").html("").append(imgContainer);
+        </div>`;
+    $("#img-wrapper").html(imgContainer);
     let qrCodeFile = $("#qr")[0].files[0];
     if (!qrCodeFile) {
         $("#upload-text").text("emm.. 还在盼着二维码");
@@ -92,7 +101,6 @@ function loadPreview() {
     previewer.readAsDataURL(qrCodeFile);
 }
 
-
 function fitImageOntoCanvasAndDisplay(ctx, image, width, height) {
     let scale = Math.min((width / image.width), (height / image.height), 1);
     canv.width = image.width * scale;
@@ -105,22 +113,15 @@ function updatePageURLWithImageUploaded(image_data){
     $("#upload-text").text("");
     switch (url){
     case 2:
-        $("#upload-text").text("哎？好像不是二维码");
+        $("#upload-text").text("好像不是二维码");
         break;
     case 1:
-        $("#upload-text").text("确定这是微信二维码？？？");
+        $("#upload-text").text("请上传微信二维码");
         break;
     default:
-        updateQrCss("qr-container-contained");
         courseURL = url;
         break;
     }
-}
-
-function updateQrCss(cssClass) {
-    let qrContainer = $("#qr-upload");
-    qrContainer.removeClass("qr-container", "qr-container-contained");
-    qrContainer.addClass(cssClass)
 }
 
 function isLegalURL(url) {
@@ -145,7 +146,6 @@ function getURL(image_data) {
         return 2;
     }
 }
-
 
 function getCode() {
     return $("#dep-code").val().toUpperCase() + " " + $("#course-code").val().toUpperCase();
@@ -200,16 +200,6 @@ function isNotEmpty(value) {
     return true;
 }
 
-function isLegalCode(code) {
-    let regex = new RegExp("^([a-zA-Z]+ [a-zA-Z]?[0-9]+[a-zA-Z]*-[0-9]{3})$");
-    if (regex.test(code)) {
-        return true;
-    } else {
-        console.log("Wrong course code.");
-        return false;
-    }
-}
-
 function isLegalCourse() {
     let depCodeInputField = $("#dep-code");
     let depCodeInput = depCodeInputField.val();
@@ -227,12 +217,10 @@ function isLegalCourse() {
         depCodeInput = depCodeInput.toUpperCase();
         couCodeInput = couCodeInput.toUpperCase();
         let code = depCodeInput + " " + couCodeInput;
-        if (isLegalCode(code)) {
-            if (isLegalURL(courseURL)) {
-                return true;
-            }
-            console.log("no image");
+        if (isLegalURL(courseURL)) {
+            return true;
         }
+        console.log("no image");
     }
     return false;
 }

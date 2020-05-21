@@ -1,15 +1,21 @@
 let api = "http://118.25.79.158:3000/api/v1/";
+let cookiesLoaded = false;
 
 $(() => {
     $("#search-input").on("input", () => {
         filter();
     });
-    $(".toggle-button").on("click", () => {
+    
+    $(".about-toggle").on("click", () => {
         $("#about-container").toggleClass("hidden");
     });
-    $("#cookie-button").on("click", () => {
-        window.open("policy.html", "_blank");
-        return false;
+
+    $(".cookies-toggle").on("click", () => {
+        if (!cookiesLoaded) {
+            $("#cookies-page-container").load("policy.html");
+            cookiesLoaded = true;
+        }
+        $("#cookies-container").toggleClass("hidden");
     });
 
     $.urlParam = (name) => {

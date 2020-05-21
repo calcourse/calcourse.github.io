@@ -11,35 +11,45 @@
 </head>
 <body>
     <div id="main-container">
-        <h1>Cal Course</h1>
-        <h2 id="header">- 添加条目</h2>
-        <div id="sel-container">
-            <input type="radio" name="term" id="term1" value="SU20" />
-            <label for="term1">Summer 2020</label>
-            <input type="radio" name="term" id="term2" value="FA20" />
-            <label for="term2">Fall 2020</label>
-        </div>
-        <div id="dep-code-wrapper">
-            <input id="dep-code" type="text" placeholder="COMPSCI"></input>
-        </div>
-        <div id="course-code-wrapper">
-            <input id="course-code" type="text" placeholder="61P-001"></input>
-        </div>
-        <div id="course-name-wrapper">
-            <input id="course-name" type="text" placeholder="Structure and Interpretation of Crafted Procrastination"></input>
-        </div>
-        <div id="overrall-wrapper">
-            <div id="left">
-                <div id="qr-wrapper">
-                    <label class="qr-container" id="qr-upload" for="qr">选择二维码</label>
-                    <input id="qr" type="file" accept="image/jpg,image/png,image/jpeg" onchange="loadPreview()"/>
-                </div>
-                <button id="submit-button" onclick="processSubmit()">添加</button>
-                <h3 id="submit-text"></h3>
+        <h1>添加条目</h1>
+        <h2>
+            ① 填写课号
+        </h2>
+        <div>
+            <div id="sel-container">
+                <input type="radio" name="term" id="term1" value="SU20" />
+                <label for="term1" class="button">Summer 2020</label>
+                <input type="radio" name="term" id="term2" value="FA20" />
+                <label for="term2" class="button">Fall 2020</label>
             </div>
-            <div id="img-wrapper"></div>
+            <input id="dep-code" type="text" placeholder="COMPSCI"></input>
+            <input id="course-code" type="text" placeholder="61P-001"></input>
+            <div id="help-tooltip">
+                ⓘ
+                <span>61P-001中001是lecture number哦</span>
+            </div>
+            <br />
+            <input id="course-name" type="text" placeholder="Structure and Interpretation of Crafted Procrastination"></input>    
         </div>
-
+        <h2>
+            ② 上传二维码
+        </h2>
+        <div>
+            <div id="img-wrapper"></div>
+            <div id="qr-wrapper">
+                <label class="button" id="qr-upload" for="qr">选择二维码</label>
+                <input id="qr" type="file" accept="image/jpg,image/png,image/jpeg" onchange="loadPreview()"/>
+            </div>
+        </div>
+        <h2>
+            ③
+            <button id="submit-button" class="button" onclick="processSubmit()">提交</button>
+        </h2>
+        <span id="submit-text"></span>
+        <!--<div id="help-container" class="hidden">
+            <div id="help-page-container"></div>
+            <button id="help-close-button"><div>X</div></button>
+        </div>-->
     </div>
 </body>
 </html>
