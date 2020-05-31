@@ -4,7 +4,7 @@ let helpLoaded = false;
 
 $(() => {
     token = readCookie("token");
-    if (token) {
+    if (!token) {
         window.location.href = 'index.html?redirect=add';
     }
     $("#help-button").on("click", () => {
