@@ -4,7 +4,7 @@ let helpLoaded = false;
 
 $(() => {
     token = readCookie("token");
-    if (!token) {
+    if (token) {
         window.location.href = 'index.html?redirect=add';
     }
     $("#help-button").on("click", () => {
@@ -44,7 +44,7 @@ function processSubmit() {
 function submitInfo(name, code, term) {
     $.ajax({
         type: 'POST',
-        url: 'http://118.25.79.158:3000/api/v1/tickets/',
+        url: 'http://118.25.79.158:3000/api/v1/',
         headers: {
             "Authorization": 'Bearer ' + token,
             "Content-Type": 'application/json',
@@ -86,7 +86,7 @@ function loadPreview() {
         qrCodeImg.onload = () => {
             let canv = $("#canv")[0];
             let context = canv.getContext("2d");
-            fitImageOntoCanvasAndDisplay(context, qrCodeImg, 150, 200);
+            fitImageOntoCanvasAndDisplay(context, qrCodeImg, 125, 125);
             try {
                 let img_data = new ImageData(
                     context.getImageData(

@@ -12,6 +12,22 @@ html, body {
     color: var(--p-fg);
     font-family: -apple-system, Roboto, Helvetica, Arial, sans-serif;
     font-size: 18px;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -moz-user-focus: ignore;
+}
+
+button:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: var(--p-fg);
 }
 
 h1 {
@@ -39,57 +55,12 @@ h2::before {
     border-top: solid 1px var(--p-fg);
 }
 
-button:focus {
-    outline:0;
-}
-
 #main-container {
     max-width: 800px;
     width: 90vw;
     margin: 0 auto;
     padding-bottom: 30px;
 }
-
-/*#help-close-button {
-    width: 25px;
-    height: 25px;
-    align-self: end;
-    border-radius: 15px;
-    border: solid 2px var(--accent);
-    padding: 0;
-    background-color: transparent;
-    color: var(--accent);
-    cursor: pointer;
-}
-
-#help-container {
-    position: fixed;
-    top: 10vh;
-    height: 600px;
-    width: 60%;
-    left: calc(50vw - 30%);
-    background-color: var(--p-bg);
-    border-radius: 16px;
-    padding: 24px;
-    box-sizing: border-box;
-    animation: show 0.2s;
-    box-shadow: var(--shadow) 0 0 16px;
-    font-weight: lighter;
-    z-index: 3;
-}
-
-#help-container>button {
-    margin: 30px 10px 10px calc(50% - 15px);
-}
-
-#help-container.hidden {
-    display: none;
-}
-
-#help-container {
-    overflow-x: scroll;
-    overflow-y: scroll;
-}*/
 
 #help-tooltip {
     display: inline-block;
@@ -110,7 +81,8 @@ button:focus {
 #sel-container {
     display: flex;
     flex-flow: row nowrap;
-    margin-bottom: 8px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 #sel-container input {
@@ -134,28 +106,57 @@ button:focus {
     width: 500px;
     max-width: 100%;
     text-overflow: ellipsis;
+    margin-top: 20px;
+}
+
+#qr-container {
+    display: table;
 }
 
 #qr-wrapper {
-    margin-top: 32px;
+    display: table-cell;
+    vertical-align: middle;
+    padding-top: 25px;
 }
 
 #qr {
     display: none;
 }
 
+#img-wrapper {
+    display: table-cell;
+    padding-left: 35px;
+}
+
 #img-container {
     box-shadow: var(--shadow) 0 0 4px;
-    max-width: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 8px;
-    overflow: hidden;
     text-align: center;
-    transition: 0.3s;
-    padding: 8px;
+    animation: show 0.6s;
+    padding: 10px;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+        margin-top: -10px;
+        margin-left: -10px;
+    }
+    to {
+        opacity: 1;
+        margin-top: 0;
+        margin-left: 0;
+    }
 }
 
 #upload-text {
     padding: 4px;
+}
+
+#submit-button {
+    color: var(--p-fg);
 }
 
 #submit-text {

@@ -11,7 +11,7 @@
 </head>
 <body>
     <div id="main-container">
-        <h1>添加条目</h1>
+        <h1><a href="index.html">Cal Course</a> / 添加条目</h1>
         <h2>
             ① 填写课号
         </h2>
@@ -34,22 +34,18 @@
         <h2>
             ② 上传二维码
         </h2>
-        <div>
-            <div id="img-wrapper"></div>
+        <div id="qr-container">
             <div id="qr-wrapper">
                 <label class="button" id="qr-upload" for="qr">选择二维码</label>
                 <input id="qr" type="file" accept="image/jpg,image/png,image/jpeg" onchange="loadPreview()"/>
             </div>
+            <div id="img-wrapper"></div>
         </div>
         <h2>
             ③
             <button id="submit-button" class="button" onclick="processSubmit()">提交</button>
         </h2>
         <span id="submit-text"></span>
-        <!--<div id="help-container" class="hidden">
-            <div id="help-page-container"></div>
-            <button id="help-close-button"><div>X</div></button>
-        </div>-->
     </div>
 </body>
 </html>
