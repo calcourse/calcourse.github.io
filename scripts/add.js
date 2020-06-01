@@ -44,7 +44,7 @@ function processSubmit() {
 function submitInfo(name, code, term) {
     $.ajax({
         type: 'POST',
-        url: 'http://118.25.79.158:3000/api/v1/',
+        url: 'http://118.25.79.158:3000/api/v1/tickets/',
         headers: {
             "Authorization": 'Bearer ' + token,
             "Content-Type": 'application/json',
