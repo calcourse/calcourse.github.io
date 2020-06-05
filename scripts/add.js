@@ -44,7 +44,7 @@ function processSubmit() {
 function submitInfo(name, code, term) {
     $.ajax({
         type: 'POST',
-        url: 'https://118.25.79.158:3000/api/v1/tickets/',
+        url: 'https://uncertaintycc.com/api/v1/tickets/',
         headers: {
             "Authorization": 'Bearer ' + token,
             "Content-Type": 'application/json',
@@ -156,7 +156,7 @@ function getCode() {
 
 function findDuplicate(term, depCode, couCode, url) {
     $.ajax({
-        url: 'https://118.25.79.158:3000/api/v1/courses/',
+        url: 'https://uncertaintycc.com/api/v1/courses/',
         headers: {
             "Authorization": "Bearer " + token,
         },
