@@ -1,4 +1,4 @@
-let api = "http://118.25.79.158:3000/api/v1/";
+let api = "https://118.25.79.158:3000/api/v1/";
 let cookiesLoaded = false;
 
 $(() => {
