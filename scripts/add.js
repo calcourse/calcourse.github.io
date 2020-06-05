@@ -86,14 +86,17 @@ function loadPreview() {
         qrCodeImg.onload = () => {
             let canv = $("#canv")[0];
             let context = canv.getContext("2d");
-            fitImageOntoCanvasAndDisplay(context, qrCodeImg, 125, 125);
             try {
+                canv.style.visibility = 'hidden';
+                fitImageOntoCanvasAndDisplay(context, canv, qrCodeImg, 300, 300);
                 let img_data = new ImageData(
                     context.getImageData(
                         0, 0, canv.width, canv.height).data,
                     canv.width,
                     canv.height);
+                fitImageOntoCanvasAndDisplay(context, canv, qrCodeImg, 120, 120);
                 updatePageURLWithImageUploaded(img_data);
+                canv.style.visibility = 'visible';
             } catch (err) {
                 $("#upload-text").text("唔，出错了，请重试");
             }
@@ -102,7 +105,7 @@ function loadPreview() {
     previewer.readAsDataURL(qrCodeFile);
 }
 
-function fitImageOntoCanvasAndDisplay(ctx, image, width, height) {
+function fitImageOntoCanvasAndDisplay(ctx, canv, image, width, height) {
     let scale = Math.min((width / image.width), (height / image.height), 1);
     canv.width = image.width * scale;
     canv.height = image.height * scale;
@@ -133,7 +136,6 @@ function isLegalURL(url) {
     return false;
 }
 
-// image_data is ImageData or Uint8ClampedArray, give it undecoded stuff shit will happen
 function getURL(image_data) {
     let qrCodeRead = jsQR(image_data.data, image_data.width, image_data.height);
     if (qrCodeRead) {
