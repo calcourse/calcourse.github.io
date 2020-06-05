@@ -112,6 +112,7 @@ function onSignIn(googleUser) {
             loadCourses(response.token);
         }
     }, error: (response) => {
+        console.log(response);
         alert("你的邮箱不是Berkeley邮箱，请换为Berkeley邮箱登陆。");
     }});
 }
