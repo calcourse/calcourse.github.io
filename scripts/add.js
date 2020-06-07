@@ -204,13 +204,13 @@ function isIllegal(FLAG, value) {
     switch (FLAG) {
         case "DEP_CODE":
             let depCodeReg = new RegExp("^[a-zA-Z]+$");
-            return !depCodeReg.test(value);
+            return !(depCodeReg.test(value) && value.length < 11);
         case "NUM_CODE":
             let numCodeReg = new RegExp("^[a-zA-Z]?[0-9]+[a-zA-Z]*(-[0-9]{3})?$");
-            return !numCodeReg.test(value);
+            return !(numCodeReg.test(value) && value.length < 11);
         case "COURSE_NAME":
             let courseNameReg = new RegExp("^[a-zA-Z0-9()_ ]+$");
-            return !courseNameReg.test(value) && value.length < 51;
+            return !(courseNameReg.test(value) && value.length < 51);
     }
 }
 
@@ -264,7 +264,29 @@ function checkDuplicateAndSubmit() {
                 restoreSubmitButton();
                 return false;
             } else {
-                submitInfo();
+                submitAlert("正在加载待审核的二维码，稍等");
+                $.ajax({
+                    url: serverURL + 'tickets/',
+                    headers: {
+                        "Authorization": "Bearer " + token,
+                    },
+                    success: (response) => {
+                        submitAlert("正在看看有没有重复的");
+                        let found = findInResponse(response, courseTerm, courseCode, courseURL);
+                        if (found) {
+                            submitAlert("这个二维码已经待审核啦");
+                            restoreSubmitButton();
+                            return false;
+                        } else {
+                            submitInfo();
+                        }
+                    },
+                    error: (response) => {
+                        console.log(response);
+                        submitAlert("糟糕，服务器走丢了！");
+                        restoreSubmitButton();
+                    }
+                });
             }
         },
         error: (response) => {
@@ -313,7 +335,7 @@ function submitInfo() {
         },
         error: (response) => {
             console.log(response);
-            submitAlert("添加失败，请稍后重试");
+            submitAlert("糟糕，服务器走丢了！");
             restoreSubmitButton();
         },
     });
