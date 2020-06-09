@@ -316,7 +316,7 @@ function submitInfo() {
     submitAlert("一切就绪，正在上船（上传）");
     $.ajax({
         type: 'POST',
-        url: serverURL,
+        url: serverURL + 'tickets/',
         headers: {
             "Authorization": 'Bearer ' + token,
             "Content-Type": 'application/json',
