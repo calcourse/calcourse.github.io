@@ -4,6 +4,7 @@ let courseURL = "";
 let courseTerm = "";
 let courseCode = "";
 let courseName = "";
+let checkInProgress;
 
 $(() => {
     token = readCookie("token");
@@ -250,43 +251,42 @@ function processQRInput() {
 
 
 function checkDuplicateAndSubmit() {
-    submitAlert("正在加载已有的二维码，稍等");
+    submitAlert("正在验证是否有重复");
+    checkInProgress = 2;
     $.ajax({
         url: serverURL + 'courses/',
         headers: {
             "Authorization": "Bearer " + token,
         },
         success: (response) => {
-            submitAlert("正在看看有没有重复的");
-            let found = findInResponse(response, courseTerm, courseCode, courseURL);
-            if (found) {
-                submitAlert("这个二维码已经存在啦");
+            let findResult = findInResponse(response, courseTerm, courseCode, courseURL);
+            if (findResult[0]) {
+                checkDuplicateCallBack("DUPLICATE");
+                submitAlert("这个" + findResult[1] + "已经有人传过啦");
                 restoreSubmitButton();
-                return false;
             } else {
-                submitAlert("正在加载待审核的二维码，稍等");
-                $.ajax({
-                    url: serverURL + 'tickets/',
-                    headers: {
-                        "Authorization": "Bearer " + token,
-                    },
-                    success: (response) => {
-                        submitAlert("正在看看有没有重复的");
-                        let found = findInResponse(response, courseTerm, courseCode, courseURL);
-                        if (found) {
-                            submitAlert("这个二维码已经待审核啦");
-                            restoreSubmitButton();
-                            return false;
-                        } else {
-                            submitInfo();
-                        }
-                    },
-                    error: (response) => {
-                        console.log(response);
-                        submitAlert("糟糕，服务器走丢了！");
-                        restoreSubmitButton();
-                    }
-                });
+                checkDuplicateCallBack("OK");
+            }
+        },
+        error: (response) => {
+            console.log(response);
+            submitAlert("糟糕，服务器走丢了！");
+            restoreSubmitButton();
+        }
+    });
+    $.ajax({
+        url: serverURL + 'tickets/',
+        headers: {
+            "Authorization": "Bearer " + token,
+        },
+        success: (response) => {
+            let findResult = findInResponse(response, courseTerm, courseCode, courseURL);
+            if (findResult[0]) {
+                checkDuplicateCallBack("DUPLICATE");
+                submitAlert("这个" + findResult[1] + "已经待审核啦");
+                restoreSubmitButton();
+            } else {
+                checkDuplicateCallBack("OK");
             }
         },
         error: (response) => {
@@ -297,18 +297,32 @@ function checkDuplicateAndSubmit() {
     });
 }
 
+function checkDuplicateCallBack(FLAG) {
+    if (FLAG === "OK") {
+        checkInProgress -= 1;
+    } else if (FLAG === "DUPLICATE") {
+        checkInProgress = -1;
+    }
+    if (checkInProgress === 0) {
+        submitInfo();
+    }
+}
+
 function findInResponse(response) {
     let found = false;
+    let msg = "";
     for (let course of response) {
         if (course.term === courseTerm && course.code === courseCode) {
             found = true;
+            msg = "课程";
             break;
         } else if (course.qr_code === courseURL) {
             found = true;
+            msg = "二维码";
             break;
         }
     }
-    return found;
+    return [found, msg];
 }
 
 
