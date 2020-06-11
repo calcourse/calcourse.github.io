@@ -109,7 +109,9 @@ function pass(index) {
                         .removeClass("blocked").addClass("passed");
     cards[index].completed = true;
     cards[index].type = "passed";
-    moveTo(findNext(), 110);
+    let next = findNext();
+    $(".card.active").removeClass("active");
+    moveTo(next, 110);
     $.ajax({url: api + `tickets/${cards[index].id}/confirm/`, headers: {
         "Authorization": `Bearer ${token}`
     }, success: (response) => {
@@ -129,7 +131,9 @@ function block(index) {
                         .removeClass("passed").addClass("blocked");
     cards[index].completed = true;
     cards[index].type = "blocked";
-    moveTo(findNext(), 110);
+    let next = findNext();
+    $(".card.active").removeClass("active");
+    moveTo(next, 110);
     $.ajax({url: api + `tickets/${cards[index].id}/`, method: "DELETE", headers: {
         "Authorization": `Bearer ${token}`
     }, success: (response) => {
@@ -160,7 +164,7 @@ function findPrev() {
     while ((x >= 0) && cards[x].completed) {
         x -= 1;
     }
-    return x >= 0 ? x : getCurrent();
+    return x >= 0 ? x : null;
 }
 
 function findNext() {
@@ -171,11 +175,11 @@ function findNext() {
     while ((x < cards.length) && cards[x].completed) {
         x += 1;
     }
-    return x < cards.length ? x : getCurrent();
+    return x < cards.length ? x : null;
 }
 
 function moveTo(index, delay) {
-    if (isNaN(getCurrent()) || index == getCurrent()) {
+    if (isNaN(getCurrent()) || index === null) {
         return;
     }
     $(".card.active").removeClass("active");
