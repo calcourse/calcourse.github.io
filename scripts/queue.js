@@ -68,6 +68,15 @@ function addCard(id, name, term, desc, link) {
             </div>
             <div class="card-message"></div>
         </div>`);
+
+    cardElement.on("click", (e) => {
+        let id = $(e.currentTarget).data("id");
+        let c = cards[id];
+        if (!c.completed) {
+            moveTo(id, 110);
+        }
+    });
+
     $("#card-container").append(cardElement);
     let card = {
         id: id,
@@ -148,7 +157,9 @@ function block(index) {
 function fail(index, message) {
     cards[index].element.removeClass("folded").addClass("failed")
                         .find(".card-message").text(message);
-    cards[index].completed = false;
+    if (cards[index].type !== "info") {
+        cards[index].completed = false;
+    }
 }
 
 function complete(index) {
@@ -157,10 +168,11 @@ function complete(index) {
 }
 
 function findPrev() {
-    if (isNaN(getCurrent())) {
-        return;
+    let x = getCurrent();
+    if (isNaN(x)) {
+        x = cards.length;
     }
-    let x = getCurrent() - 1;
+    x -= 1;
     while ((x >= 0) && cards[x].completed) {
         x -= 1;
     }
@@ -168,10 +180,11 @@ function findPrev() {
 }
 
 function findNext() {
-    if (isNaN(getCurrent())) {
-        return;
+    let x = getCurrent();
+    if (isNaN(x)) {
+        x = -1;
     }
-    let x = getCurrent() + 1;
+    x += 1;
     while ((x < cards.length) && cards[x].completed) {
         x += 1;
     }
@@ -179,7 +192,7 @@ function findNext() {
 }
 
 function moveTo(index, delay) {
-    if (isNaN(getCurrent()) || index === null) {
+    if (index === null || index === undefined) {
         return;
     }
     $(".card.active").removeClass("active");
