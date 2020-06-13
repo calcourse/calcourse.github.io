@@ -118,13 +118,17 @@ function startSubmit() {
     if (readCookie("token")) {
         $("#submit-button").on("click", () => {});
         if (!(processCourseInput() && processQRInput())) {
-            $("#submit-button").on("click", startSubmit);
+            restoreSubmitButton();
         } else {
             checkDuplicateAndSubmit();
         }    
     } else {
         submitAlert("会话过期，请刷新重新登录");
     }
+}
+
+function restoreSubmitButton() {
+    $("#submit-button").on("click", startSubmit);
 }
 
 function processCourseInput() {
