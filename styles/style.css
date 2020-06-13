@@ -40,6 +40,14 @@ a {
     min-height: 100%;
 }
 
+#wechat-message {
+    position: absolute;
+    top: calc(50vh - 1em);
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
 #login-wrapper {
     display: flex;
     position: absolute;
@@ -58,6 +66,15 @@ a {
     box-sizing: border-box;
     border-radius: 16px;
     box-shadow: var(--shadow) 0 0 16px;
+    animation: show 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+#wechat-message.hidden {
+    display: none;
+}
+
+#login-wrapper.hidden {
+    display :none;
 }
 
 #main-container.logged-in>#login-wrapper {

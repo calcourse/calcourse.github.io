@@ -2,6 +2,13 @@ let api = "https://uncertaintycc.com/api/v1/";
 let cookiesLoaded = false;
 
 $(() => {
+    if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
+        $("#wechat-message").removeClass("hidden");
+        return;
+    }
+
+    $("#login-wrapper").removeClass("hidden");
+
     $("#search-input").on("input", () => {
         filter();
     });

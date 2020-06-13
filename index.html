@@ -8,7 +8,7 @@
         <script src="scripts/jquery-3.5.0.min.js"></script>
         <script src="scripts/qrcode.min.js"></script>
         <script src="https://apis.google.com/js/platform.js" defer></script>
-        <script src="scripts/index.js?v=2"></script>
+        <script src="scripts/index.js?v=3"></script>
     </head>
     <body>
         <div id="main-container">
@@ -17,7 +17,10 @@
                 <input id="search-input" class="deferred" placeholder="搜索课号"></input>
                 <div id="term-container"></div>
             </div>
-            <div id="login-wrapper">
+            <div id="wechat-message" class="hidden">
+                请复制链接在浏览器中打开。
+            </div>
+            <div id="login-wrapper" class="hidden">
                 <div>我们需要验证你的学生身份。</div>
                 <div id="login-button" class="customGPlusSignIn button">
                     <img src="assets/google.svg" />
