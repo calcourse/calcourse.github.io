@@ -76,13 +76,14 @@ function updatePageURLWithImageUploaded(image_data){
         case "CORRECT_URL":
             qrAlert("");
             break;
-        case "NO_UR":
-            qrAlert("好像不是微信群的二维码");
+        case "NO_URL":
+            qrAlert("没有检测到二维码");
             break;
         case "ILLEGAL_URL":
             qrAlert("好像不是微信群的二维码");
             break;
         default:
+            console.log(URLCheckResult);
             qrAlert("出错了，请稍后重试");
             break;
     }
@@ -114,47 +115,27 @@ function qrAlert(message) {
 }
 
 function startSubmit() {
-    freezeSubmitButton();
-    submitAlert("让我们先检查一下格式");
-    if (!processInput()) {
-        restoreSubmitButton();
+    if (readCookie("token")) {
+        $("#submit-button").on("click", () => {});
+        if (!(processCourseInput() && processQRInput())) {
+            $("#submit-button").on("click", startSubmit);
+        } else {
+            checkDuplicateAndSubmit();
+        }    
     } else {
-        checkDuplicateAndSubmit();
+        submitAlert("会话过期，请刷新重新登录");
     }
-}
-
-function freezeSubmitButton() {
-    document.getElementById("submit-button").onclick = function () {};
-}
-
-function restoreSubmitButton() {
-    document.getElementById("submit-button").onclick = function () {startSubmit();};
-}
-
-function processInput() {
-    return processCourseInput() && processQRInput();
 }
 
 function processCourseInput() {
-    let courseTermInput = processCourseTermInput();
-    if (!courseTermInput) {
+    let checks = [processCourseTermInput(), processDepCodeInput(),
+        processNumCodeInput(), processCourseNameInput()];
+    if (checks.some(e => !e)) {
         return false;
     }
-    let depCodeInput = processDepCodeInput();
-    if(!depCodeInput) {
-        return false;
-    }
-    let numCodeInput = processNumCodeInput();
-    if(!numCodeInput) {
-        return false;
-    }
-    let courseNameInput = processCourseNameInput();
-    if(!courseNameInput) {
-        return false;
-    }
-    courseTerm = courseTermInput;
-    courseCode = depCodeInput + " " + numCodeInput;
-    courseName = courseNameInput;
+    courseTerm = checks[0];
+    courseCode = `${checks[1]} ${checks[2]}`;
+    courseName = checks[3];
     return true;
 }
 
@@ -201,16 +182,16 @@ function isEmpty(value) {
     } else return value.replace(/(^s*)|(s*$)/g, "").length === 0;
 }
 
-function isIllegal(FLAG, value) {
-    switch (FLAG) {
+function isIllegal(flag, value) {
+    switch (flag) {
         case "DEP_CODE":
-            let depCodeReg = new RegExp("^[a-zA-Z]+$");
+            let depCodeReg = /^[a-zA-Z]+$/
             return !(depCodeReg.test(value) && value.length < 11);
         case "NUM_CODE":
-            let numCodeReg = new RegExp("^[a-zA-Z]?[0-9]+[a-zA-Z]*(-[0-9]{3})?$");
+            let numCodeReg = /^[a-zA-Z]?[0-9]+[a-zA-Z]*(-[0-9]{3})?$/
             return !(numCodeReg.test(value) && value.length < 11);
         case "COURSE_NAME":
-            let courseNameReg = new RegExp("^[a-zA-Z0-9()_ ]+$");
+            let courseNameReg = /^[a-zA-Z0-9()_ ]+$/
             return !(courseNameReg.test(value) && value.length < 51);
     }
 }
@@ -248,7 +229,6 @@ function processQRInput() {
         return false;
     }
 }
-
 
 function checkDuplicateAndSubmit() {
     submitAlert("正在验证是否有重复");

@@ -55,13 +55,30 @@ $(() => {
     }
 });
 
-let ids=[];
+let ids = [];
+
+let entityMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;'
+};
+  
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+        return entityMap[s];
+    });
+}
 
 function addCard(id, name, url, term) {
     ids.push(id);
     let lastSpace = id.lastIndexOf(" ");
-    let codePart = lastSpace == -1 ? "" : id.substring(0, lastSpace);
-    let numPart = id.substring(lastSpace + 1, id.length);
+    let codePart = escapeHtml(lastSpace == -1 ? "" : id.substring(0, lastSpace));
+    let numPart = escapeHtml(id.substring(lastSpace + 1, id.length));
     let newCard = $(
         `<div class="card" data-id="${id}" data-name="${name}"
                            data-url="${url}" data-term="${term}">
@@ -73,7 +90,7 @@ function addCard(id, name, url, term) {
                 </div>
             </div>
             <div class="qrcode"></div>
-            <div class="desc">${name}</div>
+            <div class="desc">${escapeHtml(name)}</div>
         </div>`);
     $("#card-container").append(newCard);
     new QRCode(newCard.find(".qrcode")[0], {
@@ -110,7 +127,7 @@ function onSignIn(googleUser) {
     let email = profile.getEmail();
     $.ajax({url: api + "auth/", type: "POST",
             data: {email: email}, success: (response) => {
-        createCookie("token", response.token, 10);
+        createCookie("token", response.token, 60);
         if ($.urlParam("redirect") === "add") {
             window.location.href = "add.html";
         } else if ($.urlParam("redirect") === "queue") {
