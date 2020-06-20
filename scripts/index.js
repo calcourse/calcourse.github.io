@@ -104,8 +104,8 @@ function addCard(id, name, url, term) {
 
 function cardClick(e) {
     let img = $(e.currentTarget).find("img").attr("src");
-    img = img.substring(img.indexOf(",") + 1);
-    window.location.href = 'data:application/octet-stream;base64,' + img;
+    // img = img.substring(img.indexOf(",") + 1);
+    window.location.href = img;
 }
 
 function filter() {
