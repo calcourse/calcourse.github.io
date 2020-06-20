@@ -103,8 +103,9 @@ function addCard(id, name, url, term) {
 }
 
 function cardClick(e) {
-    let card = e.currentTarget;
-    window.location.href = $(card).data("url");
+    let img = $(e.currentTarget).find("img").attr("src");
+    img = img.substring(img.indexOf(",") + 1);
+    window.location.href = 'data:application/octet-stream;base64,' + img;
 }
 
 function filter() {

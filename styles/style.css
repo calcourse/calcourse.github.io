@@ -283,29 +283,12 @@ a {
     text-overflow: ellipsis;
 }
 
-.card .desc::after {
-    display: block;
-    content: "⟩";
-    font-weight: 400;
-    position: relative;
-    margin-top: -24px;
-    margin-right: 4px;
-    line-height: 24px;
-    font-size: 12px;
-    text-align: right;
-    color: var(--s-fg);
-    transition: margin-right 0.1s;
-}
-
 .card:hover .id {
     display: none;
 }
 
-.card:hover .desc::after {
-    margin-right: 0;
-}
-
 .card:hover {
+    margin-right: 0;
     box-shadow: var(--shadow) 0 0 32px;
 }
 
