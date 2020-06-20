@@ -103,6 +103,7 @@ function addCard(id, name, url, term) {
 }
 
 function cardClick(e) {
+    alert("请保存图片，在微信扫一扫中选择相册打开。");
     let img = $(e.currentTarget).find("img").attr("src");
     // img = img.substring(img.indexOf(",") + 1);
     window.location.href = img;
