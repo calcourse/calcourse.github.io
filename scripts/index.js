@@ -139,7 +139,11 @@ function onSignIn(googleUser) {
         }
     }, error: (response) => {
         console.log(response);
-        alert("你的邮箱不是Berkeley邮箱，请换为Berkeley邮箱登陆。");
+        if (email.endsWith("berkeley.edu")) {
+            alert("服务器错误，请稍后重试");
+        } else {
+            alert("你的邮箱不是Berkeley邮箱，请换为Berkeley邮箱登陆。");
+        }
     }});
 }
 
