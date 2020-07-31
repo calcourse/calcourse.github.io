@@ -1,4 +1,4 @@
-let api = "https://uncertaintycc.com/api/v1/";
+let api = "https://backend.calcourse.richardyrh.com/api/v1/";
 let cookiesLoaded = false;
 
 $(() => {

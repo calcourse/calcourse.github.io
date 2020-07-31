@@ -1,4 +1,4 @@
-let serverURL = 'https://uncertaintycc.com/api/v1/';
+let serverURL = 'https://backend.calcourse.richardyrh.com/api/v1/';
 let token = "";
 let courseURL = "";
 let courseTerm = "";
