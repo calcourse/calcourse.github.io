@@ -127,7 +127,7 @@ function filter() {
 function onSignIn(googleUser) {
     let profile = googleUser.getBasicProfile();
     let email = profile.getEmail();
-    $.ajax({url: api + "auth/", type: "POST",
+    $.ajax({url: api + "auth/legacy/", type: "POST",
             data: {email: email}, success: (response) => {
         createCookie("token", response.token, 60);
         if ($.urlParam("redirect") === "add") {
