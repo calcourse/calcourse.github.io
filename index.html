@@ -7,12 +7,15 @@
         <link rel="stylesheet" type="text/css" href="styles/style.css"></link>
         <script src="scripts/jquery-3.5.0.min.js"></script>
         <script src="scripts/qrcode.min.js"></script>
-        <script src="https://apis.google.com/js/platform.js" defer></script>
-        <script src="scripts/index.js?v=3" defer></script>
+        <script async defer src="https://apis.google.com/js/api.js"
+                onload="this.onload=function(){};handleClientLoad()"
+                onreadystatechange="if (this.readyState === 'complete') this.onload()">
+        </script>
+        <script src="scripts/index.js?v=3"></script>
     </head>
     <body>
         <div id="main-container">
-            <h1>Cal Course</h1>
+            <h1 id="title">Cal Course</h1>
             <div id="filter-container" class="deferred">
                 <input id="search-input" class="deferred" placeholder="搜索课号"/>
                 <div id="term-container"></div>
@@ -21,7 +24,7 @@
                 请复制链接在浏览器中打开。
             </div>
             <div id="login-wrapper" class="hidden">
-                <div>我们需要验证你的学生身份</div>
+                <div id="login-description">我们需要验证你的学生身份</div>
                 <div class="hr"></div>
                 <div id="email-auth-wrapper">
                     <div id="email-input-wrapper">
@@ -35,7 +38,7 @@
                             <span>获取</span>
                         </div>
                         <input id="email-code-input" autocomplete="off" autocapitalize="off"
-                               spellcheck="false" maxlength="6" placeholder="666666"/>
+                               spellcheck="false" maxlength="6" placeholder="123456"/>
                     </div>
                 </div>
                 <div id="login-button-wrapper">
@@ -62,25 +65,23 @@
             </div>
         </div>
         <div id="about-container" class="hidden">
-            <p>
-                <strong>Made with 💙💛💙 by ... </strong>
+            <p class="about-title">
+                <strong>Made with 💙💛💙 by ... </strong><br />
             </p>
             <p>
-                <strong>Prototype: </strong><br />
-                Yufeng Chi
+                Prototype: TK 有点难 .-.
             </p>
             <p>
-                <strong>Front end 前端: </strong><br />
-                Ruohan Yan, Yuanhan Li, Ruomu Xu
+                前端: Ruohan Yan, William Li, Ruomu Xu
             </p>
             <p>
-                <strong>Back end 后端: </strong><br />
-                Shufan Li
+                后端: Shufan Li
             </p>
-            <p>
-                <strong>联系我们: </strong><br />
-                calcourse@outlook.com
-            </p>
+            <div id="contact-button-wrapper">
+                <div id="contact-button" class="button" onclick="location.href='mailto:calcourse@outlook.com';">
+                    <span>calcourse@outlook.com</span>
+                </div>
+            </div>
             <button class="button small-button about-toggle"><div>✔︎</div></button>
         </div>
         <div id="cookies-container" class="hidden">

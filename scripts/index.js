@@ -9,6 +9,10 @@ $(() => {
 
     $("#login-wrapper").removeClass("hidden");
 
+    $("#email-code-button").on("click", sendEmailCode);
+
+    $("#email-login-button").on("click", onEmailSignIn);
+
     $("#search-input").on("input", () => {
         filter();
     });
@@ -30,7 +34,7 @@ $(() => {
         if (results && results.length >= 2) {
             return results[1] || 0;
         }
-    }
+    };
 
     if ($.urlParam("timeout")) {
         $("#login-wrapper>div:first-child").text("会话过期，请重新登陆。");
@@ -39,19 +43,6 @@ $(() => {
     let token = readCookie("token");
     if (token) {
         loadCourses(token);
-    } else {
-        gapi.load('auth2', () => {
-            auth2 = gapi.auth2.init({
-                client_id: '707915550129-7l94p2dpplaoub3d6clhrjpivki6dqpe.apps.googleusercontent.com',
-                cookiepolicy: 'single_host_origin'
-            });
-            auth2.attachClickHandler($("#login-button")[0], {}, onSignIn, (error) => {
-                if (error.error.indexOf("closed by user") == -1) {
-                    alert("无法登陆，请稍后再试。");
-                    console.log(error.error);
-                }
-            });
-        });    
     }
 });
 
@@ -67,6 +58,116 @@ let entityMap = {
     '`': '&#x60;',
     '=': '&#x3D;'
 };
+
+let COUNTDOWN_INI = 60;
+let COUNTDOWN_CUR = 60;
+let USER_EMAIL = "";
+let USER_CODE = "";
+
+function handleClientLoad() {
+    gapi.load('auth2', () => {
+        auth2 = gapi.auth2.init({
+            client_id: '707915550129-7l94p2dpplaoub3d6clhrjpivki6dqpe.apps.googleusercontent.com',
+            cookiepolicy: 'single_host_origin'
+        });
+        auth2.attachClickHandler($("#google-login-button")[0], {}, onGoogleSignIn, (error) => {
+            if (error.error.indexOf("closed by user") == -1) {
+                $('#login-description').text("验证失败，请重试");
+                console.log(error.error);
+            }
+        });
+    });
+}
+
+function sendEmailCode() {
+    let emailInput = $("#email-input").val().toLowerCase();
+    let emailReg = new RegExp("^[A-Za-z0-9._]+$");
+    if (!emailInput) {
+        $('#login-description').text("请填写Berkeley邮箱地址");
+    } else if (!emailReg.test(emailInput)) {
+        $('#login-description').text("邮箱格式不正确");
+    } else {
+        sendEmailCodeCountDown();
+        USER_EMAIL = emailInput + "@berkeley.edu";
+        let form = new FormData();
+        form.append("email", USER_EMAIL);
+        $.ajax({url: api + "auth/code/",
+            type: "POST",
+            data: form,
+            processData: false,
+            contentType: false,
+            success: (response) => {
+                $('#login-description').text("请查收并填写邮箱验证码");
+            }, error: (response) => {
+                console.log(response);
+                $('#login-description').text("无法发送验证码到该邮箱，请重试");
+            }});
+    }
+}
+
+function sendEmailCodeCountDown() {
+    const sendEmailCodeButton = $("#email-code-button");
+    if (COUNTDOWN_CUR === 0) {
+        sendEmailCodeButton.css("cursor", "pointer");
+        sendEmailCodeButton.css("color", "");
+        sendEmailCodeButton.html("<span>获取</span>");
+        $("#email-code-button").on("click", sendEmailCode);
+        COUNTDOWN_CUR = COUNTDOWN_INI;
+    } else {
+        sendEmailCodeButton.css("cursor", "default");
+        sendEmailCodeButton.css("color", "#707070");
+        sendEmailCodeButton.html("<span>" + COUNTDOWN_CUR + "</span>");
+        if (COUNTDOWN_CUR === COUNTDOWN_INI) {
+            $("#email-code-button").off("click");
+        }
+        COUNTDOWN_CUR -= 1;
+        setTimeout(function() { sendEmailCodeCountDown() },1000);
+    }
+}
+
+function onEmailSignIn() {
+    let codeInput = $("#email-code-input").val();
+    let codeReg = new RegExp("^[0-9]{6}$");
+    if (!USER_EMAIL) {
+        $('#login-description').text("请先获取验证码");
+    } else if (!codeInput) {
+        $('#login-description').text("请填写验证码");
+    } else if (!codeReg.test(codeInput)) {
+        $('#login-description').text("验证码格式不正确");
+    } else {
+        $("#email-login-button").html("<span>登录中</span>");
+        $("#email-login-button").off("click");
+        USER_CODE = codeInput;
+        let form = new FormData();
+        form.append("email", USER_EMAIL);
+        form.append("code", USER_CODE);
+        $.ajax({url: api + "auth/email/",
+            type: "POST",
+            data: form,
+            processData: false,
+            contentType: false,
+            mimeType: "multipart/form-data",
+            success: (response) => {
+                let response_data = JSON.parse(response);
+                let token = response_data["token"];
+                $("#email-login-button").html("<span>登录</span>");
+                $("#email-login-button").on("click", onEmailSignIn);
+                createCookie("token", token, 1440);
+                if ($.urlParam("redirect") === "add") {
+                    window.location.href = "add.html";
+                } else if ($.urlParam("redirect") === "queue") {
+                    window.location.href = "queue.html";
+                } else {
+                    loadCourses(token);
+                }
+            }, error: (response) => {
+                console.log(response);
+                $("#email-login-button").html("<span>登录</span>");
+                $("#email-login-button").on("click", onEmailSignIn);
+                $('#login-description').text("验证失败，请重试");
+            }});
+    }
+}
   
 function escapeHtml(string) {
     return String(string).replace(/[&<>"'`=\/]/g, function (s) {
@@ -110,7 +211,7 @@ function cardClick(e) {
 }
 
 function filter() {
-    substring = $("#search-input").val().toLowerCase()
+    substring = $("#search-input").val().toLowerCase();
     let term = $("input[type='radio']:checked").data("term");
     for (let id of ids) {
         let card = $(`.card[data-id="${id}"]`);
@@ -124,12 +225,12 @@ function filter() {
     }
 }
 
-function onSignIn(googleUser) {
+function onGoogleSignIn(googleUser) {
     let profile = googleUser.getBasicProfile();
     let email = profile.getEmail();
     $.ajax({url: api + "auth/legacy/", type: "POST",
             data: {email: email}, success: (response) => {
-        createCookie("token", response.token, 60);
+        createCookie("token", response.token, 1440);
         if ($.urlParam("redirect") === "add") {
             window.location.href = "add.html";
         } else if ($.urlParam("redirect") === "queue") {
@@ -140,9 +241,9 @@ function onSignIn(googleUser) {
     }, error: (response) => {
         console.log(response);
         if (email.endsWith("berkeley.edu")) {
-            alert("服务器错误，请稍后重试");
+            $('#login-description').text("服务器错误，请稍后重试");
         } else {
-            alert("你的邮箱不是Berkeley邮箱，请换为Berkeley邮箱登陆。");
+            $('#login-description').text("请换用bConnect账号登录");
         }
     }});
 }
@@ -162,7 +263,9 @@ function parseTerm(x) {
 
 function loadCourses(token) {
     $("#main-container").addClass("logged-in");
-    $("#card-container").html("加加加加加加载中");
+    $("#card-container").html("<div class=\"load-ani\">" +
+        "<div></div> <div></div> <div></div> <div></div>" +
+        "</div> ");
     $.ajax({url: api + "courses/", headers: {
         "Authorization": `Bearer ${token}`
     }, success: (response) => {
@@ -178,7 +281,7 @@ function loadCourses(token) {
             <div id="add-button" class="card">
                 <div>
                     <div>+</div>
-                    <div>添加条目</div>
+                    <div>添加课程</div>
                 </div>
             </div>`);
         $("#card-container").append(addButton);
