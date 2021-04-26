@@ -7,24 +7,48 @@
         <link rel="stylesheet" type="text/css" href="styles/style.css"></link>
         <script src="scripts/jquery-3.5.0.min.js"></script>
         <script src="scripts/qrcode.min.js"></script>
-        <script src="https://apis.google.com/js/platform.js" defer></script>
-        <script src="scripts/index.js?v=3" defer></script>
+        <script async defer src="https://apis.google.com/js/api.js"
+                onload="this.onload=function(){};handleClientLoad()"
+                onreadystatechange="if (this.readyState === 'complete') this.onload()">
+        </script>
+        <script src="scripts/index.js?v=3"></script>
     </head>
     <body>
         <div id="main-container">
-            <h1>Cal Course</h1>
+            <h1 id="title">Cal Course</h1>
             <div id="filter-container" class="deferred">
-                <input id="search-input" class="deferred" placeholder="搜索课号"></input>
+                <input id="search-input" class="deferred" placeholder="搜索课号"/>
                 <div id="term-container"></div>
             </div>
             <div id="wechat-message" class="hidden">
                 请复制链接在浏览器中打开。
             </div>
             <div id="login-wrapper" class="hidden">
-                <div>我们需要验证你的学生身份。</div>
-                <div id="login-button" class="customGPlusSignIn button">
-                    <img src="assets/google.svg" />
-                    <span>用Berkeley邮箱登陆</span>
+                <div id="login-description">我们需要验证你的学生身份</div>
+                <div class="hr"></div>
+                <div id="email-auth-wrapper">
+                    <div id="email-input-wrapper">
+                        <input id="email-input" autocomplete="off" autocapitalize="off"
+                               spellcheck="false" maxlength="30" placeholder="oskibear"/>
+                        <div id="email-domain"> @berkeley.edu </div>
+                    </div>
+                    <div id="email-code-input-wrapper">
+                        <div id="email-code-prompt"> 验证码:  </div>
+                        <div id="email-code-button" class="button">
+                            <span>获取</span>
+                        </div>
+                        <input id="email-code-input" autocomplete="off" autocapitalize="off"
+                               spellcheck="false" maxlength="6" placeholder="123456"/>
+                    </div>
+                </div>
+                <div id="login-button-wrapper">
+                    <div id="email-login-button" class="button">
+                        <span>登录</span>
+                    </div>
+                    <div id="google-login-button" class="customGPlusSignIn button">
+                        <img src="assets/google.svg" />
+                        <span>Sign in with Google</span>
+                    </div>
                 </div>
             </div>
             <div id="card-container">
@@ -44,8 +68,8 @@
             </div>
         </div>
         <div id="about-container" class="hidden">
-            <p>
-                <strong>Made with 💙💛💙 by ... </strong>
+            <p class="about-title">
+                <strong>Made with 💙💛💙 by ... </strong><br />
             </p>
             <p>
                 <strong>Prototype</strong><br />
@@ -67,6 +91,11 @@
                 <strong>Contact Us | 联系我们</strong><br />
                 calcourse@outlook.com
             </p>
+            <div id="contact-button-wrapper">
+                <div id="contact-button" class="button" onclick="location.href='mailto:calcourse@outlook.com';">
+                    <span>calcourse@outlook.com</span>
+                </div>
+            </div>
             <button class="button small-button about-toggle"><div>✔︎</div></button>
         </div>
         <div id="cookies-container" class="hidden">

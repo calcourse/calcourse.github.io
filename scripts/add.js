@@ -146,7 +146,7 @@ function processCourseInput() {
 function processCourseTermInput() {
     let courseTermInput = $("input[name='term']:checked").val();
     if (!courseTermInput) {
-        submitAlert("挑一个学期呗");
+        submitAlert("请选择学期");
         return null;
     } else {
         return courseTermInput;
@@ -202,7 +202,7 @@ function isIllegal(flag, value) {
 
 function checkNonemptyAndLegal(FLAG, value) {
     if (isEmpty(value)) {
-        submitAlert("课程信息没有填全哦");
+            submitAlert("请补全课程信息");
         return false;
     } else if (isIllegal(FLAG, value)) {
         submitAlert("课程信息格式不正确");
@@ -229,7 +229,7 @@ function processQRInput() {
     if (isLegalURL(courseURL)) {
         return true;
     } else {
-        submitAlert("还没上传正确的二维码哦");
+        submitAlert("请上传二维码");
         return false;
     }
 }
@@ -254,7 +254,7 @@ function checkDuplicateAndSubmit() {
         },
         error: (response) => {
             console.log(response);
-            submitAlert("糟糕，服务器走丢了！");
+            submitAlert("上传失败");
             restoreSubmitButton();
         }
     });
@@ -275,7 +275,7 @@ function checkDuplicateAndSubmit() {
         },
         error: (response) => {
             console.log(response);
-            submitAlert("糟糕，服务器走丢了！");
+            submitAlert("上传失败");
             restoreSubmitButton();
         }
     });
@@ -311,7 +311,7 @@ function findInResponse(response) {
 
 
 function submitInfo() {
-    submitAlert("一切就绪，正在上船（上传）");
+    submitAlert("一切就绪，正在上传");
     $.ajax({
         type: 'POST',
         url: serverURL + 'tickets/',
@@ -333,7 +333,7 @@ function submitInfo() {
         },
         error: (response) => {
             console.log(response);
-            submitAlert("糟糕，服务器走丢了！");
+            submitAlert("上传失败");
             restoreSubmitButton();
         },
     });
