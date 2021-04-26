@@ -320,7 +320,8 @@ a {
 }
 
 #about-container,
-#cookies-container {
+#cookies-container,
+#help-container {
     position: fixed;
     top: 10vh;
     background-color: var(--p-bg);
@@ -334,12 +335,13 @@ a {
 }
 
 #about-container {
-    height: 385px;
+    height: 485px;
     width: 350px;
     left: calc(50vw - 175px);
 }
 
-#cookies-container {
+#cookies-container,
+#help-container {
     height: 80vh;
     width: 90vw;
     max-width: 1000px;
@@ -348,7 +350,8 @@ a {
 }
 
 @media screen and (min-width: 1111px) {
-    #cookies-container {
+    #cookies-container,
+	#help-container	{
         left: calc(50vw - 500px);
     }
 }
@@ -366,17 +369,20 @@ a {
 }
 
 #about-container.hidden,
-#cookies-container.hidden {
+#cookies-container.hidden,
+#help-container.hidden {
     display: none;
 }
 
-#cookies-container>button {
+#cookies-container>button,
+#help-container>button {
     position: fixed;
     left: calc(50vw - 15px);
     top: calc(90vh - 64px);
 }
 
-#cookies-container {
+#cookies-container,
+#help-container {
     overflow-y: scroll;
     padding-bottom: 64px;
 }
