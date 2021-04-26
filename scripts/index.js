@@ -1,5 +1,6 @@
 let api = "https://calcourse.jackli.org/api/v1/";
 let cookiesLoaded = false;
+let helpLoaded = false;
 
 $(() => {
     if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
@@ -27,6 +28,14 @@ $(() => {
             cookiesLoaded = true;
         }
         $("#cookies-container").toggleClass("hidden");
+    });
+    
+    $(".help-toggle").on("click", () => {
+        if (!helpLoaded) {
+            $("#help-page-container").load("help.html");
+            cookiesLoaded = true;
+        }
+        $("#help-container").toggleClass("hidden");
     });
 
     $.urlParam = (name) => {

@@ -438,7 +438,8 @@ input:-webkit-autofill:active
 }
 
 #about-container,
-#cookies-container {
+#cookies-container,
+#help-container {
     position: fixed;
     background-color: var(--p-bg);
     border-radius: 16px;
@@ -461,7 +462,8 @@ input:-webkit-autofill:active
     font-weight: 400;
 }
 
-#cookies-container {
+#cookies-container,
+#help-container {
     top: 5vh;
     height: 79vh;
     width: 90vw;
@@ -471,7 +473,8 @@ input:-webkit-autofill:active
 }
 
 @media screen and (min-width: 1111px) {
-    #cookies-container {
+  #cookies-container,
+	#help-container	{
         left: calc(50vw - 500px);
     }
 }
@@ -512,17 +515,20 @@ input:-webkit-autofill:active
 }
 
 #about-container.hidden,
-#cookies-container.hidden {
+#cookies-container.hidden,
+#help-container.hidden {
     display: none;
 }
 
-#cookies-container>button {
+#cookies-container>button,
+#help-container>button {
     position: fixed;
     left: calc(50vw - 15px);
     top: calc(90vh - 100px);
 }
 
-#cookies-container {
+#cookies-container,
+#help-container {
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 70px;
