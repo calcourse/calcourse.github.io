@@ -90,8 +90,9 @@ function updatePageURLWithImageUploaded(image_data){
 }
 
 function isLegalURL(url) {
-    let regex = new RegExp("^https://weixin.qq.com/g/([a-zA-Z0-9-_]+)$");
-    return regex.test(url);
+    let regex_normal = new RegExp("^https://weixin.qq.com/g/([a-zA-Z0-9-_]+)$");
+    let regex_work = new RegExp("^https://work.weixin.qq.com/gm/([a-zA-Z0-9-_]+)$");
+    return regex_normal.test(url) || regex_work.test(url);
 }
 
 function processURL(image_data) {
