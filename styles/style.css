@@ -300,6 +300,9 @@ input:-webkit-autofill:active
     animation: show 0.5s;
     cursor: pointer;
     transition: box-shadow 0.2s;
+    position: relative;
+    height: 0;
+    padding-bottom: calc(100% + 32px);
 }
 
 @keyframes show {
@@ -427,12 +430,6 @@ input:-webkit-autofill:active
 
 .card:hover > .qrcode {
     transform: translateY(100%);
-}
-
-#add-button {
-    position: relative;
-    height: 0;
-    padding-bottom: calc(100% + 32px);
 }
 
 #add-button>div {
