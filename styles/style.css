@@ -183,7 +183,7 @@ input:-webkit-autofill:active
 #email-code-button, #email-login-button {
     display: inline-block;
     margin-left: 8px;
-    width: 48px;
+    width: 72px;
 }
 
 .auth-wrapper {

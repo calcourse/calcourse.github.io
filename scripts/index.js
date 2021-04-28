@@ -94,7 +94,7 @@ function handleClientLoad() {
 
 function sendEmailCode() {
     let emailInput = $("#email-input").val().toLowerCase();
-    let emailReg = new RegExp("^[A-Za-z0-9._]+$");
+    let emailReg = new RegExp("^[A-Za-z0-9._-]+$");
     if (!emailInput) {
         $('#login-description').text("请填写Berkeley邮箱地址");
     } else if (!emailReg.test(emailInput)) {
@@ -261,7 +261,7 @@ function filter() {
 function onGoogleSignIn(googleUser) {
     let profile = googleUser.getBasicProfile();
     let email = profile.getEmail();
-    $.ajax({url: api + "auth/legacy/", type: "POST",
+    $.ajax({url: api + "auth/", type: "POST",
             data: {email: email}, success: (response) => {
         createCookie("token", response.token, 1440);
         if ($.urlParam("redirect") === "add") {
