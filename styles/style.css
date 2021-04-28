@@ -4,7 +4,7 @@
     --p-fg: #fff;
     --s-fg: #ccc;
     --accent: #da8388;
-    --shadow: rgba(0, 0, 0, 0.5);
+    --shadow: rgba(0, 0, 0, 0.4);
 }
 
 html, body {
@@ -16,7 +16,7 @@ html, body {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none; /
+    user-select: none;
     padding: 0;
     margin: 0;
     min-height: 100%;
@@ -27,16 +27,34 @@ button:focus {
 }
 
 a {
-    color: white;
+    display: inline;
+    cursor: pointer;
+    color: var(--accent);
+    text-decoration: none;
 }
 
+input {
+    background-color: transparent;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 0;
+    border-bottom: solid 2px var(--s-bg);
+    font-size: 18px;
+    color: var(--p-fg);
+    transition: border-bottom 0.2s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+input:focus {
+    border-bottom: solid 2px var(--accent);
+}
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active
 {
-    -webkit-box-shadow: 0 0 0 30px #333 inset;
+    box-shadow: 0 0 0 30px #333 inset;
     -webkit-text-fill-color: white;
 }
 
@@ -70,18 +88,61 @@ input:-webkit-autofill:active
     top: 30vh;
     left: 0;
     right: 0;
+    height: 300px;
     text-align: center;
     z-index: 1;
     flex-flow: column nowrap;
-    align-items: center;
+    justify-content: center;
     background-color: var(--p-bg);
     width: 90vw;
     max-width: 400px;
-    padding: 36px 0 36px 0;
+    padding: 36px;
     box-sizing: border-box;
     border-radius: 16px;
-    box-shadow: var(--shadow) 0 0 8px;
+    box-shadow: var(--shadow) 0 2px 16px;
     animation: show 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+#login-wrapper > input[type="radio"] {
+    display: none;
+}
+
+.auth-wrapper {
+    display: none;
+}
+
+.auth-option-wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    overflow: hidden;
+    border-radius: 8px;
+    border: solid var(--accent) 2px;
+}
+
+.auth-option {
+    cursor: pointer;
+    padding: 4px;
+    flex-basis: 0;
+    flex-grow: 1;
+    border-bottom: solid var(--p-fg) 0;
+    color: var(--accent);
+    transition: background-color 0.1s;
+}
+
+.auth-option:first-child {
+    border-right: solid var(--accent) 2px;
+}
+
+#email-login-radio:checked ~ #email-auth-wrapper,
+#google-login-radio:checked ~ #google-auth-wrapper {
+    display: block;
+}
+
+#email-login-radio:checked ~ .auth-option-wrapper > .auth-option[for="email-login-radio"],
+#google-login-radio:checked ~ .auth-option-wrapper > .auth-option[for="google-login-radio"] {
+    color: var(--p-fg);
+    background-color: var(--accent);
 }
 
 #wechat-message.hidden {
@@ -93,8 +154,9 @@ input:-webkit-autofill:active
 }
 
 .hr {
+    align-self: center;
     width: 80%;
-    height: 2vh;
+    margin: 16px;
     border-bottom: solid 2px #555555;
 }
 
@@ -103,100 +165,29 @@ input:-webkit-autofill:active
 }
 
 #email-auth-wrapper {
-    margin-top: 3vh;
+    width: 80%;
+    align-self: center;
 }
 
-#email-domain {
-    display: inline;
+#email-auth-wrapper > div {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 16px;
 }
 
-#email-input {
-    display: inline;
-    background-color: transparent;
-    width: 80px;
-    border: none;
-    outline: none;
-    border-radius: 0;
-    border-bottom: solid 2px #707070;
-    font-size: 18px;
-    text-align: center;
-    color: var(--p-fg);
-    transition: border-bottom 0.6s;
-}
-
-#email-input:focus {
-    border-bottom: solid 2px var(--accent);
-}
-
-#email-code-input-wrapper {
-    margin-top: 3vh;
-}
-
-#email-code-prompt {
-    display: inline-flex;
-    vertical-align: baseline;
-}
-
-#email-code-button {
-    display: inline-flex;
-    flex-flow: row nowrap;
-    vertical-align: baseline;
-    height: 30px;
-    width: 50px;
-    border: none;
-    border-radius: 8px;
-    line-height: 30px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-#email-code-button>span {
+#email-auth-wrapper > div > *:first-child {
     flex-grow: 1;
-    text-align: center;
+    flex-basis: 0;
 }
 
-#email-code-button:hover {
-    border-radius: 8px;
+#email-code-button, #email-login-button {
+    display: inline-block;
+    margin-left: 8px;
+    width: 48px;
 }
 
-#email-code-input {
-    display: inline-flex;
-    vertical-align: baseline;
-    background-color: transparent;
-    width: 80px;
-    border: none;
-    outline: none;
-    border-radius: 0;
-    border-bottom: solid 2px #707070;
-    font-size: 18px;
-    text-align: center;
-    color: var(--p-fg);
-    transition: border-bottom 0.6s;
-}
-
-#email-code-input:focus {
-    border-bottom: solid 2px var(--accent);
-}
-
-#login-button-wrapper {
-    margin-top: 4vh;
-}
-
-#email-login-button {
-    display: inline-flex;
-    flex-flow: row nowrap;
-    vertical-align: bottom;
-    height: 36px;
-    width: 100px;
-    border-radius: 8px;
-    line-height: 32px;
-    cursor: pointer;
-    transition: background-color 0.1s;
-}
-
-#email-login-button>span {
-    flex-grow: 1;
-    text-align: center;
+.auth-wrapper {
+    padding-top: 36px;
 }
 
 #google-login-button {
@@ -224,17 +215,6 @@ input:-webkit-autofill:active
     flex-grow: 1;
     text-align: center;
     margin-left: -6px;
-}
-
-#search-input {
-    background-color: transparent;
-    width: 100%;
-    border: none;
-    outline: none;
-    border-radius: 0;
-    border-bottom: solid 2px var(--accent);
-    font-size: 18px;
-    color: var(--p-fg);
 }
 
 #filter-container {
@@ -290,6 +270,7 @@ input:-webkit-autofill:active
     margin-top: 20px;
     grid-template-columns: 1fr;
     text-align: center;
+    min-height: 60vh;
 }
 
 #main-container.loaded>#card-container {
@@ -336,7 +317,7 @@ input:-webkit-autofill:active
     display: none;
 }
 
-.card>.id-wrapper {
+.card > .id-wrapper {
     position: relative;
     height: 0;
     top: 0;
@@ -349,6 +330,10 @@ input:-webkit-autofill:active
     justify-content: center;
     align-items: center;
     text-align: center;
+    font-size: 24px;
+    color: var(--p-fg);
+    transition: font-size 1s, color 1s;
+    transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
 }
 
 .card .id::after {
@@ -356,35 +341,60 @@ input:-webkit-autofill:active
     display: block;
     line-height: 0;
     padding-bottom: 100%;
+    transition: padding-bottom 1s cubic-bezier(0.55, 0, 0.1, 1);
 }
 
-.card .id>span {
+.card .id > span {
     position: absolute;
     padding-left: 8px;
     padding-right: 8px;
-    font-size: 24px;
     line-height: 20px;
     font-weight: 400;
 }
 
-.card .id>span>span {
+.card .id > span > span {
     font-weight: 800;
 }
 
-.card>.qrcode {
+.card > .qrcode {
+    position: relative;
     height: 0;
+    width: 100%;
     padding-bottom: 100%;
     background-color: var(--accent);
-    overflow: hidden;
+    overflow: visible;
+    transform: translateY(0);
+    transition: transform 1s;
+    transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.card .qrcode::before {
+    content: "";
+    position: absolute;
+    background-color: var(--accent);
+    width: 100%;
+    padding-bottom: 120%;
+    left: 0;
+    transform: translateY(-90%);
+}
+
+/*.card>.qrcode:empty::before {
+    content: "请稍等...";
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    padding-top: calc(50% - 0.5em);
+}*/
+
+.card canvas {
+    display: none;
 }
 
 .card img {
+    transform: translateY(-100%);
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
-    filter: blur(24px);
-    transform: translateZ(0);
-    transition: filter 0.2s;
 }
 
 .card .desc {
@@ -402,7 +412,12 @@ input:-webkit-autofill:active
 }
 
 .card:hover .id {
-    display: none;
+    font-size: 18px;
+    color: var(--p-bg);
+}
+
+.card:hover .id::after {
+    padding-bottom: 210%;
 }
 
 .card:hover {
@@ -410,8 +425,8 @@ input:-webkit-autofill:active
     box-shadow: var(--shadow) 0 0 32px;
 }
 
-.card:hover img {
-    filter: none;
+.card:hover > .qrcode {
+    transform: translateY(100%);
 }
 
 #add-button {
@@ -446,14 +461,15 @@ input:-webkit-autofill:active
     padding: 24px;
     box-sizing: border-box;
     animation: show 0.2s;
-    box-shadow: var(--shadow) 0 0 16px;
+    overflow-y: scroll;
+    box-shadow: var(--shadow) 0 2px 16px;
     font-weight: lighter;
     z-index: 3;
 }
 
 #about-container {
     top: 20vh;
-    height: 360px;
+    height: 450px;
     width: 400px;
     left: calc(50vw - 200px);
     padding-left: 39px;
@@ -489,29 +505,6 @@ input:-webkit-autofill:active
     margin-left: calc(50% - 15px);
     bottom: 20px;
     left: 0;
-}
-
-#contact-button-wrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: fit-content;
-    padding-top: 3vh;
-}
-
-#contact-button {
-    display: inline-flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    height: 40px;
-    width: 250px;
-    line-height: 36px;
-    cursor: pointer;
-    position: relative;
-    border-radius: 8px;
-}
-
-#contact-button:hover {
 }
 
 #about-container.hidden,
@@ -610,8 +603,11 @@ input:-webkit-autofill:active
 }
 
 .load-ani {
+    position: relative;
     width: 80px;
     height: 80px;
+    margin: auto;
+    left: 4px;
 }
 
 .load-ani div {
@@ -644,28 +640,16 @@ input:-webkit-autofill:active
 }
 
 @keyframes load-ani-appear {
-    0% {
-        transform: scale(0);
-    }
-    100% {
-        transform: scale(1);
-    }
+    0% {transform: scale(0);}
+    100% {transform: scale(1);}
 }
 
 @keyframes load-ani-slide {
-    0% {
-        transform: translate(0, 0);
-    }
-    100% {
-        transform: translate(24px, 0);
-    }
+    0% {transform: translate(0, 0);}
+    100% {transform: translate(24px, 0);}
 }
 
 @keyframes load-ani-disappear {
-    0% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(0);
-    }
+    0% {transform: scale(1);}
+    100% {transform: scale(0);}
 }

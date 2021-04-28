@@ -26,25 +26,26 @@
             <div id="login-wrapper" class="hidden">
                 <div id="login-description">我们需要验证你的学生身份</div>
                 <div class="hr"></div>
-                <div id="email-auth-wrapper">
-                    <div id="email-input-wrapper">
+                <input type="radio" id="email-login-radio" name="login-type" />
+                <input type="radio" id="google-login-radio" name="login-type" />
+                <div class="auth-option-wrapper">
+                    <label class="auth-option" for="email-login-radio">邮箱验证码登陆</label>
+                    <label class="auth-option" for="google-login-radio">bConnected登陆</label>    
+                </div>
+                <div id="email-auth-wrapper" class="auth-wrapper">
+                    <div>
                         <input id="email-input" autocomplete="off" autocapitalize="off"
                                spellcheck="false" maxlength="30" placeholder="oskibear"/>
-                        <div id="email-domain"> @berkeley.edu </div>
+                        @berkeley.edu
+                        <a href="#" id="email-code-button">获取</a>
                     </div>
-                    <div id="email-code-input-wrapper">
-                        <div id="email-code-prompt"> 验证码:  </div>
-                        <div id="email-code-button" class="button">
-                            <span>获取</span>
-                        </div>
+                    <div>
                         <input id="email-code-input" autocomplete="off" autocapitalize="off"
-                               spellcheck="false" maxlength="6" placeholder="123456"/>
+                        spellcheck="false" maxlength="6" placeholder="请输入验证码"/>
+                        <a href="#" id="email-login-button">登录</a>
                     </div>
                 </div>
-                <div id="login-button-wrapper">
-                    <div id="email-login-button" class="button">
-                        <span>登录</span>
-                    </div>
+                <div id="google-auth-wrapper" class="auth-wrapper">
                     <div id="google-login-button" class="customGPlusSignIn button">
                         <img src="assets/google.svg" />
                         <span>Sign in with Google</span>
@@ -62,7 +63,7 @@
                         <div>🍪</div>
                     </button>
                     <button class="button small-button help-toggle">
-                        <div>🕮</div>
+                        <div>?</div>
                     </button>
                 </div>
             </div>
@@ -89,13 +90,8 @@
             </p>
             <p>
                 <strong>Contact Us | 联系我们</strong><br />
-                calcourse@outlook.com
+                <a href="mailto:calcourse@outlook.com">calcourse@outlook.com</a>
             </p>
-            <div id="contact-button-wrapper">
-                <div id="contact-button" class="button" onclick="location.href='mailto:calcourse@outlook.com';">
-                    <span>calcourse@outlook.com</span>
-                </div>
-            </div>
             <button class="button small-button about-toggle"><div>✔︎</div></button>
         </div>
         <div id="cookies-container" class="hidden">

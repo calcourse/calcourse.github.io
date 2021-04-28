@@ -38,6 +38,10 @@ $(() => {
         $("#help-container").toggleClass("hidden");
     });
 
+    $(".auth-option").on("click", () => {
+        $('#login-description').text("我们需要验证你的学生身份");
+    });
+
     $.urlParam = (name) => {
         let results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
         if (results && results.length >= 2) {
@@ -186,9 +190,9 @@ function escapeHtml(string) {
 
 function addCard(id, name, url, term) {
     ids.push(id);
-    let lastSpace = id.lastIndexOf(" ");
-    let codePart = escapeHtml(lastSpace == -1 ? "" : id.substring(0, lastSpace));
-    let numPart = escapeHtml(id.substring(lastSpace + 1, id.length));
+    let lastSpace = name.lastIndexOf(" ");
+    let codePart = escapeHtml(lastSpace == -1 ? "" : name.substring(0, lastSpace));
+    let numPart = escapeHtml(name.substring(lastSpace + 1, name.length));
     let newCard = $(
         `<div class="card" data-id="${id}" data-name="${name}"
                            data-url="${url}" data-term="${term}">
@@ -200,16 +204,36 @@ function addCard(id, name, url, term) {
                 </div>
             </div>
             <div class="qrcode"></div>
-            <div class="desc">${escapeHtml(name)}</div>
+            <div class="desc">${escapeHtml(id)}</div>
         </div>`);
     $("#card-container").append(newCard);
-    new QRCode(newCard.find(".qrcode")[0], {
-        text: url,
-        colorDark : "#333333",
-        colorLight : "#da8388",
-        correctLevel : QRCode.CorrectLevel.H
-    })
+    
+    newCard.on("mouseenter", cardEnter);
+    newCard.on("mouseleave", cardLeave);
     newCard.on("click", cardClick);
+}
+
+function cardEnter(e) {
+    let x = $(e.currentTarget);
+    if (x.data("timer")) {
+        clearTimeout(x.data("timer"));
+        x.data("timer", null);
+    } else {
+        new QRCode(x.find(".qrcode")[0], {
+            text: x.data("url"),
+            colorDark : "#333333",
+            colorLight : "#da8388",
+            correctLevel : QRCode.CorrectLevel.H
+        });    
+    }
+}
+
+function cardLeave(e) {
+    let x = $(e.currentTarget);
+    x.data("timer", setTimeout(() => {
+        x.find(".qrcode").html("");
+        x.data("timer", null);
+    }, 2000));
 }
 
 function cardClick(e) {
@@ -252,7 +276,7 @@ function onGoogleSignIn(googleUser) {
         if (email.endsWith("berkeley.edu")) {
             $('#login-description').text("服务器错误，请稍后重试");
         } else {
-            $('#login-description').text("请换用bConnect账号登录");
+            $('#login-description').text("请换用bConnected账号登录");
         }
     }});
 }
@@ -272,9 +296,10 @@ function parseTerm(x) {
 
 function loadCourses(token) {
     $("#main-container").addClass("logged-in");
-    $("#card-container").html("<div class=\"load-ani\">" +
-        "<div></div> <div></div> <div></div> <div></div>" +
-        "</div> ");
+    $("#card-container").html(
+        `<div class="load-ani">
+            <div></div><div></div><div></div><div></div>
+        </div>`);
     $.ajax({url: api + "courses/", headers: {
         "Authorization": `Bearer ${token}`
     }, success: (response) => {
