@@ -36,11 +36,14 @@ a {
 input {
     background-color: transparent;
     width: 100%;
+    margin: 0;
+    padding: 0;
     border: none;
     outline: none;
     border-radius: 0;
     border-bottom: solid 2px var(--s-bg);
     font-size: 18px;
+    line-height: 18px;
     color: var(--p-fg);
     transition: border-bottom 0.2s cubic-bezier(0.55, 0, 0.1, 1);
 }
@@ -123,6 +126,9 @@ input:-webkit-autofill:active
 .auth-option {
     cursor: pointer;
     padding: 4px;
+    height: 30px;
+    line-height: 22px;
+    box-sizing: border-box;
     flex-basis: 0;
     flex-grow: 1;
     border-bottom: solid var(--p-fg) 0;
@@ -167,6 +173,12 @@ input:-webkit-autofill:active
 #email-auth-wrapper {
     width: 80%;
     align-self: center;
+}
+
+@media screen and (max-width: 450px) {
+    #email-auth-wrapper {
+        width: 100%;
+    }
 }
 
 #email-auth-wrapper > div {
