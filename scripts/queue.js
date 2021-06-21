@@ -1,4 +1,4 @@
-let api = "https://calcourse.jackli.org/api/v1/";
+let api = "https://backend.calcourse.jackli.org/api/v1/";
 let cards = [];
 
 $(() => {

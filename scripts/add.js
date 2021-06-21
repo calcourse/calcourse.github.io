@@ -1,4 +1,4 @@
-let serverURL = 'https://calcourse.jackli.org/api/v1/';
+let serverURL = 'https://backend.calcourse.jackli.org/api/v1/';
 let token = "";
 let courseURL = "";
 let courseTerm = "";
