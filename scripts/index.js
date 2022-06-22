@@ -282,16 +282,23 @@ function onGoogleSignIn(googleUser) {
 }
 
 function parseTerm(x) {
-    if (/^(FA|SP|SU)(\d\d)$/gi.test(x)) {
-        let season = {"FA": "Fall", "SP": "Spring", "SU": "Summer"};
-        let year = (y) => {
-            return String(2000 + parseInt(y));
-        }
-        return season[x.substring(0, 2)] + " " + year(x.substring(2));
-    } else {
-        let cap = x.substring(0, 1).toUpperCase();
-        return cap + x.substring(1).toLowerCase();
-    }
+  if (/^(FA|SP|SU|Fa|Sp|Su)(\d\d)$/gi.test(x)) {
+    let season = {
+      FA: "Fall",
+      SP: "Spring",
+      SU: "Summer",
+      Fa: "Fall",
+      Sp: "Spring",
+      Su: "Summer",
+    };
+    let year = (y) => {
+      return String(2000 + parseInt(y));
+    };
+    return season[x.substring(0, 2)] + " " + year(x.substring(2));
+  } else {
+    let cap = x.substring(0, 1).toUpperCase();
+    return cap + x.substring(1).toLowerCase();
+  }
 }
 
 function loadCourses(token) {
