@@ -351,11 +351,6 @@ function loadCourses(token) {
         addCard(course.code, course.name, course.qr_code, term);
         allTerms.add(term);
       }
-      // fixme
-      for (let hans of allTerms) {
-        console.log(hans);
-      }
-      // fixme
       let addButton = $(`
             <div id="add-button" class="card">
                 <div>
