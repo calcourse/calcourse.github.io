@@ -330,6 +330,7 @@ function parseTerm(x) {
   }
 }
 
+
 // Manually filter out only the most current three terms.
 // Need to change the value every semester
 function filterMostCurrentThreeTerm(x) {
@@ -358,7 +359,8 @@ function loadCourses(token) {
       let allTerms = new Set();
       for (let course of response) {
         let term = parseTerm(course.term);
-        if (filterMostCurrentThreeTerm(course.term)) { // Only display courses that's in the current term.
+        if (filterMostCurrentThreeTerm(course.term)) {
+          // Only display courses that's in the current term.
           addCard(course.code, course.name, course.qr_code, term);
           allTerms.add(term);
         }
