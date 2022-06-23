@@ -466,7 +466,7 @@ input:-webkit-autofill:active
 #help-container {
     position: fixed;
     background-color: var(--p-bg);
-    border-radius: 16px;
+    border-radius: 16px; 
     padding: 24px;
     box-sizing: border-box;
     animation: show 0.2s;
@@ -478,7 +478,7 @@ input:-webkit-autofill:active
 
 #about-container {
     top: 20vh;
-    height: 450px;
+    height: 525px;
     width: 400px;
     left: calc(50vw - 200px);
     padding-left: 39px;
