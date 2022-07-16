@@ -83,7 +83,7 @@ function handleClientLoad() {
   gapi.load("auth2", () => {
     auth2 = gapi.auth2.init({
       client_id:
-        "707915550129-7l94p2dpplaoub3d6clhrjpivki6dqpe.apps.googleusercontent.com",
+        "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
       cookiepolicy: "single_host_origin",
     });
     auth2.attachClickHandler(
@@ -122,6 +122,7 @@ function sendEmailCode() {
         $("#login-description").text("请查收并填写邮箱验证码");
       },
       error: (response) => {
+        console.log(11111);
         console.log(response);
         $("#login-description").text("无法发送验证码到该邮箱，请重试");
       },
@@ -311,7 +312,7 @@ function onGoogleSignIn(googleUser) {
 }
 
 function parseTerm(x) {
-  if (/^(FA|SP|SU|Fa|Sp|Su)(\d\d)$/gi.test(x)) {
+  if (/^(FA|SP|SU|Fa|Sp|Su|Lf)(\d\d)$/gi.test(x)) {
     let season = {
       FA: "Fall",
       SP: "Spring",
@@ -319,6 +320,7 @@ function parseTerm(x) {
       Fa: "Fall",
       Sp: "Spring",
       Su: "Summer",
+      Lf: "Cal Life",
     };
     let year = (y) => {
       return String(2000 + parseInt(y));
@@ -334,7 +336,7 @@ function parseTerm(x) {
 // Manually filter out only the most current three terms.
 // Need to change the value every semester
 function filterMostCurrentThreeTerm(x) {
-  if (x == "Su22" || x == "Fa22" || x == "Sp23") {
+  if (x == "Su22" || x == "Fa22" || x == "Sp23" || x == "Lf22") {
     return true;
   } else {
     return false;
