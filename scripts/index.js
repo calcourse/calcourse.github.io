@@ -359,10 +359,15 @@ function loadCourses(token) {
       $("#main-container").addClass("loaded");
       let allTerms = new Set();
       for (let course of response) {
-        let term = parseTerm(course.term);
-        if (filterMostCurrentThreeTerm(course.term)) {
+        let term = parseTerm(course.course_term);
+        if (filterMostCurrentThreeTerm(course.course_term)) {
           // Only display courses that's in the current term.
-          addCard(course.code, course.name, course.qr_code, term);
+          addCard(
+            course.course_id,
+            course.course_name,
+            course.course_qr_code_url,
+            term
+          );
           allTerms.add(term);
         }
       }
