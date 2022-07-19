@@ -1,4 +1,6 @@
-let api = "https://backend.calcourse.jackli.org/api/v1/";
+// let api = "https://backend.calcourse.jackli.org/api/v1/";
+// New API socket
+let api = "https://j2xnmuiw4k.execute-api.us-west-1.amazonaws.com/CalCourse";
 let cookiesLoaded = false;
 let helpLoaded = false;
 
@@ -100,6 +102,7 @@ function handleClientLoad() {
   });
 }
 
+// FIXME
 function sendEmailCode() {
   let emailInput = $("#email-input").val().toLowerCase();
   let emailReg = new RegExp("^[A-Za-z0-9._-]+$");
@@ -112,21 +115,29 @@ function sendEmailCode() {
     USER_EMAIL = emailInput + "@berkeley.edu";
     let form = new FormData();
     form.append("email", USER_EMAIL);
-    $.ajax({
-      url: api + "auth/code/",
-      type: "POST",
-      data: form,
-      processData: false,
-      contentType: false,
-      success: (response) => {
-        $("#login-description").text("请查收并填写邮箱验证码");
-      },
-      error: (response) => {
-        console.log(response);
-        $("#login-description").text("无法发送验证码到该邮箱，请重试");
-      },
+    // // Old API
+    // $.ajax({
+    //   url: api + "auth/code/",
+    //   type: "POST",
+    //   data: form,
+    //   processData: false,
+    //   contentType: false,
+    //   success: (response) => {
+    //     $("#login-description").text("请查收并填写邮箱验证码");
+    //   },
+    //   error: (response) => {
+    //     console.log(response);
+    //     $("#login-description").text("无法发送验证码到该邮箱，请重试");
+    //   },
+    // });
+
+    //  New API
+    const response = await fetch(api + "/email/send_verification_code/"+ USER_EMAIL, {
+    method: 'POST',
     });
-  }
+    const myJson = await response.json(); //extract JSON from the http response
+    console.log("myJson", myJson);
+    }
 }
 
 function sendEmailCodeCountDown() {
@@ -150,7 +161,7 @@ function sendEmailCodeCountDown() {
     }, 1000);
   }
 }
-
+// FIXME
 function onEmailSignIn() {
   let codeInput = $("#email-code-input").val();
   let codeReg = new RegExp("^[0-9]{6}$");
@@ -281,7 +292,7 @@ function filter() {
     }
   }
 }
-
+// FIXME
 function onGoogleSignIn(googleUser) {
   let profile = googleUser.getBasicProfile();
   let email = profile.getEmail();
@@ -341,7 +352,7 @@ function filterMostCurrentThreeTerm(x) {
     return false;
   }
 }
-
+// FIXME
 function loadCourses(token) {
   $("#main-container").addClass("logged-in");
   $("#card-container").html(
