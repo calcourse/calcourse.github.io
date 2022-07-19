@@ -267,7 +267,7 @@ function filter() {
   for (let id of ids) {
     let card = $(`.card[data-id="${id}"]`);
     if (
-      (id.toLowerCase().indexOf(substring) == -1 &&
+      (String(id).indexOf(substring) == -1 &&
         card.data("name").toLowerCase().indexOf(substring) == -1) ||
       term !== card.data("term")
     ) {
