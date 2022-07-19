@@ -303,7 +303,7 @@ function onGoogleSignIn(googleUser) {
   let email = profile.getEmail();
   console.log(email);
   if (email.endsWith("berkeley.edu")) {
-    loadCourses(response.token);
+    loadCourses();
   } else {
     $("#login-description").text("请换用bConnected账号登录");
   }
