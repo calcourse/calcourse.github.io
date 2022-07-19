@@ -102,7 +102,6 @@ function handleClientLoad() {
   });
 }
 
-// FIXME
 async function sendEmailCode() {
   let emailInput = $("#email-input").val().toLowerCase();
   let emailReg = new RegExp("^[A-Za-z0-9._-]+$");
@@ -115,15 +114,14 @@ async function sendEmailCode() {
     USER_EMAIL = emailInput + "@berkeley.edu";
     let form = new FormData();
     form.append("email", USER_EMAIL);
-    // Old API
     $.ajax({
-      url: api + "/email/send_verification_code/",
+      url: api + "/email/send_verification_code/" + USER_EMAIL,
       type: "POST",
-      data: form,
       processData: false,
       contentType: false,
       success: (response) => {
         $("#login-description").text("请查收并填写邮箱验证码");
+        console.log(response);
       },
       error: (response) => {
         console.log(response);
@@ -131,7 +129,7 @@ async function sendEmailCode() {
       },
     });
 
-    //  New API
+    // //  New API
     // const response = await fetch(
     //   api + "/email/send_verification_code/" + USER_EMAIL,
     //   {
@@ -177,30 +175,34 @@ function onEmailSignIn() {
   } else {
     $("#email-login-button").html("<span>登录中</span>");
     $("#email-login-button").off("click");
-    USER_CODE = codeInput;
-    let form = new FormData();
-    form.append("email", USER_EMAIL);
-    form.append("code", USER_CODE);
+    USER_CODE = String(codeInput);
+
     $.ajax({
-      url: api + "auth/email/",
-      type: "POST",
-      data: form,
+      url:
+        api +
+        "/email/verify_authentication_code/" +
+        USER_EMAIL +
+        "/" +
+        USER_CODE,
+      type: "GET",
+      // dataType: "jsonp",
       processData: false,
       contentType: false,
-      mimeType: "multipart/form-data",
       success: (response) => {
-        let response_data = JSON.parse(response);
-        let token = response_data["token"];
+        // let response_data = JSON.parse(response);
+        // let token = response_data["token"];
+        console.log(response);
         $("#email-login-button").html("<span>登录</span>");
         $("#email-login-button").on("click", onEmailSignIn);
-        createCookie("token", token, 1440);
-        if ($.urlParam("redirect") === "add") {
-          window.location.href = "add.html";
-        } else if ($.urlParam("redirect") === "queue") {
-          window.location.href = "queue.html";
-        } else {
-          loadCourses(token);
-        }
+        // // createCookie("token", token, 1440);
+        // if ($.urlParam("redirect") === "add") {
+        //   window.location.href = "add.html";
+        // } else if ($.urlParam("redirect") === "queue") {
+        //   window.location.href = "queue.html";
+        // } else {
+        //   loadCourses(token);
+        // }
+        loadCourses();
       },
       error: (response) => {
         console.log(response);
@@ -355,7 +357,7 @@ function filterMostCurrentThreeTerm(x) {
   }
 }
 // FIXME
-function loadCourses(token) {
+function loadCourses() {
   $("#main-container").addClass("logged-in");
   $("#card-container").html(
     `<div class="load-ani">
@@ -363,10 +365,10 @@ function loadCourses(token) {
         </div>`
   );
   $.ajax({
-    url: api + "courses/",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    url: api + "/courses/get_all_courses",
+    // headers: {
+    //   Authorization: `Bearer ${token}`,
+    // },
     success: (response) => {
       $("#card-container").html("");
       $("#main-container").addClass("loaded");
