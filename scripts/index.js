@@ -115,31 +115,31 @@ async function sendEmailCode() {
     USER_EMAIL = emailInput + "@berkeley.edu";
     let form = new FormData();
     form.append("email", USER_EMAIL);
-    // // Old API
-    // $.ajax({
-    //   url: api + "auth/code/",
-    //   type: "POST",
-    //   data: form,
-    //   processData: false,
-    //   contentType: false,
-    //   success: (response) => {
-    //     $("#login-description").text("请查收并填写邮箱验证码");
-    //   },
-    //   error: (response) => {
-    //     console.log(response);
-    //     $("#login-description").text("无法发送验证码到该邮箱，请重试");
-    //   },
-    // });
+    // Old API
+    $.ajax({
+      url: api + "/email/send_verification_code/",
+      type: "POST",
+      data: form,
+      processData: false,
+      contentType: false,
+      success: (response) => {
+        $("#login-description").text("请查收并填写邮箱验证码");
+      },
+      error: (response) => {
+        console.log(response);
+        $("#login-description").text("无法发送验证码到该邮箱，请重试");
+      },
+    });
 
     //  New API
-    const response = await fetch(
-      api + "/email/send_verification_code/" + USER_EMAIL,
-      {
-        method: "POST",
-      }
-    );
-    const myJson = await response.json(); //extract JSON from the http response
-    console.log("myJson", myJson);
+    // const response = await fetch(
+    //   api + "/email/send_verification_code/" + USER_EMAIL,
+    //   {
+    //     method: "POST",
+    //   }
+    // );
+    // const myJson = await response.json(); //extract JSON from the http response
+    // console.log("myJson", myJson);
   }
 }
 
