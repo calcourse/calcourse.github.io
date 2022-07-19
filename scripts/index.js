@@ -1,4 +1,3 @@
-// let api = "https://backend.calcourse.jackli.org/api/v1/";
 // New API socket
 let api = "https://j2xnmuiw4k.execute-api.us-west-1.amazonaws.com/CalCourse";
 let cookiesLoaded = false;
@@ -87,6 +86,7 @@ function handleClientLoad() {
     auth2 = gapi.auth2.init({
       client_id:
         "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
+      cookiepolicy: "single_host_origin",
     });
 
     auth2.attachClickHandler(
@@ -130,16 +130,6 @@ async function sendEmailCode() {
         $("#login-description").text("无法发送验证码到该邮箱，请重试");
       },
     });
-
-    // //  New API
-    // const response = await fetch(
-    //   api + "/email/send_verification_code/" + USER_EMAIL,
-    //   {
-    //     method: "POST",
-    //   }
-    // );
-    // const myJson = await response.json(); //extract JSON from the http response
-    // console.log("myJson", myJson);
   }
 }
 
@@ -164,7 +154,6 @@ function sendEmailCodeCountDown() {
     }, 1000);
   }
 }
-// FIXME
 function onEmailSignIn() {
   let codeInput = $("#email-code-input").val();
   let codeReg = new RegExp("^[0-9]{6}$");
@@ -187,23 +176,12 @@ function onEmailSignIn() {
         "/" +
         USER_CODE,
       type: "GET",
-      // dataType: "jsonp",
       processData: false,
       contentType: false,
       success: (response) => {
-        // let response_data = JSON.parse(response);
-        // let token = response_data["token"];
         console.log(response);
         $("#email-login-button").html("<span>登录</span>");
         $("#email-login-button").on("click", onEmailSignIn);
-        // // createCookie("token", token, 1440);
-        // if ($.urlParam("redirect") === "add") {
-        //   window.location.href = "add.html";
-        // } else if ($.urlParam("redirect") === "queue") {
-        //   window.location.href = "queue.html";
-        // } else {
-        //   loadCourses(token);
-        // }
         loadCourses();
       },
       error: (response) => {
@@ -366,7 +344,6 @@ function filterMostCurrentThreeTerm(x) {
     return false;
   }
 }
-// FIXME
 function loadCourses() {
   $("#main-container").addClass("logged-in");
   $("#card-container").html(
@@ -376,9 +353,6 @@ function loadCourses() {
   );
   $.ajax({
     url: api + "/courses/get_all_courses",
-    // headers: {
-    //   Authorization: `Bearer ${token}`,
-    // },
     success: (response) => {
       $("#card-container").html("");
       $("#main-container").addClass("loaded");
