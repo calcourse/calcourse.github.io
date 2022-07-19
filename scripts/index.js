@@ -122,7 +122,6 @@ function sendEmailCode() {
         $("#login-description").text("请查收并填写邮箱验证码");
       },
       error: (response) => {
-        console.log(11111);
         console.log(response);
         $("#login-description").text("无法发送验证码到该邮箱，请重试");
       },
@@ -336,7 +335,7 @@ function parseTerm(x) {
 // Manually filter out only the most current three terms.
 // Need to change the value every semester
 function filterMostCurrentThreeTerm(x) {
-  if (x == "Su22" || x == "Fa22" || x == "Sp23" || x == "Lf22") {
+  if (x == "Fa22" || x == "Sp23" || x == "Su23" || x == "Lf22") {
     return true;
   } else {
     return false;
