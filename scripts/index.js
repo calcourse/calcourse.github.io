@@ -124,6 +124,7 @@ async function sendEmailCode() {
         console.log(response);
       },
       error: (response) => {
+        console.log(5);
         console.log(response);
         $("#login-description").text("无法发送验证码到该邮箱，请重试");
       },
@@ -299,6 +300,7 @@ function filter() {
 }
 // FIXME
 function onGoogleSignIn(googleUser) {
+  console.log(4);
   let profile = googleUser.getBasicProfile();
   console.log(profile);
   let email = profile.getEmail();
