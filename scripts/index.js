@@ -97,7 +97,7 @@ function handleClientLoad() {
       (error) => {
         if (error.error.indexOf("closed by user") == -1) {
           $("#login-description").text("验证失败，请重试");
-          console.log(error.error);
+          console.log(error);
           console.log("hi im here");
         }
       }
