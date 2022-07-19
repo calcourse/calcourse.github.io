@@ -82,6 +82,7 @@ let USER_EMAIL = "";
 let USER_CODE = "";
 
 function handleClientLoad() {
+  console.log("handleClientLoad");
   gapi.load("auth2", () => {
     auth2 = gapi.auth2.init({
       client_id:
