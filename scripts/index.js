@@ -89,6 +89,7 @@ function handleClientLoad() {
         "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
       cookiepolicy: "single_host_origin",
     });
+
     auth2.attachClickHandler(
       $("#google-login-button")[0],
       {},
@@ -97,6 +98,7 @@ function handleClientLoad() {
         if (error.error.indexOf("closed by user") == -1) {
           $("#login-description").text("验证失败，请重试");
           console.log(error.error);
+          console.log("hi im here");
         }
       }
     );
