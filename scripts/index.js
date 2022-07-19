@@ -103,7 +103,7 @@ function handleClientLoad() {
 }
 
 // FIXME
-function sendEmailCode() {
+const sendEmailCode = async () => {
   let emailInput = $("#email-input").val().toLowerCase();
   let emailReg = new RegExp("^[A-Za-z0-9._-]+$");
   if (!emailInput) {
@@ -132,13 +132,16 @@ function sendEmailCode() {
     // });
 
     //  New API
-    const response = await fetch(api + "/email/send_verification_code/"+ USER_EMAIL, {
-    method: 'POST',
-    });
+    const response = await fetch(
+      api + "/email/send_verification_code/" + USER_EMAIL,
+      {
+        method: "POST",
+      }
+    );
     const myJson = await response.json(); //extract JSON from the http response
     console.log("myJson", myJson);
-    }
-}
+  }
+};
 
 function sendEmailCodeCountDown() {
   const sendEmailCodeButton = $("#email-code-button");
@@ -341,7 +344,6 @@ function parseTerm(x) {
     return cap + x.substring(1).toLowerCase();
   }
 }
-
 
 // Manually filter out only the most current three terms.
 // Need to change the value every semester
