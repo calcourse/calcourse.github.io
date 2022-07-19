@@ -103,7 +103,7 @@ function handleClientLoad() {
 }
 
 // FIXME
-const sendEmailCode = async () => {
+async function sendEmailCode() {
   let emailInput = $("#email-input").val().toLowerCase();
   let emailReg = new RegExp("^[A-Za-z0-9._-]+$");
   if (!emailInput) {
@@ -141,7 +141,7 @@ const sendEmailCode = async () => {
     const myJson = await response.json(); //extract JSON from the http response
     console.log("myJson", myJson);
   }
-};
+}
 
 function sendEmailCodeCountDown() {
   const sendEmailCodeButton = $("#email-code-button");
