@@ -301,6 +301,7 @@ function filter() {
 function onGoogleSignIn(googleUser) {
   let profile = googleUser.getBasicProfile();
   let email = profile.getEmail();
+  console.log(email);
   if (email.endsWith("berkeley.edu")) {
     loadCourses(response.token);
   } else {
