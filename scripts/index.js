@@ -300,6 +300,7 @@ function filter() {
 // FIXME
 function onGoogleSignIn(googleUser) {
   let profile = googleUser.getBasicProfile();
+  console.log(profile);
   let email = profile.getEmail();
   console.log(email);
   if (email.endsWith("berkeley.edu")) {
