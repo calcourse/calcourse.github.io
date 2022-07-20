@@ -87,6 +87,7 @@ function handleClientLoad() {
       client_id:
         "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
       cookiepolicy: "single_host_origin",
+      plugin_name: "com.calcourse"
     });
 
     auth2.attachClickHandler(
