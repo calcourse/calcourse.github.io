@@ -288,7 +288,7 @@ function onGoogleSignIn(googleUser) {
     type: "GET",
     success: (response) => {
       console.log(response);
-      if (response.status == 200) {
+      if (response.status_code == 200) {
         loadCourses();
       } else {
         $("#login-description").text("验证失败，请重试");
