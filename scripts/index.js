@@ -278,7 +278,8 @@ function filter() {
     }
   }
 }
-// FIXME
+
+
 function onGoogleSignIn(googleUser) {
   let profile = googleUser.getBasicProfile();
   let email = profile.getEmail();
@@ -311,6 +312,7 @@ function onGoogleSignIn(googleUser) {
   });
 }
 
+// This function is commented out. It's the old version
 // function onGoogleSignIn(googleUser) {
 //   console.log(4);
 //   let profile = googleUser.getBasicProfile();
