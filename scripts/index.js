@@ -81,7 +81,6 @@ let USER_EMAIL = "";
 let USER_CODE = "";
 
 function handleClientLoad() {
-  console.log("handleClientLoad");
   gapi.load("auth2", () => {
     auth2 = gapi.auth2.init({
       client_id:
@@ -126,7 +125,6 @@ async function sendEmailCode() {
         console.log(response);
       },
       error: (response) => {
-        console.log(5);
         console.log(response);
         $("#login-description").text("无法发送验证码到该邮箱，请重试");
       },
