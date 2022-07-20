@@ -80,23 +80,39 @@ let COUNTDOWN_CUR = 60;
 let USER_EMAIL = "";
 let USER_CODE = "";
 
-function handleClientLoad() {
-  gapi.load("auth2", () => {
-    auth2 = gapi.auth2.init({
-      client_id:
-        "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
-      cookiepolicy: "single_host_origin",
-      plugin_name: "com.calcourse",
-    });
+function parseJwt (token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
 
-    auth2.attachClickHandler(
-      $("#google-login-button")[0],
-      {},
-      onGoogleSignIn,
-      onGoogleSignIn,
-    );
-  });
+  return JSON.parse(jsonPayload);
+};
+
+function handleCredentialResponse(response) {
+  console.log(1111);
+  console.log(JSON.stringify(parseJwt(response.credential)));
 }
+
+
+// function handleClientLoad() {
+//   gapi.load("auth2", () => {
+//     auth2 = gapi.auth2.init({
+//       client_id:
+//         "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
+//       cookiepolicy: "single_host_origin",
+//       plugin_name: "com.calcourse",
+//     });
+
+//     auth2.attachClickHandler(
+//       $("#google-login-button")[0],
+//       {},
+//       onGoogleSignIn,
+//       onGoogleSignIn,
+//     );
+//   });
+// }
 
 async function sendEmailCode() {
   let emailInput = $("#email-input").val().toLowerCase();
