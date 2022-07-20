@@ -84,7 +84,7 @@ function handleClientLoad() {
   gapi.load("auth2", () => {
     auth2 = gapi.auth2.init({
       client_id:
-        "707915550129-7l94p2dpplaoub3d6clhrjpivki6dqpe.apps.googleusercontent.com",
+        "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
       cookiepolicy: "single_host_origin",
       plugin_name: "com.calcourse",
     });
