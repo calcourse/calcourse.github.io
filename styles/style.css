@@ -479,7 +479,7 @@ input:-webkit-autofill:active
 #about-container {
     top: 20vh;
     height: 525px;
-    width: 400px;
+    width: 500px;
     left: calc(50vw - 200px);
     padding-left: 39px;
     padding-right: 39px;

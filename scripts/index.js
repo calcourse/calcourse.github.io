@@ -255,7 +255,9 @@ function cardLeave(e) {
 }
 
 function cardClick(e) {
-  alert("请保存图片，在微信扫一扫中选择相册打开。");
+  alert(
+    "请保存图片，在微信扫一扫中选择相册打开。\n请不要把任何CalCourse上的群二维码发到任何群内，只给他们CalCourse的链接即可，防止代写跳过CalCourse的身份验证直接扫码加群.\n谢谢配合!"
+  );
   let img = $(e.currentTarget).find("img").attr("src");
   // img = img.substring(img.indexOf(",") + 1);
   window.location.href = img;
