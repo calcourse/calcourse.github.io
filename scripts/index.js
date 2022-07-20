@@ -84,9 +84,9 @@ function handleClientLoad() {
   gapi.load("auth2", () => {
     auth2 = gapi.auth2.init({
       client_id:
-        "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
+        "707915550129-7l94p2dpplaoub3d6clhrjpivki6dqpe.apps.googleusercontent.com",
       cookiepolicy: "single_host_origin",
-      plugin_name: "com.calcourse"
+      // plugin_name: "com.calcourse",
     });
 
     auth2.attachClickHandler(
@@ -286,13 +286,18 @@ function onGoogleSignIn(googleUser) {
     url: api + "/email/verify_email/" + email,
     type: "GET",
     success: (response) => {
+      console.log(response);
+      if (response.status == 200) {
+        loadCourses();
+      } else {
+        $("#login-description").text("验证失败，请重试");
+      }
       // createCookie("token", response.token, 1440);
       // if ($.urlParam("redirect") === "add") {
       //   window.location.href = "add.html";
       // } else if ($.urlParam("redirect") === "queue") {
       //   window.location.href = "queue.html";
       // } else {
-      loadCourses();
       // }
     },
     error: (response) => {
