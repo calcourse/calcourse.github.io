@@ -93,12 +93,7 @@ function handleClientLoad() {
       $("#google-login-button")[0],
       {},
       onGoogleSignIn,
-      (error) => {
-        if (error.error.indexOf("closed by user") == -1) {
-          $("#login-description").text("验证失败，请重试");
-          console.log(error);
-        }
-      }
+      onGoogleSignIn,
     );
   });
 }
@@ -309,39 +304,31 @@ function onGoogleSignIn(googleUser) {
 
 // This function is commented out. It's the old version
 // function onGoogleSignIn(googleUser) {
-//   console.log(4);
 //   let profile = googleUser.getBasicProfile();
-//   console.log(profile);
 //   let email = profile.getEmail();
-//   console.log(email);
-//   if (email.endsWith("berkeley.edu")) {
-//     loadCourses();
-//   } else {
-//     $("#login-description").text("请换用bConnected账号登录");
-//   }
-  // $.ajax({
-  //   url: api + "auth/",
-  //   type: "POST",
-  //   data: { email: email },
-  //   success: (response) => {
-  //     createCookie("token", response.token, 1440);
-  //     if ($.urlParam("redirect") === "add") {
-  //       window.location.href = "add.html";
-  //     } else if ($.urlParam("redirect") === "queue") {
-  //       window.location.href = "queue.html";
-  //     } else {
-  //       loadCourses(response.token);
-  //     }
-  //   },
-  //   error: (response) => {
-  //     console.log(response);
-  //     if (email.endsWith("berkeley.edu")) {
-  //       $("#login-description").text("服务器错误，请稍后重试");
-  //     } else {
-  //       $("#login-description").text("请换用bConnected账号登录");
-  //     }
-  //   },
-  // });
+//   $.ajax({
+//     url: api + "auth/",
+//     type: "POST",
+//     data: { email: email },
+//     success: (response) => {
+//       createCookie("token", response.token, 1440);
+//       if ($.urlParam("redirect") === "add") {
+//         window.location.href = "add.html";
+//       } else if ($.urlParam("redirect") === "queue") {
+//         window.location.href = "queue.html";
+//       } else {
+//         loadCourses(response.token);
+//       }
+//     },
+//     error: (response) => {
+//       console.log(response);
+//       if (email.endsWith("berkeley.edu")) {
+//         $("#login-description").text("服务器错误，请稍后重试");
+//       } else {
+//         $("#login-description").text("请换用bConnected账号登录");
+//       }
+//     },
+//   });
 // }
 
 function parseTerm(x) {
