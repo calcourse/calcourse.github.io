@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Cal Course</title>
+        <link rel="shortcut icon" href="assets/favicon.png">
         <link rel="stylesheet" type="text/css" href="styles/style.css"></link>
         <script src="scripts/jquery-3.5.0.min.js"></script>
         <script src="scripts/qrcode.min.js"></script>
@@ -31,7 +32,7 @@
     </head>
     <body>
         <div id="main-container">
-            <h1 id="title">Cal Course</h1>
+            <h1 id="title"><a href="index.html">Cal Course</a></h1>
             <div id="filter-container" class="deferred">
                 <input id="search-input" class="deferred" placeholder="搜索课号"/>
                 <div id="term-container"></div>
@@ -45,8 +46,8 @@
                 <input type="radio" id="email-login-radio" name="login-type" />
                 <input type="radio" id="google-login-radio" name="login-type" />
                 <div class="auth-option-wrapper">
-                    <label class="auth-option" for="email-login-radio">邮箱验证码</label>
-                    <label class="auth-option" for="google-login-radio">bConnected</label>    
+                    <label class="auth-option" for="email-login-radio" onclick="toggleEmailAuth();">邮箱验证码</label>
+                    <label class="auth-option" for="google-login-radio" onclick="toggleGoogleAuth();">bConnected</label>
                 </div>
                 <div id="email-auth-wrapper" class="auth-wrapper">
                     <div>
@@ -54,11 +55,17 @@
                                spellcheck="false" maxlength="30" placeholder="oskibear"/>
                         @berkeley.edu
                         <a href="#" id="email-code-button">获取</a>
+                        <div id="email-code-ani" class="load-ani-small">
+                            <div></div><div></div><div></div><div></div>
+                        </div>
                     </div>
                     <div>
                         <input id="email-code-input" autocomplete="off" autocapitalize="off"
                         spellcheck="false" maxlength="6" placeholder="请输入验证码"/>
                         <a href="#" id="email-login-button">登录</a>
+                        <div id="email-login-ani" class="load-ani-small">
+                            <div></div><div></div><div></div><div></div>
+                        </div>
                     </div>
                 </div>
                 <div id="google-auth-wrapper" class="auth-wrapper">

@@ -29,7 +29,7 @@ button:focus {
 a {
     display: inline;
     cursor: pointer;
-    color: var(--accent);
+    color: var(--p-fg);
     text-decoration: none;
 }
 
@@ -133,20 +133,15 @@ input:-webkit-autofill:active
     flex-grow: 1;
     border-bottom: solid var(--p-fg) 0;
     color: var(--accent);
-    transition: background-color 0.1s;
+    transition: 0.5s;
+    transition-delay: 50ms;
 }
 
 .auth-option:first-child {
     border-right: solid var(--accent) 2px;
 }
 
-#email-login-radio:checked ~ #email-auth-wrapper,
-#google-login-radio:checked ~ #google-auth-wrapper {
-    display: block;
-}
-
-#email-login-radio:checked ~ .auth-option-wrapper > .auth-option[for="email-login-radio"],
-#google-login-radio:checked ~ .auth-option-wrapper > .auth-option[for="google-login-radio"] {
+.auth-option:hover {
     color: var(--p-fg);
     background-color: var(--accent);
 }
@@ -185,17 +180,49 @@ input:-webkit-autofill:active
     display: flex;
     flex-direction: row;
     margin-bottom: 16px;
+    color: #C0C0C0;
 }
 
 #email-auth-wrapper > div > *:first-child {
     flex-grow: 1;
     flex-basis: 0;
+    margin-right: 2px;
 }
 
-#email-code-button, #email-login-button {
+#email-code-button {
     display: inline-block;
     margin-left: 8px;
-    width: 60px;
+    width: 56px;
+    border-radius: 10px;
+    color: #C0C0C0;
+}
+
+#email-code-ani {
+    display: none;
+}
+
+#email-code-input {
+    margin-top: 8px;
+}
+
+#email-login-button {
+    display: inline-block;
+    margin-left: 8px;
+    width: 50px;
+    border-radius: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border: solid var(--accent) 2px;
+    color: var(--p-fg);
+}
+
+#email-login-button:hover {
+    background-color: var(--accent);
+    color: var(--p-fg);
+}
+
+#email-login-ani {
+    display: none;
 }
 
 .auth-wrapper {
@@ -213,6 +240,7 @@ input:-webkit-autofill:active
     line-height: 32px;
     cursor: pointer;
     transition: background-color 0.1s;
+    color: var(--p-fg);
 }
 
 #google-login-button>img {
@@ -227,6 +255,10 @@ input:-webkit-autofill:active
     flex-grow: 1;
     text-align: center;
     margin-left: -6px;
+}
+
+#google-login-ani {
+    display: none;
 }
 
 #filter-container {
@@ -324,7 +356,7 @@ input:-webkit-autofill:active
     }
     to {
         opacity: 1;
-        margin-top: translateY(0);
+        transform: translateY(0);
     }
 }
 
@@ -379,7 +411,7 @@ input:-webkit-autofill:active
     background-color: var(--accent);
     overflow: visible;
     transform: translateY(0);
-    transition: transform 1s;
+    transition: transform 1.6s;
     transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
 }
 
@@ -392,14 +424,6 @@ input:-webkit-autofill:active
     left: 0;
     transform: translateY(-90%);
 }
-
-/*.card>.qrcode:empty::before {
-    content: "请稍等...";
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    padding-top: calc(50% - 0.5em);
-}*/
 
 .card canvas {
     display: none;
@@ -444,7 +468,9 @@ input:-webkit-autofill:active
     transform: translateY(100%);
 }
 
-#add-button>div {
+
+
+.function-button>div {
     display: flex;
     position: absolute;
     top: 0;
@@ -457,8 +483,9 @@ input:-webkit-autofill:active
     justify-content: center;
 }
 
-#add-button>div>div:first-child {
-    font-size: 60px;
+.function-button>div>div:first-child {
+    font-size: 30px;
+    margin-bottom: 15px;
 }
 
 #about-container,
@@ -466,7 +493,7 @@ input:-webkit-autofill:active
 #help-container {
     position: fixed;
     background-color: var(--p-bg);
-    border-radius: 16px; 
+    border-radius: 16px;
     padding: 24px;
     box-sizing: border-box;
     animation: show 0.2s;
@@ -478,9 +505,9 @@ input:-webkit-autofill:active
 
 #about-container {
     top: 20vh;
-    height: 525px;
-    width: 500px;
-    left: calc(50vw - 200px);
+    height: 450px;
+    width: 600px;
+    left: calc(50vw - 300px);
     padding-left: 39px;
     padding-right: 39px;
     font-size: 18px;
@@ -526,7 +553,7 @@ input:-webkit-autofill:active
 #help-container>button {
     position: fixed;
     left: calc(50vw - 15px);
-    top: calc(90vh - 100px);
+    top: calc(90vh - 115px);
 }
 
 #cookies-container,
@@ -536,7 +563,8 @@ input:-webkit-autofill:active
     padding-bottom: 70px;
 }
 
-#cookies-page-container {
+#cookies-page-container,
+#help-page-container {
     overflow-y: scroll;
     height: 100%;
     width: 100%;
@@ -615,8 +643,7 @@ input:-webkit-autofill:active
     position: relative;
     width: 80px;
     height: 80px;
-    margin: auto;
-    left: 4px;
+    left: 3px;
 }
 
 .load-ani div {
@@ -627,21 +654,25 @@ input:-webkit-autofill:active
     border-radius: 50%;
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
+
 .load-ani div:nth-child(1) {
     left: 8px;
     background: var(--p-fg);
     animation: load-ani-appear 0.6s infinite;
 }
+
 .load-ani div:nth-child(2) {
     left: 8px;
     background: var(--p-fg);
     animation: load-ani-slide 0.6s infinite;
 }
+
 .load-ani div:nth-child(3) {
     left: 32px;
     background: var(--accent);
     animation: load-ani-slide 0.6s infinite;
 }
+
 .load-ani div:nth-child(4) {
     left: 56px;
     background: var(--accent);
@@ -661,4 +692,80 @@ input:-webkit-autofill:active
 @keyframes load-ani-disappear {
     0% {transform: scale(1);}
     100% {transform: scale(0);}
+}
+
+.load-ani-small {
+    position: relative;
+    width: 56px;
+    height: fit-content;
+    margin-left: 8px;
+    margin-top: 5px;
+}
+
+#email-login-ani {
+    width: 54px;
+    margin-top: 8px;
+}
+
+.load-ani-small div {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.load-ani-small div:nth-child(1) {
+    left: 6px;
+    background: var(--p-fg);
+    animation: load-ani-small-appear 0.6s infinite;
+}
+
+.load-ani-small div:nth-child(2) {
+    left: 6px;
+    background: var(--p-fg);
+    animation: load-ani-small-slide 0.6s infinite;
+}
+
+.load-ani-small div:nth-child(3) {
+    left: 24px;
+    background: var(--accent);
+    animation: load-ani-small-slide 0.6s infinite;
+}
+
+.load-ani-small div:nth-child(4) {
+    left: 42px;
+    background: var(--accent);
+    animation: load-ani-small-disappear 0.6s infinite;
+}
+
+@keyframes load-ani-small-appear {
+    0% {transform: scale(0);}
+    100% {transform: scale(1);}
+}
+
+@keyframes load-ani-small-slide {
+    0% {transform: translate(0, 0);}
+    100% {transform: translate(18px, 0);}
+}
+
+@keyframes load-ani-small-disappear {
+    0% {transform: scale(1);}
+    100% {transform: scale(0);}
+}
+
+
+.shake {
+    animation: shake;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+
+@keyframes shake {
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-2px);
+    }
+    20%, 40%, 60%, 80%, 100% {
+        transform: translateX(2px);
+    }
 }

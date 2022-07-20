@@ -2,6 +2,8 @@
 let api = "https://j2xnmuiw4k.execute-api.us-west-1.amazonaws.com/CalCourse";
 let cookiesLoaded = false;
 let helpLoaded = false;
+let hoverTimer;
+let hoverDelay = 50;
 
 $(() => {
   if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
@@ -40,7 +42,7 @@ $(() => {
   });
 
   $(".auth-option").on("click", () => {
-    $("#login-description").text("我们需要验证你的学生身份");
+    errorRestore("我们需要验证你的学生身份");
   });
 
   $.urlParam = (name) => {
@@ -86,13 +88,105 @@ function parseJwt (token) {
   var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
-
   return JSON.parse(jsonPayload);
-};
+}
 
 function handleCredentialResponse(response) {
   console.log(1111);
   console.log(JSON.stringify(parseJwt(response.credential)));
+}
+
+function errorAlert(msg) {
+  let login_description = $("#login-description");
+  login_description.text('\u26A0' + '\n' + msg);
+  login_description.css('color', '#FBEC5D');
+  login_description.addClass("shake").on("animationend", function(e) {
+    $(this).removeClass('shake').off("animationend");
+  });
+}
+
+function errorRestore(msg) {
+  let login_description = $("#login-description");
+  login_description.text(msg);
+  login_description.css('color', '#FFFFFF');
+}
+
+function toggleEmailColor(e_button, g_button) {
+  e_button.css("background-color","#DA8388");
+  e_button.css("color","#FFFFFF");
+  g_button.css("background-color","#333");
+  g_button.css("color","#DA8388");
+}
+
+function toggleGoogleColor(e_button, g_button) {
+  g_button.css("background-color","#DA8388");
+  g_button.css("color","#FFFFFF");
+  e_button.css("background-color","#333");
+  e_button.css("color","#DA8388");
+}
+
+function toggleEmailAuth() {
+  if($("#google-login-radio").is(':checked')) {
+    $("#google-auth-wrapper").slideUp(200, function () {
+      $("#email-auth-wrapper").slideDown(300);
+    });
+    errorRestore("我们需要验证你的学生身份");
+  } else {
+    $("#email-auth-wrapper").slideDown(300);
+  }
+  let e_button = $(".auth-option-wrapper > .auth-option[for=\"email-login-radio\"]");
+  let g_button = $(".auth-option-wrapper > .auth-option[for=\"google-login-radio\"]");
+  e_button.off("mouseenter mouseleave" );
+  g_button.off("mouseenter mouseleave");
+  e_button.hover(function (e) {
+    toggleEmailColor(e_button, g_button);
+  }, function() {
+    toggleEmailColor(e_button, g_button);
+  });
+  g_button.hover(function() {
+    clearTimeout(hoverTimer);
+    hoverTimer = setTimeout(function() {
+      toggleGoogleColor(e_button, g_button);
+    }, hoverDelay);
+  }, function () {
+    clearTimeout(hoverTimer);
+    toggleEmailColor(e_button, g_button);
+  });
+  toggleEmailColor(e_button, g_button);
+}
+
+function toggleGoogleAuth() {
+  if($("#email-login-radio").is(':checked')) {
+    $("#email-auth-wrapper").slideUp(200, function () {
+      $("#google-auth-wrapper").slideDown(300);
+    });
+    errorRestore("我们需要验证你的学生身份");
+  } else {
+    $("#google-auth-wrapper").slideDown(300);
+  }
+  let e_button = $(".auth-option-wrapper > .auth-option[for=\"email-login-radio\"]");
+  let g_button = $(".auth-option-wrapper > .auth-option[for=\"google-login-radio\"]");
+  e_button.off("mouseenter mouseleave" );
+  g_button.off("mouseenter mouseleave");
+  e_button.hover(function (e) {
+    clearTimeout(hoverTimer);
+    hoverTimer = setTimeout(function() {
+      toggleEmailColor(e_button, g_button);
+    }, hoverDelay);
+  }, function() {
+    clearTimeout(hoverTimer);
+    toggleGoogleColor(e_button, g_button);
+  });
+  g_button.hover(function() {
+    toggleGoogleColor(e_button, g_button);
+  }, function () {
+    toggleGoogleColor(e_button, g_button);
+  });
+  toggleGoogleColor(e_button, g_button);
+}
+
+function toggleGoogleAuthDisabled() {
+  errorAlert("当前浏览器不支持Google登录");
 }
 
 
@@ -118,11 +212,12 @@ async function sendEmailCode() {
   let emailInput = $("#email-input").val().toLowerCase();
   let emailReg = new RegExp("^[A-Za-z0-9._-]+$");
   if (!emailInput) {
-    $("#login-description").text("请填写Berkeley邮箱地址");
+    errorAlert("请填写Berkeley邮箱地址");
   } else if (!emailReg.test(emailInput)) {
-    $("#login-description").text("邮箱格式不正确");
+    errorAlert("邮箱格式不正确");
   } else {
-    sendEmailCodeCountDown();
+    $("#email-code-button").hide();
+    $("#email-code-ani").show();
     USER_EMAIL = emailInput + "@berkeley.edu";
     let form = new FormData();
     form.append("email", USER_EMAIL);
@@ -132,12 +227,18 @@ async function sendEmailCode() {
       processData: false,
       contentType: false,
       success: (response) => {
-        $("#login-description").text("请查收并填写邮箱验证码");
+        $("#email-code-ani").hide();
+        $("#email-code-button").show();
+        sendEmailCodeCountDown();
+        errorRestore("请查收并填写邮箱验证码");
         console.log(response);
       },
       error: (response) => {
         console.log(response);
-        $("#login-description").text("无法发送验证码到该邮箱，请重试");
+        $("#email-code-ani").hide();
+        $("#email-code-button").show();
+        sendEmailCodeCountDown();
+        errorAlert("无法发送验证码到该邮箱，请重试");
       },
     });
   }
@@ -168,14 +269,14 @@ function onEmailSignIn() {
   let codeInput = $("#email-code-input").val();
   let codeReg = new RegExp("^[0-9]{6}$");
   if (!USER_EMAIL) {
-    $("#login-description").text("请先获取验证码");
+    errorAlert("请先获取验证码");
   } else if (!codeInput) {
-    $("#login-description").text("请填写验证码");
+    errorAlert("请填写验证码");
   } else if (!codeReg.test(codeInput)) {
-    $("#login-description").text("验证码格式不正确");
+    errorAlert("验证码格式不正确");
   } else {
-    $("#email-login-button").html("<span>登录中</span>");
-    $("#email-login-button").off("click");
+    $("#email-login-button").hide();
+    $("#email-login-ani").show();
     USER_CODE = String(codeInput);
 
     $.ajax({
@@ -190,15 +291,15 @@ function onEmailSignIn() {
       contentType: false,
       success: (response) => {
         console.log(response);
-        $("#email-login-button").html("<span>登录</span>");
-        $("#email-login-button").on("click", onEmailSignIn);
+        $("#email-login-ani").hide();
+        $("#email-login-button").show();
         loadCourses();
       },
       error: (response) => {
         console.log(response);
-        $("#email-login-button").html("<span>登录</span>");
-        $("#email-login-button").on("click", onEmailSignIn);
-        $("#login-description").text("验证失败，请重试");
+        $("#email-login-ani").hide();
+        $("#email-login-button").show();
+        errorAlert("验证失败，请重试");
       },
     });
   }
@@ -294,6 +395,8 @@ function filter() {
 function onGoogleSignIn(googleUser) {
   let profile = googleUser.getBasicProfile();
   let email = profile.getEmail();
+  $("#google-login-button").hide();
+  $("#google-login-ani").show();
   $.ajax({
     url: api + "/email/verify_email/" + email,
     type: "GET",
@@ -310,9 +413,9 @@ function onGoogleSignIn(googleUser) {
     error: (response) => {
       console.log(response);
       if (email.endsWith("berkeley.edu")) {
-        $("#login-description").text("服务器错误，请稍后重试");
+        errorAlert("服务器错误，请稍后重试");
       } else {
-        $("#login-description").text("请换用bConnected账号登录");
+        errorAlert("请换用bConnected账号登录");
       }
     },
   });
