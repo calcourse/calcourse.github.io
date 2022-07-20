@@ -287,15 +287,7 @@ function onGoogleSignIn(googleUser) {
     url: api + "/email/verify_email/" + email,
     type: "GET",
     success: (response) => {
-      console.log(response);
-      console.log(response.status);
-      console.log(1111);
-      console.log(response.headers);
-      if (response.status == 200) {
         loadCourses();
-      } else {
-        $("#login-description").text("验证失败，请重试");
-      }
       // createCookie("token", response.token, 1440);
       // if ($.urlParam("redirect") === "add") {
       //   window.location.href = "add.html";
