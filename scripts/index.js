@@ -102,6 +102,9 @@ function handleCredentialResponse(response) {
   let verified = parsed_response["email_verified"];
   let email_address = parsed_response["email"];
   let user_name = parsed_response["name"];
+  console.log(verified);
+  console.log(email_address);
+  console.log(user_name);
   $.ajax({
     url:
       api +
