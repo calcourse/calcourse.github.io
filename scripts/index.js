@@ -82,7 +82,6 @@ let COUNTDOWN_CUR = 60;
 let USER_EMAIL = "";
 let USER_CODE = "";
 
-
 function parseJwt(token) {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -101,6 +100,7 @@ function handleCredentialResponse(response) {
   console.log(1111);
   console.log(response);
   console.log(JSON.stringify(parseJwt(response.credential)));
+  loadCourses();
   // const responsePayload = decodeJwtResponse(response.credential);
   // console.log("ID: " + responsePayload.sub);
 }
@@ -120,7 +120,6 @@ function handleCredentialResponse(response) {
 // }
 
 function HansMaoTesting(response) {
-
   console.log(12345678);
   console.log(response);
   // console.log(JSON.stringify(parseJwt(response.credential)));
@@ -139,7 +138,6 @@ function HansMaoTesting(response) {
   google.accounts.id.prompt();
   console.log(33333333);
 }
-
 
 function errorAlert(msg) {
   let login_description = $("#login-description");
