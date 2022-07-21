@@ -104,25 +104,26 @@ function handleCredentialResponse(response) {
   // const responsePayload = decodeJwtResponse(response.credential);
   // console.log("ID: " + responsePayload.sub);
 }
-function initClient() {
-  console.log(0000);
-  google.accounts.id.initialize({
-    client_id:
-      "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
-    callback: handleCredentialResponse,
-  });
-  console.log(010101);
-  google.accounts.id.renderButton(
-    document.getElementById("buttonDiv"),
-    { theme: "outline", size: "large" } // customization attributes
-  );
-  google.accounts.id.prompt();
-}
+// function initClient() {
+//   console.log(0000);
+//   google.accounts.id.initialize({
+//     client_id:
+//       "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
+//     callback: handleCredentialResponse,
+//   });
+//   console.log(010101);
+//   google.accounts.id.renderButton(
+//     document.getElementById("buttonDiv"),
+//     { theme: "outline", size: "large" } // customization attributes
+//   );
+//   google.accounts.id.prompt();
+// }
 
 function HansMaoTesting(response) {
 
   console.log(12345678);
-  console.log(JSON.stringify(parseJwt(response.credential)));
+  console.log(response);
+  // console.log(JSON.stringify(parseJwt(response.credential)));
   console.log(999999);
   google.accounts.id.initialize({
     client_id:
@@ -134,7 +135,9 @@ function HansMaoTesting(response) {
     document.getElementById("buttonDiv"),
     { theme: "outline", size: "large" } // customization attributes
   );
+  console.log(22222222);
   google.accounts.id.prompt();
+  console.log(33333333);
 }
 
 
