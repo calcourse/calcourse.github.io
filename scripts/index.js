@@ -82,51 +82,59 @@ let COUNTDOWN_CUR = 60;
 let USER_EMAIL = "";
 let USER_CODE = "";
 
-function parseJwt (token) {
-  var base64Url = token.split('.')[1];
-  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
+function parseJwt(token) {
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  var jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
   return JSON.parse(jsonPayload);
 }
 
 function handleCredentialResponse(response) {
   console.log(1111);
-  console.log(JSON.stringify(parseJwt(response.credential)));
+  console.log(response);
+  // console.log(JSON.stringify(parseJwt(response.credential)));
+  // const responsePayload = decodeJwtResponse(response.credential);
+  // console.log("ID: " + responsePayload.sub);
 }
 
 function errorAlert(msg) {
   let login_description = $("#login-description");
-  login_description.text('\u26A0' + '\n' + msg);
-  login_description.css('color', '#FBEC5D');
-  login_description.addClass("shake").on("animationend", function(e) {
-    $(this).removeClass('shake').off("animationend");
+  login_description.text("\u26A0" + "\n" + msg);
+  login_description.css("color", "#FBEC5D");
+  login_description.addClass("shake").on("animationend", function (e) {
+    $(this).removeClass("shake").off("animationend");
   });
 }
 
 function errorRestore(msg) {
   let login_description = $("#login-description");
   login_description.text(msg);
-  login_description.css('color', '#FFFFFF');
+  login_description.css("color", "#FFFFFF");
 }
 
 function toggleEmailColor(e_button, g_button) {
-  e_button.css("background-color","#DA8388");
-  e_button.css("color","#FFFFFF");
-  g_button.css("background-color","#333");
-  g_button.css("color","#DA8388");
+  e_button.css("background-color", "#DA8388");
+  e_button.css("color", "#FFFFFF");
+  g_button.css("background-color", "#333");
+  g_button.css("color", "#DA8388");
 }
 
 function toggleGoogleColor(e_button, g_button) {
-  g_button.css("background-color","#DA8388");
-  g_button.css("color","#FFFFFF");
-  e_button.css("background-color","#333");
-  e_button.css("color","#DA8388");
+  g_button.css("background-color", "#DA8388");
+  g_button.css("color", "#FFFFFF");
+  e_button.css("background-color", "#333");
+  e_button.css("color", "#DA8388");
 }
 
 function toggleEmailAuth() {
-  if($("#google-login-radio").is(':checked')) {
+  if ($("#google-login-radio").is(":checked")) {
     $("#google-auth-wrapper").slideUp(200, function () {
       $("#email-auth-wrapper").slideDown(300);
     });
@@ -134,29 +142,39 @@ function toggleEmailAuth() {
   } else {
     $("#email-auth-wrapper").slideDown(300);
   }
-  let e_button = $(".auth-option-wrapper > .auth-option[for=\"email-login-radio\"]");
-  let g_button = $(".auth-option-wrapper > .auth-option[for=\"google-login-radio\"]");
-  e_button.off("mouseenter mouseleave" );
+  let e_button = $(
+    '.auth-option-wrapper > .auth-option[for="email-login-radio"]'
+  );
+  let g_button = $(
+    '.auth-option-wrapper > .auth-option[for="google-login-radio"]'
+  );
+  e_button.off("mouseenter mouseleave");
   g_button.off("mouseenter mouseleave");
-  e_button.hover(function (e) {
-    toggleEmailColor(e_button, g_button);
-  }, function() {
-    toggleEmailColor(e_button, g_button);
-  });
-  g_button.hover(function() {
-    clearTimeout(hoverTimer);
-    hoverTimer = setTimeout(function() {
-      toggleGoogleColor(e_button, g_button);
-    }, hoverDelay);
-  }, function () {
-    clearTimeout(hoverTimer);
-    toggleEmailColor(e_button, g_button);
-  });
+  e_button.hover(
+    function (e) {
+      toggleEmailColor(e_button, g_button);
+    },
+    function () {
+      toggleEmailColor(e_button, g_button);
+    }
+  );
+  g_button.hover(
+    function () {
+      clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(function () {
+        toggleGoogleColor(e_button, g_button);
+      }, hoverDelay);
+    },
+    function () {
+      clearTimeout(hoverTimer);
+      toggleEmailColor(e_button, g_button);
+    }
+  );
   toggleEmailColor(e_button, g_button);
 }
 
 function toggleGoogleAuth() {
-  if($("#email-login-radio").is(':checked')) {
+  if ($("#email-login-radio").is(":checked")) {
     $("#email-auth-wrapper").slideUp(200, function () {
       $("#google-auth-wrapper").slideDown(300);
     });
@@ -164,31 +182,40 @@ function toggleGoogleAuth() {
   } else {
     $("#google-auth-wrapper").slideDown(300);
   }
-  let e_button = $(".auth-option-wrapper > .auth-option[for=\"email-login-radio\"]");
-  let g_button = $(".auth-option-wrapper > .auth-option[for=\"google-login-radio\"]");
-  e_button.off("mouseenter mouseleave" );
+  let e_button = $(
+    '.auth-option-wrapper > .auth-option[for="email-login-radio"]'
+  );
+  let g_button = $(
+    '.auth-option-wrapper > .auth-option[for="google-login-radio"]'
+  );
+  e_button.off("mouseenter mouseleave");
   g_button.off("mouseenter mouseleave");
-  e_button.hover(function (e) {
-    clearTimeout(hoverTimer);
-    hoverTimer = setTimeout(function() {
-      toggleEmailColor(e_button, g_button);
-    }, hoverDelay);
-  }, function() {
-    clearTimeout(hoverTimer);
-    toggleGoogleColor(e_button, g_button);
-  });
-  g_button.hover(function() {
-    toggleGoogleColor(e_button, g_button);
-  }, function () {
-    toggleGoogleColor(e_button, g_button);
-  });
+  e_button.hover(
+    function (e) {
+      clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(function () {
+        toggleEmailColor(e_button, g_button);
+      }, hoverDelay);
+    },
+    function () {
+      clearTimeout(hoverTimer);
+      toggleGoogleColor(e_button, g_button);
+    }
+  );
+  g_button.hover(
+    function () {
+      toggleGoogleColor(e_button, g_button);
+    },
+    function () {
+      toggleGoogleColor(e_button, g_button);
+    }
+  );
   toggleGoogleColor(e_button, g_button);
 }
 
 function toggleGoogleAuthDisabled() {
   errorAlert("当前浏览器不支持Google登录");
 }
-
 
 // function handleClientLoad() {
 //   gapi.load("auth2", () => {
@@ -391,7 +418,6 @@ function filter() {
   }
 }
 
-
 function onGoogleSignIn(googleUser) {
   let profile = googleUser.getBasicProfile();
   let email = profile.getEmail();
@@ -401,7 +427,7 @@ function onGoogleSignIn(googleUser) {
     url: api + "/email/verify_email/" + email,
     type: "GET",
     success: (response) => {
-        loadCourses();
+      loadCourses();
       // createCookie("token", response.token, 1440);
       // if ($.urlParam("redirect") === "add") {
       //   window.location.href = "add.html";
