@@ -82,6 +82,7 @@ let COUNTDOWN_CUR = 60;
 let USER_EMAIL = "";
 let USER_CODE = "";
 
+
 function parseJwt(token) {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -99,19 +100,30 @@ function parseJwt(token) {
 function handleCredentialResponse(response) {
   console.log(1111);
   console.log(response);
-  // console.log(JSON.stringify(parseJwt(response.credential)));
+  console.log(JSON.stringify(parseJwt(response.credential)));
   // const responsePayload = decodeJwtResponse(response.credential);
   // console.log("ID: " + responsePayload.sub);
 }
-function handleGoogleSignin() {
+
+function HansMaoTesting(response) {
+
+  console.log(12345678);
+  console.log(JSON.stringify(parseJwt(response.credential)));
+  console.log(999999);
   google.accounts.id.initialize({
     client_id:
       "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
     callback: handleCredentialResponse,
   });
-
+  console.log(11111111);
+  google.accounts.id.renderButton(
+    document.getElementById("buttonDiv"),
+    { theme: "outline", size: "large" } // customization attributes
+  );
   google.accounts.id.prompt();
 }
+
+
 function errorAlert(msg) {
   let login_description = $("#login-description");
   login_description.text("\u26A0" + "\n" + msg);
