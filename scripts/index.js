@@ -98,14 +98,9 @@ function parseJwt(token) {
 
 function handleCredentialResponse(response) {
   let parsed_response = parseJwt(response.credential);
-  console.log(parsed_response);
-  console.log(JSON.stringify(parsed_response));
   let verified = parsed_response["email_verified"];
   let email_address = parsed_response["email"];
   let user_name = parsed_response["name"];
-  console.log(verified);
-  console.log(email_address);
-  console.log(user_name);
   $.ajax({
     url:
       api +
