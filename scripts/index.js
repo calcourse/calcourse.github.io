@@ -103,7 +103,15 @@ function handleCredentialResponse(response) {
   // const responsePayload = decodeJwtResponse(response.credential);
   // console.log("ID: " + responsePayload.sub);
 }
+function handleGoogleSignin() {
+  google.accounts.id.initialize({
+    client_id:
+      "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
+    callback: handleCredentialResponse,
+  });
 
+  google.accounts.id.prompt();
+}
 function errorAlert(msg) {
   let login_description = $("#login-description");
   login_description.text("\u26A0" + "\n" + msg);
