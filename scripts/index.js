@@ -97,46 +97,34 @@ function parseJwt(token) {
 }
 
 function handleCredentialResponse(response) {
-  console.log(1111);
-  console.log(response);
-  console.log(JSON.stringify(parseJwt(response.credential)));
-  loadCourses();
-  // const responsePayload = decodeJwtResponse(response.credential);
-  // console.log("ID: " + responsePayload.sub);
-}
-// function initClient() {
-//   console.log(0000);
-//   google.accounts.id.initialize({
-//     client_id:
-//       "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
-//     callback: handleCredentialResponse,
-//   });
-//   console.log(010101);
-//   google.accounts.id.renderButton(
-//     document.getElementById("buttonDiv"),
-//     { theme: "outline", size: "large" } // customization attributes
-//   );
-//   google.accounts.id.prompt();
-// }
-
-function HansMaoTesting(response) {
-  console.log(12345678);
-  console.log(response);
-  // console.log(JSON.stringify(parseJwt(response.credential)));
-  console.log(999999);
-  google.accounts.id.initialize({
-    client_id:
-      "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
-    callback: handleCredentialResponse,
+  let parsed_response = JSON.stringify(parseJwt(response.credential));
+  console.log(parsed_response);
+  let verified = parsed_response["email_verified"];
+  let email_address = parsed_response["email"];
+  let user_name = parsed_response["name"];
+  $.ajax({
+    url:
+      api +
+      "/email/verify_google_email/" +
+      email_address +
+      "/" +
+      verified +
+      "/" +
+      user_name,
+    type: "POST",
+    success: (response) => {
+      console.log(response);
+      loadCourses();
+    },
+    error: (response) => {
+      console.log(response);
+      if (email.endsWith("@berkeley.edu")) {
+        errorAlert("服务器错误，请稍后重试");
+      } else {
+        errorAlert("请换用bConnected账号登录");
+      }
+    },
   });
-  console.log(11111111);
-  google.accounts.id.renderButton(
-    document.getElementById("buttonDiv"),
-    { theme: "outline", size: "large" } // customization attributes
-  );
-  console.log(22222222);
-  google.accounts.id.prompt();
-  console.log(33333333);
 }
 
 function errorAlert(msg) {
@@ -251,24 +239,6 @@ function toggleGoogleAuth() {
 function toggleGoogleAuthDisabled() {
   errorAlert("当前浏览器不支持Google登录");
 }
-
-// function handleClientLoad() {
-//   gapi.load("auth2", () => {
-//     auth2 = gapi.auth2.init({
-//       client_id:
-//         "250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com",
-//       cookiepolicy: "single_host_origin",
-//       plugin_name: "com.calcourse",
-//     });
-
-//     auth2.attachClickHandler(
-//       $("#google-login-button")[0],
-//       {},
-//       onGoogleSignIn,
-//       onGoogleSignIn,
-//     );
-//   });
-// }
 
 async function sendEmailCode() {
   let emailInput = $("#email-input").val().toLowerCase();
@@ -452,64 +422,6 @@ function filter() {
     }
   }
 }
-
-function onGoogleSignIn(googleUser) {
-  let profile = googleUser.getBasicProfile();
-  let email = profile.getEmail();
-  $("#google-login-button").hide();
-  $("#google-login-ani").show();
-  $.ajax({
-    url: api + "/email/verify_email/" + email,
-    type: "GET",
-    success: (response) => {
-      loadCourses();
-      // createCookie("token", response.token, 1440);
-      // if ($.urlParam("redirect") === "add") {
-      //   window.location.href = "add.html";
-      // } else if ($.urlParam("redirect") === "queue") {
-      //   window.location.href = "queue.html";
-      // } else {
-      // }
-    },
-    error: (response) => {
-      console.log(response);
-      if (email.endsWith("berkeley.edu")) {
-        errorAlert("服务器错误，请稍后重试");
-      } else {
-        errorAlert("请换用bConnected账号登录");
-      }
-    },
-  });
-}
-
-// This function is commented out. It's the old version
-// function onGoogleSignIn(googleUser) {
-//   let profile = googleUser.getBasicProfile();
-//   let email = profile.getEmail();
-//   $.ajax({
-//     url: api + "auth/",
-//     type: "POST",
-//     data: { email: email },
-//     success: (response) => {
-//       createCookie("token", response.token, 1440);
-//       if ($.urlParam("redirect") === "add") {
-//         window.location.href = "add.html";
-//       } else if ($.urlParam("redirect") === "queue") {
-//         window.location.href = "queue.html";
-//       } else {
-//         loadCourses(response.token);
-//       }
-//     },
-//     error: (response) => {
-//       console.log(response);
-//       if (email.endsWith("berkeley.edu")) {
-//         $("#login-description").text("服务器错误，请稍后重试");
-//       } else {
-//         $("#login-description").text("请换用bConnected账号登录");
-//       }
-//     },
-//   });
-// }
 
 function parseTerm(x) {
   if (/^(FA|SP|SU|Fa|Sp|Su|Lf)(\d\d)$/gi.test(x)) {
