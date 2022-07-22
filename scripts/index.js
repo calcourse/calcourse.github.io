@@ -117,7 +117,7 @@ function handleCredentialResponse(response) {
     },
     error: (response) => {
       console.log(response);
-      if (email.endsWith("@berkeley.edu")) {
+      if (email_address.endsWith("@berkeley.edu")) {
         errorAlert("服务器错误，请稍后重试");
       } else {
         errorAlert("请换用bConnected账号登录");
