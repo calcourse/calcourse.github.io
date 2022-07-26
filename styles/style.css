@@ -229,7 +229,13 @@ input:-webkit-autofill:active
     padding-top: 36px;
 }
 
-#google-login-button {
+#google-auth-outer-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#google-login-button-wrapper {
     display: inline-flex;
     flex-flow: row nowrap;
     vertical-align: bottom;
@@ -243,7 +249,7 @@ input:-webkit-autofill:active
     color: var(--p-fg);
 }
 
-#google-login-button>img {
+#google-login-button-wrapper>img {
     position: relative;
     left: 6px;
     height: 32px;

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Cal Course</title>
+        <link rel="stylesheet" type="text/css" href="styles/request.css"></link>
+        <link rel="shortcut icon" href="assets/favicon.png">
+        <script src="scripts/jquery-3.5.0.min.js"></script>
+        <script src="scripts/request.js?v=3"></script>
+    </head>
+    <body>
+        <div id="main-container">
+            <h1 id="title"><a href="index.html">Cal Course</a></h1>
+            <div id="request-wrapper">
+                <div id="request-description">申请建群</div>
+                <div class="hr"></div>
+                <div id="term-container" class="term-default">
+                    <input type="radio" name="term" id="term-Summer-2022" data-term="Summer 2022" value="SU20" />
+                    <label for="term-Summer-2022" onclick="toggleTerm()">Summer 2022</label>
+                    <input type="radio" name="term" id="term-Fall-2022" data-term="Fall 2022" value="FA20" />
+                    <label for="term-Fall-2022" onclick="toggleTerm()">Fall 2022</label>
+                </div>
+                <div id="course1-container" class="course-container">
+                    <input class="course-dep-code course-input-default" type="text" placeholder="COMPSCI"></input>
+                    <input class="course-num-code course-input-default" type="text" placeholder="61A"></input>
+                    <div class="course-lec-label" >-LEC</div>
+                    <input class="course-lec-code course-input-default" type="text" placeholder="001"></input>
+                </div>
+                <div id="submit-botton-container">
+                    <button id="submit-button" class="submit-button submit-button-default" onclick="submit()">提交</button>
+                    <button id="edit-button" class="submit-button" onclick="edit()">修改</button>
+                    <button id="confirm-button" class="submit-button" onclick="confirmSubmit()">确认提交</button>
+                </div>
+            </div>
+            <div id="card-container"></div>
+            <div id="footer">
+                <div>
+                    <button class="button small-button about-toggle">
+                        <div>👥</div>
+                    </button>
+                    <button class="button small-button cookies-toggle">
+                        <div>🍪</div>
+                    </button>
+                    <button class="button small-button help-toggle">
+                        <div>?</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="about-container" class="hidden">
+            <p class="about-title">
+                <strong>Made with 💙💛💙 by ... </strong><br />
+            </p>
+            <p>
+                <strong>Prototype</strong><br />
+                -T.K.-
+            </p>
+            <p>
+                <strong>Front End | 前端</strong><br />
+                Ruohan Yan, Yuanhan Li, Ruomu Xu
+            </p>
+            <p>
+                <strong>Back End | 后端</strong><br />
+                Shufan Li
+            </p>
+            <p>
+                <strong>Tech Support | 技术支持</strong><br />
+                Uncertainty. CC
+            </p>
+            <p>
+                <strong>Contact Us | 联系我们</strong><br />
+                <a href="mailto:calcourse@outlook.com">calcourse@outlook.com</a>
+            </p>
+            <button class="button small-button about-toggle"><div>✔︎</div></button>
+        </div>
+        <div id="cookies-container" class="hidden">
+            <div id="cookies-page-container"></div>
+            <button class="button small-button cookies-toggle"><div>✔︎</div></button>
+        </div>
+        <div id="help-container" class="hidden">
+            <div id="help-page-container"></div>
+            <button class="button small-button help-toggle"><div>✔︎</div></button>
+        </div>
+    </body>
+</html>

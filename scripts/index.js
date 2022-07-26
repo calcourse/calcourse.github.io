@@ -58,7 +58,7 @@ $(() => {
     $("#login-wrapper>div:first-child").text("会话过期，请重新登陆。");
   }
 
-  let token = readCookie("token");
+  let token = readToken();
   if (token) {
     loadCourses(token);
   }
@@ -113,6 +113,11 @@ function handleCredentialResponse(response) {
     type: "POST",
     success: (response) => {
       console.log(response);
+
+      //TODO: Add Token to Cookies
+      let token = "user_token";
+      createToken(token);
+
       loadCourses();
     },
     error: (response) => {
@@ -324,6 +329,11 @@ function onEmailSignIn() {
         console.log(response);
         $("#email-login-ani").hide();
         $("#email-login-button").show();
+
+        //TODO: Add token to Cookies
+        let token = "user_token";
+        createToken(token);
+
         loadCourses();
       },
       error: (response) => {
@@ -478,20 +488,47 @@ function loadCourses() {
           allTerms.add(term);
         }
       }
+      let requestButton = $(`
+       <div id="request-button" class="card function-button">
+           <div>
+               <div>&#128195</div>
+               <div>申请建群</div>
+           </div>
+       </div>`);
+      $("#card-container").append(requestButton);
+      requestButton.on("click", () => {
+        if (readToken()) {
+          window.location.href = "request.html";
+        } else {
+          window.location.replace("index.html?redirect=request&timeout=1");
+        }
+      });
       let addButton = $(`
-            <div id="add-button" class="card">
-                <div>
-                    <div>+</div>
-                    <div>添加课程</div>
-                </div>
-            </div>`);
+       <div id="add-button" class="card function-button">
+           <div>
+               <div>&#11014</div>
+               <div>上传临时二维码</div>
+           </div>
+       </div>`);
       $("#card-container").append(addButton);
       addButton.on("click", () => {
-        if (readCookie("token")) {
+        if (readToken()) {
           window.location.href = "add.html";
         } else {
           window.location.replace("index.html?redirect=add&timeout=1");
         }
+      });
+      let logoutButton = $(`
+       <div id="logout-button" class="card function-button">
+           <div>
+               <div>&#128274</div>
+               <div>退出登录</div>
+           </div>
+       </div>`);
+      $("#card-container").append(logoutButton);
+      logoutButton.on("click", () => {
+        deleteToken();
+        location.reload();
       });
       let termsArray = [];
       for (let x of allTerms) {
@@ -549,21 +586,59 @@ function loadCourses() {
   });
 }
 
+function createToken(token) {
+  if(navigator.cookieEnabled) {
+    createCookie("token", token, 1440);
+  }
+  else {
+    createSession("token", token);
+  }
+}
+
+function readToken() {
+  if(navigator.cookieEnabled) {
+    return readCookie("token");
+  }
+  else {
+    return readSession("token");
+  }
+}
+
+function deleteToken() {
+  deleteSession("token");
+  deleteCookie("token");
+}
+
+function createSession(name, value) {
+  sessionStorage.setItem(encodeURIComponent(name), encodeURIComponent(value));
+}
+
+function readSession(name) {
+  name = encodeURIComponent(name);
+  if (sessionStorage.hasOwnProperty(name)) {
+    return sessionStorage.getItem(name);
+  } else {
+    return null;
+  }
+}
+
+function deleteSession(name) {
+  name = encodeURIComponent(name);
+  if (sessionStorage.hasOwnProperty(name)) {
+    return sessionStorage.removeItem(name);
+  }
+}
+
 function createCookie(name, value, minutes) {
   let date = new Date();
   date.setTime(date.getTime() + minutes * 60 * 1000);
   let expires = "; expires=" + date.toUTCString();
-  document.cookie =
-    encodeURIComponent(name) +
-    "=" +
-    encodeURIComponent(value) +
-    expires +
-    "; path=/";
+  document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
 }
 
 function readCookie(name) {
   name = encodeURIComponent(name) + "=";
-  for (c of document.cookie.split(";")) {
+  for (c of document.cookie.split(';')) {
     c = c.trim();
     if (c.indexOf(name) === 0) {
       return decodeURIComponent(c.substring(name.length, c.length));
@@ -571,3 +646,9 @@ function readCookie(name) {
   }
   return null;
 }
+
+function deleteCookie(name) {
+  let expires = "; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+  document.cookie = encodeURIComponent(name) + "=/"  + expires + "; path=/";
+}
+
