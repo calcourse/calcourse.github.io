@@ -322,7 +322,7 @@ function onEmailSignIn() {
         USER_EMAIL +
         "/" +
         USER_CODE,
-      type: "GET",
+      type: "POST",
       processData: false,
       contentType: false,
       success: (response) => {
