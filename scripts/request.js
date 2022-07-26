@@ -112,7 +112,7 @@ function errorAlert(msg) {
 
 function errorRestore() {
     let request_description = $("#request-description");
-    request_description.text("申请官方建群");
+    request_description.text("申请建群");
     request_description.css('color', '#FFFFFF');
     $("#submit-button").removeClass('submit-button-error').addClass('submit-button-default');
 }
