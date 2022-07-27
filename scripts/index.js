@@ -113,12 +113,14 @@ function handleCredentialResponse(response) {
     type: "POST",
     success: (response) => {
       console.log(response);
+      console.log(response["access_token"]);
+      let access_token = response["access_token"];
 
       //TODO: Add Token to Cookies
       let token = "user_token";
       createToken(token);
 
-      loadCourses();
+      loadCourses(email_address, access_token);
     },
     error: (response) => {
       console.log(response);
@@ -327,6 +329,7 @@ function onEmailSignIn() {
       contentType: false,
       success: (response) => {
         console.log(response);
+        let access_token = response["access_token"];
         $("#email-login-ani").hide();
         $("#email-login-button").show();
 
@@ -334,7 +337,7 @@ function onEmailSignIn() {
         let token = "user_token";
         createToken(token);
 
-        loadCourses();
+        loadCourses(USER_EMAIL, access_token);
       },
       error: (response) => {
         console.log(response);
@@ -462,7 +465,7 @@ function filterMostCurrentThreeTerm(x) {
     return false;
   }
 }
-function loadCourses() {
+function loadCourses(email, access_token) {
   $("#main-container").addClass("logged-in");
   $("#card-container").html(
     `<div class="load-ani">
@@ -471,6 +474,11 @@ function loadCourses() {
   );
   $.ajax({
     url: api + "/courses/get_all_courses",
+    dataType: "json",
+    data: JSON.stringify({
+      email: email,
+      access_token: access_token,
+    }),
     success: (response) => {
       $("#card-container").html("");
       $("#main-container").addClass("loaded");
