@@ -59,6 +59,7 @@ $(() => {
   }
 
   let token = readToken();
+  // TODO: loadcourse needs two arguments
   if (token) {
     loadCourses(token);
   }
@@ -113,13 +114,12 @@ function handleCredentialResponse(response) {
     type: "POST",
     success: (response) => {
       console.log(response);
-      console.log(response["access_token"]);
-      let access_token = response["access_token"];
 
       //TODO: Add Token to Cookies
       let token = "user_token";
       createToken(token);
 
+      let access_token = response["access_token"];
       loadCourses(email_address, access_token);
     },
     error: (response) => {
@@ -329,7 +329,7 @@ function onEmailSignIn() {
       contentType: false,
       success: (response) => {
         console.log(response);
-        let access_token = response["access_token"];
+        
         $("#email-login-ani").hide();
         $("#email-login-button").show();
 
@@ -337,6 +337,7 @@ function onEmailSignIn() {
         let token = "user_token";
         createToken(token);
 
+        let access_token = response["access_token"];
         loadCourses(USER_EMAIL, access_token);
       },
       error: (response) => {
@@ -476,8 +477,8 @@ function loadCourses(email, access_token) {
     url: api + "/courses/get_all_courses",
     dataType: "json",
     data: JSON.stringify({
-      email: email,
-      access_token: access_token,
+      "email": email,
+      "ccess_token": access_token,
     }),
     success: (response) => {
       $("#card-container").html("");
