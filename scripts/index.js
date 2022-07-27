@@ -475,6 +475,7 @@ function loadCourses(email, access_token) {
   );
   $.ajax({
     url: api + "/courses/get_all_courses",
+    mothod: "GET",
     data: {
       "email": email,
       "ccess_token": access_token,
