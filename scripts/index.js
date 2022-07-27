@@ -475,11 +475,10 @@ function loadCourses(email, access_token) {
   );
   $.ajax({
     url: api + "/courses/get_all_courses",
-    dataType: "json",
-    data: JSON.stringify({
+    data: {
       "email": email,
       "ccess_token": access_token,
-    }),
+    },
     success: (response) => {
       $("#card-container").html("");
       $("#main-container").addClass("loaded");
