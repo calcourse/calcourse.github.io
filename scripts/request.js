@@ -305,27 +305,27 @@ function confirmSubmit() {
     let course_code = course_entries[0]["code"];
     let lec_id = course_entries[0]["lec"];
     $.ajax({
-        type: 'POST',
-        url: api + 'courses/report_missing_class/',
-        headers: {
-            "Authorization": "Bearer " + token,
-            "Content-Type": 'application/json',
-        },
-        dataType: 'json',
-        data: JSON.stringify({
-            "department_code": dep_code,
-            "course_code": course_code,
-            "lec_id": lec_id,
-        }),
-        success: (response) => {
-            submitSuccessAlert();
-            logSubmission(term);
-        },
-        error: (response) => {
-            console.log(response);
-            $("#submit-ani").remove();
-            displayConfirmSubmit();
-            errorAlert("上传失败, 请重试");
-        }
+      type: "POST",
+      url: api + "/courses/report_missing_class",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+      dataType: "json",
+      data: JSON.stringify({
+        department_code: dep_code,
+        course_code: course_code,
+        lec_id: lec_id,
+      }),
+      success: (response) => {
+        submitSuccessAlert();
+        logSubmission(term);
+      },
+      error: (response) => {
+        console.log(response);
+        $("#submit-ani").remove();
+        displayConfirmSubmit();
+        errorAlert("上传失败, 请重试");
+      },
     });
 }
