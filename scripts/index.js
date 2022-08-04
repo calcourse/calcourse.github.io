@@ -508,21 +508,35 @@ function loadCourses(email, access_token) {
           window.location.replace("index.html?redirect=request&timeout=1");
         }
       });
-      let addButton = $(`
-       <div id="add-button" class="card function-button">
+
+      // let addButton = $(`
+      //  <div id="add-button" class="card function-button">
+      //      <div>
+      //          <div>&#11014</div>
+      //          <div>上传临时二维码</div>
+      //      </div>
+      //  </div>`);
+      // $("#card-container").append(addButton);
+      // addButton.on("click", () => {
+      //   if (readToken()) {
+      //     window.location.href = "add.html";
+      //   } else {
+      //     window.location.replace("index.html?redirect=add&timeout=1");
+      //   }
+      // });
+
+      let reportButton = $(`
+       <div id="report-button" class="card function-button">
            <div>
                <div>&#11014</div>
-               <div>上传临时二维码</div>
+               <div>故障报告</div>
            </div>
        </div>`);
-      $("#card-container").append(addButton);
-      addButton.on("click", () => {
-        if (readToken()) {
-          window.location.href = "add.html";
-        } else {
-          window.location.replace("index.html?redirect=add&timeout=1");
-        }
+      $("#card-container").append(reportButton);
+      reportButton.on("click", () => {
+        location.href = "https://forms.gle/56fJyQtw24JTaA2i9";
       });
+
       let logoutButton = $(`
        <div id="logout-button" class="card function-button">
            <div>

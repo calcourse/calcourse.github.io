@@ -293,7 +293,7 @@ function edit() {
 }
 
 function confirmSubmit() {
-    // console.log(JSON.stringify(course_entries));
+    console.log(JSON.stringify(course_entries));
     $("#edit-button").hide();
     $("#confirm-button").hide();
     $("#request-description").text("正在提交");
