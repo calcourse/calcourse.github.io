@@ -326,7 +326,7 @@ function confirmSubmit() {
       data: JSON.stringify({
         department_code: dep_code,
         course_code: course_code,
-        lec_id: lec_id,
+        lecture_id: lec_id,
       }),
       success: (response) => {
         submitSuccessAlert();
