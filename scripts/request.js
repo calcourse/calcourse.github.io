@@ -322,6 +322,7 @@ function confirmSubmit() {
     $.ajax({
       type: "POST",
       url: api + "/courses/report_missing_class",
+      contentType: "application/json",
       dataType: "json",
       data: JSON.stringify({
         department_code: dep_code,
