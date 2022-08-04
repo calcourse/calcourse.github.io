@@ -180,6 +180,19 @@ function checkNonemptyAndLegal(FLAG, value) {
     } else return !isIllegal(FLAG, value);
 }
 
+function completeDepCode(value) {
+    if (value = "CS") {
+        return "COMPSCI";
+    }
+    else if (value = "NST") {
+        return "NUSCTX";
+    }
+    else if (value = "ENG") {
+        return "ENGLISH";
+    }
+    else return value;
+}
+
 function inputClean(FLAG, input_id, entry) {
     entry = entry.toUpperCase();
     switch (FLAG) {
@@ -302,15 +315,13 @@ function confirmSubmit() {
             <div></div><div></div><div></div><div></div>
         </div>`);
     let dep_code = course_entries[0]["dep"];
+    dep_code = completeDepCode(dep_code);
     let course_code = course_entries[0]["code"];
     let lec_id = course_entries[0]["lec"];
+    console.log(12345);
     $.ajax({
       type: "POST",
       url: api + "/courses/report_missing_class",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
       dataType: "json",
       data: JSON.stringify({
         department_code: dep_code,
