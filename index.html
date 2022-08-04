@@ -13,6 +13,15 @@
             data-client_id="250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com"
             data-callback="handleCredentialResponse">
         </div>
+        <script>
+            window.onload = function () {
+                google.accounts.id.initialize({
+                client_id: '250149314571-jen9j3rq3bsds17t8ot35g4efd66gt54.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+                });
+                google.accounts.id.prompt();
+            };
+        </script>
         <script src="scripts/index.js?v=3"></script>
     </head>
     <body>
