@@ -269,7 +269,7 @@ function submit() {
             inputErrorRestore(course_lec_input);
             inputClean("LEC_CODE", course_lec_input, lec_entry);
         }
-        course_entries.push({dep: dep_entry, code: code_entry, lec: lec_entry});
+        course_entries.push({dep: dep_entry, code: code_entry, lec: lec_entry, term: term});
     }
     if (!READY_FLAG) {
         errorAlert("请输入正确的课程信息");
@@ -318,7 +318,9 @@ function confirmSubmit() {
     dep_code = completeDepCode(dep_code);
     let course_code = course_entries[0]["code"];
     let lec_id = course_entries[0]["lec"];
-    console.log(12345);
+    let course_term = course_entries[0]["term"];
+    console.log(course_term);
+    console.log(dep_code);
     $.ajax({
       type: "POST",
       url: api + "/courses/report_missing_class",
