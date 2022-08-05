@@ -193,6 +193,10 @@ function completeDepCode(value) {
     else return value;
 }
 
+function completeLecCode(value) {
+    return "0".repeat(3 - value.length) + value;
+}
+
 function inputClean(FLAG, input_id, entry) {
     entry = entry.toUpperCase();
     switch (FLAG) {
@@ -318,9 +322,8 @@ function confirmSubmit() {
     dep_code = completeDepCode(dep_code);
     let course_code = course_entries[0]["code"];
     let lec_id = course_entries[0]["lec"];
+    lec_id = completeLecCode(lec_id);
     let course_term = course_entries[0]["term"];
-    console.log(course_term);
-    console.log(dep_code);
     $.ajax({
       type: "POST",
       url: api + "/courses/report_missing_class",
@@ -330,8 +333,10 @@ function confirmSubmit() {
         department_code: dep_code,
         course_code: course_code,
         lecture_id: lec_id,
+        course_term: course_term,
       }),
-      success: (response) => {
+        success: (response) => {
+        console.log(response);
         submitSuccessAlert();
         logSubmission(term);
       },
