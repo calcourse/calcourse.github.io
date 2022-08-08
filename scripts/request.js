@@ -190,11 +190,56 @@ function completeDepCode(value) {
     else if (value = "ENG") {
         return "ENGLISH";
     }
+    else if (value = "DS") {
+        return "DATA";
+    }
+    else if (value = "BIO") {
+        return "BIOLOGY";
+    }
+    else if (value = "MCB") {
+        return "MCELLBI";
+    }
+    else if (value = "IB") {
+        return "INTEGBI";
+    }
+    else if (value = "PHYSIC") {
+        return "PHYSICS";
+    }
     else return value;
 }
 
 function completeLecCode(value) {
     return "0".repeat(3 - value.length) + value;
+}
+
+function cleanLowerCase(value) {
+    value = value.replaceAll("a", "A");
+    value = value.replaceAll("b", "B");
+    value = value.replaceAll("c", "C");
+    value = value.replaceAll("d", "D");
+    value = value.replaceAll("e", "E");
+    value = value.replaceAll("f", "F");
+    value = value.replaceAll("g", "G");
+    value = value.replaceAll("h", "H");
+    value = value.replaceAll("i", "I");
+    value = value.replaceAll("j", "J");
+    value = value.replaceAll("k", "K");
+    value = value.replaceAll("l", "L");
+    value = value.replaceAll("m", "M");
+    value = value.replaceAll("n", "N");
+    value = value.replaceAll("o", "O");
+    value = value.replaceAll("p", "P");
+    value = value.replaceAll("q", "Q");
+    value = value.replaceAll("r", "R");
+    value = value.replaceAll("s", "S");
+    value = value.replaceAll("t", "T");
+    value = value.replaceAll("u", "U");
+    value = value.replaceAll("v", "V");
+    value = value.replaceAll("w", "W");
+    value = value.replaceAll("x", "X");
+    value = value.replaceAll("y", "Y");
+    value = value.replaceAll("z", "Z");
+    return value;
 }
 
 function inputClean(FLAG, input_id, entry) {
@@ -210,6 +255,21 @@ function inputClean(FLAG, input_id, entry) {
                     break;
                 case "ENG":
                     entry = "ENGLISH";
+                    break;
+                case "DS":
+                    entry = "DATA";
+                    break;
+                case "BIO":
+                    entry = "BIOLOGY";
+                    break;
+                case "MCB":
+                    entry = "MCELLBI";
+                    break;
+                case "IB":
+                    entry = "INTEGBI";
+                    break;
+                case "PHYSIC":
+                    entry = "PHYSICS";
                     break;
                 default:
                     break;
@@ -319,6 +379,7 @@ function confirmSubmit() {
             <div></div><div></div><div></div><div></div>
         </div>`);
     let dep_code = course_entries[0]["dep"];
+    dep_code = cleanLowerCase(dep_code);
     dep_code = completeDepCode(dep_code);
     let course_code = course_entries[0]["code"];
     let lec_id = course_entries[0]["lec"];

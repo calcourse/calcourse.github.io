@@ -59,9 +59,11 @@ $(() => {
   }
 
   let token = readToken();
-  // TODO: loadcourse needs two arguments
-  if (token) {
-    loadCourses(token);
+  let email = readEmail();
+  if (token && email) {
+    if (checkValidToken()) {
+      loadCourses(email, token);
+    }
   }
 });
 
@@ -116,10 +118,12 @@ function handleCredentialResponse(response) {
       console.log(response);
 
       //TODO: Add Token to Cookies
-      let token = "user_token";
-      createToken(token);
+      // let token = "user_token";
+      // createToken(token);
 
       let access_token = response["access_token"];
+
+      saveDataToLocalStorage(email_address, access_token);
       loadCourses(email_address, access_token);
     },
     error: (response) => {
@@ -334,10 +338,11 @@ function onEmailSignIn() {
         $("#email-login-button").show();
 
         //TODO: Add token to Cookies
-        let token = "user_token";
-        createToken(token);
+        // let token = "user_token";
+        // createToken(token);
 
         let access_token = response["access_token"];
+        saveDataToLocalStorage(USER_EMAIL, access_token);
         loadCourses(USER_EMAIL, access_token);
       },
       error: (response) => {
@@ -671,3 +676,46 @@ function deleteCookie(name) {
   document.cookie = encodeURIComponent(name) + "=/"  + expires + "; path=/";
 }
 
+
+function saveDataToLocalStorage(email, token) {
+  localStorage.setItem("user_email", email);
+  localStorage.setItem("user_token", token);
+  let currentTime = new Date();
+  let currentTimeList = [currentTime.getUTCFullYear(), currentTime.getUTCMonth, currentTime.getUTCDate(), currentTime.getUTCHours()];
+  localStorage.setItem("user_token_time", JSON.stringify(currentTimeList));
+}
+
+function readUserEmail() {
+  return localStorage.getItem("user_email");
+}
+
+function readUserToken() {
+  return localStorage.getItem("user_token");
+}
+
+function readUserTokenTime() {
+  let token_time_data = localStorage.getItem("user_token_time");
+  if (token_time_data) {
+    return JSON.parse(token_time_data);
+  } else {
+    return null;
+  }
+}
+
+
+function checkValidToken() {
+  let timeList = readUserTokenTime();
+  if (timeList == null) {
+    return false;
+  }
+  let currentTime = new Date();
+  let currentTimeUTC = Data.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours());
+  let tokenTimeUTC = Data.UTC(timeList[0], timeList[1], timeList[2], timeList[3]);
+  let diff_ms = currentTimeUTC - tokenTimeUTC;
+  // token is valid for 6 hours
+  let diff_hours = diff_ms / 1000 / 60 / 60;
+  if (diff_hours <= 6) {
+    return true;
+  }
+  return false;
+}
