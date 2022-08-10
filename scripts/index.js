@@ -498,21 +498,21 @@ function loadCourses(email, access_token) {
           allTerms.add(term);
         }
       }
-      let requestButton = $(`
-       <div id="request-button" class="card function-button">
-           <div>
-               <div>&#128195</div>
-               <div>申请建群</div>
-           </div>
-       </div>`);
-      $("#card-container").append(requestButton);
-      requestButton.on("click", () => {
-        if (readToken()) {
-          window.location.href = "request.html";
-        } else {
-          window.location.replace("index.html?redirect=request&timeout=1");
-        }
-      });
+      // let requestButton = $(`
+      //  <div id="request-button" class="card function-button">
+      //      <div>
+      //          <div>&#128195</div>
+      //          <div>申请建群</div>
+      //      </div>
+      //  </div>`);
+      // $("#card-container").append(requestButton);
+      // requestButton.on("click", () => {
+      //   if (readToken()) {
+      //     window.location.href = "request.html";
+      //   } else {
+      //     window.location.replace("index.html?redirect=request&timeout=1");
+      //   }
+      // });
 
       // let addButton = $(`
       //  <div id="add-button" class="card function-button">
