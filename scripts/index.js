@@ -58,11 +58,17 @@ $(() => {
     $("#login-wrapper>div:first-child").text("会话过期，请重新登陆。");
   }
 
+  console.log("need to get token");
   let token = readToken();
   let email = readEmail();
+  console.log(email);
+  console.log(token);
   if (token && email) {
+    console.log("token and email found");
     if (checkValidToken()) {
+      console.log("token is valid");
       loadCourses(email, token);
+      console.log("success");
     }
   }
 });
@@ -342,6 +348,7 @@ function onEmailSignIn() {
         // createToken(token);
 
         let access_token = response["access_token"];
+        console.log("now saving token to cookies");
         saveDataToLocalStorage(USER_EMAIL, access_token);
         loadCourses(USER_EMAIL, access_token);
       },
@@ -498,21 +505,21 @@ function loadCourses(email, access_token) {
           allTerms.add(term);
         }
       }
-      // let requestButton = $(`
-      //  <div id="request-button" class="card function-button">
-      //      <div>
-      //          <div>&#128195</div>
-      //          <div>申请建群</div>
-      //      </div>
-      //  </div>`);
-      // $("#card-container").append(requestButton);
-      // requestButton.on("click", () => {
-      //   if (readToken()) {
-      //     window.location.href = "request.html";
-      //   } else {
-      //     window.location.replace("index.html?redirect=request&timeout=1");
-      //   }
-      // });
+      let requestButton = $(`
+       <div id="request-button" class="card function-button">
+           <div>
+               <div>&#128195</div>
+               <div>申请建群</div>
+           </div>
+       </div>`);
+      $("#card-container").append(requestButton);
+      requestButton.on("click", () => {
+        if (readToken()) {
+          window.location.href = "request.html";
+        } else {
+          window.location.replace("index.html?redirect=request&timeout=1");
+        }
+      });
 
       // let addButton = $(`
       //  <div id="add-button" class="card function-button">
@@ -678,11 +685,16 @@ function deleteCookie(name) {
 
 
 function saveDataToLocalStorage(email, token) {
+  console.log("invoked");
   localStorage.setItem("user_email", email);
   localStorage.setItem("user_token", token);
   let currentTime = new Date();
   let currentTimeList = [currentTime.getUTCFullYear(), currentTime.getUTCMonth, currentTime.getUTCDate(), currentTime.getUTCHours()];
   localStorage.setItem("user_token_time", JSON.stringify(currentTimeList));
+  console.log("token saved");
+  console.log(readUserEmail());
+  console.log(readUserToken());
+  console.log(readUserTokenTime());
 }
 
 function readUserEmail() {
