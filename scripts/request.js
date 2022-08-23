@@ -5,10 +5,26 @@ let term = undefined;
 let course_entries = []
 
 $(() => {
-    token = readToken();
-    if (!token) {
+    // token = readToken();
+    console.log("need to get token in request");
+    let token = readToken();
+    let email = readEmail();
+    console.log(email);
+    console.log(token);
+    if (token && email) {
+      console.log("token and email found");
+      if (checkValidToken()) {
+        console.log("token is valid");
+        loadCourses(email, token);
+        console.log("success");
+      }
+    } else {
         window.location.href = 'index.html?redirect=request';
     }
+
+    // if (!token) {
+    //     window.location.href = 'index.html?redirect=request';
+    // }
 
     $(".about-toggle").on("click", () => {
         $("#about-container").toggleClass("hidden");
