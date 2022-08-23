@@ -15,7 +15,6 @@ $(() => {
       console.log("token and email found");
       if (checkValidToken()) {
         console.log("token is valid");
-        loadCourses(email, token);
         console.log("success");
       }
     } else {
