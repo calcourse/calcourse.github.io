@@ -5,25 +5,12 @@ let term = undefined;
 let course_entries = []
 
 $(() => {
-    // token = readToken();
-    console.log("need to get token in request");
-    let token = readToken();
-    let email = readEmail();
-    console.log(email);
-    console.log(token);
-    if (token && email) {
-      console.log("token and email found");
-      if (checkValidToken()) {
-        console.log("token is valid");
-        console.log("success");
-      }
-    } else {
-        window.location.href = 'index.html?redirect=request';
-    }
+    let token = readUserEmail();
+    let email = readUserToken();
 
-    // if (!token) {
-    //     window.location.href = 'index.html?redirect=request';
-    // }
+    if (!(token && email && checkValidToken())) {
+        window.location.href = "index.html?redirect=request";
+    } 
 
     $(".about-toggle").on("click", () => {
         $("#about-container").toggleClass("hidden");
@@ -75,14 +62,14 @@ function readLog(term) {
     }
 }
 
-function readToken() {
-    if(navigator.cookieEnabled) {
-        return readCookie("token");
-    }
-    else {
-        return readSession("token");
-    }
-}
+// function readToken() {
+//     if(navigator.cookieEnabled) {
+//         return readCookie("token");
+//     }
+//     else {
+//         return readSession("token");
+//     }
+// }
 
 function createSession(name, value) {
     sessionStorage.setItem(encodeURIComponent(name), encodeURIComponent(value));
@@ -423,4 +410,49 @@ function confirmSubmit() {
         errorAlert("上传失败, 请重试");
       },
     });
+}
+
+
+function readUserEmail() {
+  return localStorage.getItem("user_email");
+}
+
+function readUserToken() {
+  return localStorage.getItem("user_token");
+}
+
+function readUserTokenTime() {
+  let token_time_data = localStorage.getItem("user_token_time");
+  if (token_time_data) {
+    return JSON.parse(token_time_data);
+  } else {
+    return null;
+  }
+}
+
+function checkValidToken() {
+  let timeList = readUserTokenTime();
+  if (timeList == null) {
+    return false;
+  }
+  let currentTime = new Date();
+  let currentTimeUTC = Data.UTC(
+    currentTime.getUTCFullYear(),
+    currentTime.getUTCMonth(),
+    currentTime.getUTCDate(),
+    currentTime.getUTCHours()
+  );
+  let tokenTimeUTC = Data.UTC(
+    timeList[0],
+    timeList[1],
+    timeList[2],
+    timeList[3]
+  );
+  let diff_ms = currentTimeUTC - tokenTimeUTC;
+  // token is valid for 6 hours
+  let diff_hours = diff_ms / 1000 / 60 / 60;
+  if (diff_hours <= 6) {
+    return true;
+  }
+  return false;
 }

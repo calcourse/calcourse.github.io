@@ -58,17 +58,12 @@ $(() => {
     $("#login-wrapper>div:first-child").text("会话过期，请重新登陆。");
   }
 
-  console.log("need to get token");
+
   let token = readToken();
   let email = readEmail();
-  console.log(email);
-  console.log(token);
   if (token && email) {
-    console.log("token and email found");
     if (checkValidToken()) {
-      console.log("token is valid");
       loadCourses(email, token);
-      console.log("success");
     }
   }
 });
@@ -514,7 +509,7 @@ function loadCourses(email, access_token) {
        </div>`);
       $("#card-container").append(requestButton);
       requestButton.on("click", () => {
-        if (readUserEmail()) {
+        if (readUserToken()) {
           console.log("redirect to request page");
           window.location.href = "request.html";
         } else {
