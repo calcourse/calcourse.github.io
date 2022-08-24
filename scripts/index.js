@@ -514,7 +514,7 @@ function loadCourses(email, access_token) {
        </div>`);
       $("#card-container").append(requestButton);
       requestButton.on("click", () => {
-        if (readToken()) {
+        if (readUserEmail()) {
           console.log("redirect to request page");
           window.location.href = "request.html";
         } else {
