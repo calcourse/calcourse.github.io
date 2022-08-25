@@ -10,17 +10,17 @@ $(() => {
     $("#wechat-message").removeClass("hidden");
     return;
   }
-
+  console.log("111");
   $("#login-wrapper").removeClass("hidden");
-
+  console.log("222");
   $("#email-code-button").on("click", sendEmailCode);
-
+  console.log("333");
   $("#email-login-button").on("click", onEmailSignIn);
-
+  console.log("444");
   $("#search-input").on("input", () => {
     filter();
   });
-
+  console.log("555");
   $(".about-toggle").on("click", () => {
     $("#about-container").toggleClass("hidden");
   });
@@ -40,11 +40,11 @@ $(() => {
     }
     $("#help-container").toggleClass("hidden");
   });
-
+  console.log("666");
   $(".auth-option").on("click", () => {
     errorRestore("我们需要验证你的学生身份");
   });
-
+  console.log("777");
   $.urlParam = (name) => {
     let results = new RegExp("[?&]" + name + "=([^&#]*)").exec(
       window.location.href
@@ -53,12 +53,12 @@ $(() => {
       return results[1] || 0;
     }
   };
-
+  console.log("888");
   if ($.urlParam("timeout")) {
     $("#login-wrapper>div:first-child").text("会话过期，请重新登陆。");
   }
 
-
+  console.log("999");
   let token = readToken();
   let email = readEmail();
   if (token && email) {
@@ -66,6 +66,7 @@ $(() => {
       loadCourses(email, token);
     }
   }
+  console.log("1000");
 });
 
 let ids = [];
