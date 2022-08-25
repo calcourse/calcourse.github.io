@@ -382,18 +382,11 @@ function confirmSubmit() {
         </div>`);
     let dep_code = course_entries[0]["dep"];
     dep_code = cleanLowerCase(dep_code);
-    console.log("clean lower")
-    console.log(dep_code);
-    
     dep_code = completeDepCode(dep_code);
-    console.log("complete");
-    console.log(dep_code);
-
     let course_code = course_entries[0]["code"];
     let lec_id = course_entries[0]["lec"];
     lec_id = completeLecCode(lec_id);
     let course_term = course_entries[0]["term"];
-    console.log(dep_code, course_code, lec_id, course_term);
     $.ajax({
       type: "POST",
       url: api + "/courses/report_missing_class",
