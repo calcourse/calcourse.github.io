@@ -183,28 +183,28 @@ function checkNonemptyAndLegal(FLAG, value) {
 }
 
 function completeDepCode(value) {
-    if (value == "CS") {
+    if (value === "CS") {
         return "COMPSCI";
     }
-    else if (value == "NST") {
+    else if (value === "NST") {
         return "NUSCTX";
     }
-    else if (value == "ENG") {
+    else if (value === "ENG") {
         return "ENGLISH";
     }
-    else if (value == "DS") {
+    else if (value === "DS") {
         return "DATA";
     }
-    else if (value == "BIO") {
+    else if (value === "BIO") {
         return "BIOLOGY";
     }
-    else if (value == "MCB") {
+    else if (value === "MCB") {
         return "MCELLBI";
     }
-    else if (value == "IB") {
+    else if (value === "IB") {
         return "INTEGBI";
     }
-    else if (value == "PHYSIC") {
+    else if (value === "PHYSIC") {
         return "PHYSICS";
     }
     else return value;
