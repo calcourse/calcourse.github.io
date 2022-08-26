@@ -714,22 +714,27 @@ function readUserTokenTime() {
 
 
 function checkValidToken() {
-  console.log("checking valid token");
-  let timeList = readUserTokenTime();
-  if (timeList === null) {
+  try {
+    console.log("checking valid token");
+    let timeList = readUserTokenTime();
+    if (timeList === null) {
+      return false;
+    }
+    console.log(timeList);
+    let currentTime = new Date();
+    // let currentTimeUTC = Data.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours());
+    let tokenTime = new Date(Data.UTC(timeList[0], timeList[1], timeList[2], timeList[3]));
+    let diff_ms = currentTime.getTime() - tokenTime.getTime();
+    // token is valid for 6 hours
+    let diff_hours = diff_ms / 1000 / 60 / 60;
+    console.log(diff_ms);
+    console.log(diff_hours);
+    if (diff_hours <= 6) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    console.log(e);
     return false;
   }
-  console.log(timeList);
-  let currentTime = new Date();
-  // let currentTimeUTC = Data.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours());
-  let tokenTime = new Date(Data.UTC(timeList[0], timeList[1], timeList[2], timeList[3]));
-  let diff_ms = currentTime.getTime() - tokenTime.getTime();
-  // token is valid for 6 hours
-  let diff_hours = diff_ms / 1000 / 60 / 60;
-  console.log(diff_ms);
-  console.log(diff_hours);
-  if (diff_hours <= 6) {
-    return true;
-  }
-  return false;
 }
