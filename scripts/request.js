@@ -387,7 +387,7 @@ function confirmSubmit() {
     let lec_id = course_entries[0]["lec"];
     lec_id = completeLecCode(lec_id);
     let course_term = course_entries[0]["term"];
-    $.ajax({
+a    $.ajax({
       type: "POST",
       url: api + "/courses/report_missing_class",
       contentType: "application/json",
