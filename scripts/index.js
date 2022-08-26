@@ -723,7 +723,7 @@ function checkValidToken() {
     console.log(timeList);
     let currentTime = new Date();
     // let currentTimeUTC = Data.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours());
-    let tokenTime = Data.UTC(timeList[0], timeList[1], timeList[2], timeList[3], 0, 0, 0);
+    let tokenTime = Date.UTC(timeList[0], timeList[1], timeList[2], timeList[3], 0, 0, 0);
     console.log(tokenTime);
     console.log(currentTime.getTime());
     let diff_ms = currentTime.getTime() - tokenTime;
