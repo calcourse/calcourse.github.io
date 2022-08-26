@@ -691,6 +691,8 @@ function saveDataToLocalStorage(email, token) {
   let currentTimeList = [currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours()];
   localStorage.setItem("user_token_time", JSON.stringify(currentTimeList));
   console.log("email and token saved");
+  console.log(localStorage.getItem("user_email"));
+  console.log(localStorage.getItem("user_token"));
 }
 
 function readUserEmail() {
