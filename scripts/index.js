@@ -485,11 +485,6 @@ function loadCourses(email, access_token) {
             <div></div><div></div><div></div><div></div>
         </div>`
   );
-  console.log("in load courses");
-  console.log(readUserEmail());
-  console.log("hiiii");
-  saveDataToLocalStorage(email, access_token);
-  console.log(readUserEmail());
   $.ajax({
     url: api + "/courses/get_all_courses" + "/" + email + "/" + access_token,
     mothod: "GET",
@@ -709,7 +704,7 @@ function readUserToken() {
 
 function readUserTokenTime() {
   let token_time_data = localStorage.getItem("user_token_time");
-  if (token_time_data) {
+  if (token_time_data !== null) {
     return JSON.parse(token_time_data);
   } else {
     return null;
@@ -718,8 +713,9 @@ function readUserTokenTime() {
 
 
 function checkValidToken() {
+  console.log("checking valid token");
   let timeList = readUserTokenTime();
-  if (timeList == null) {
+  if (timeList === null) {
     return false;
   }
   let currentTime = new Date();
