@@ -58,21 +58,13 @@ $(() => {
     $("#login-wrapper>div:first-child").text("会话过期，请重新登陆。");
   }
 
-  console.log("999");
   let token = readUserToken();
   let email = readUserEmail();
-  console.log("data was read");
-  console.log(token);
-  console.log(email);
   if (token && email) {
-    console.log("data was found");
-    console.log(checkValidToken());
     if (checkValidToken()) {
-      console.log("222");
       loadCourses(email, token);
     }
   }
-  console.log("1000");
 });
 
 let ids = [];
@@ -516,7 +508,6 @@ function loadCourses(email, access_token) {
       $("#card-container").append(requestButton);
       requestButton.on("click", () => {
         if (readUserToken()) {
-          console.log("redirect to request page");
           window.location.href = "request.html";
         } else {
           window.location.replace("index.html?redirect=request&timeout=1");
@@ -692,7 +683,7 @@ function saveDataToLocalStorage(email, token) {
   let currentTime = new Date();
   let currentTimeList = [currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours()];
   localStorage.setItem("user_token_time", JSON.stringify(currentTimeList));
-  console.log("email and token saved");
+  console.log("email and token saved to local storage");
 }
 
 function readUserEmail() {
@@ -714,29 +705,18 @@ function readUserTokenTime() {
 
 
 function checkValidToken() {
-  try {
-    console.log("checking valid token");
-    let timeList = readUserTokenTime();
-    if (timeList === null) {
-      return false;
-    }
-    console.log(timeList);
-    let currentTime = new Date();
-    // let currentTimeUTC = Data.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours());
-    let tokenTime = Date.UTC(timeList[0], timeList[1], timeList[2], timeList[3], 0, 0, 0);
-    console.log(tokenTime);
-    console.log(currentTime.getTime());
-    let diff_ms = currentTime.getTime() - tokenTime;
-    // token is valid for 6 hours
-    let diff_hours = diff_ms / 1000 / 60 / 60;
-    console.log(diff_ms);
-    console.log(diff_hours);
-    if (diff_hours <= 6) {
-      return true;
-    }
-    return false;
-  } catch (e) {
-    console.log(e);
+  let timeList = readUserTokenTime();
+  if (timeList === null) {
     return false;
   }
+  let currentTime = new Date();
+  // let currentTimeUTC = Data.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours());
+  let tokenTime = Date.UTC(timeList[0], timeList[1], timeList[2], timeList[3], 0, 0, 0);
+  let diff_ms = currentTime.getTime() - tokenTime;
+  // token is valid for 6 hours
+  let diff_hours = diff_ms / 1000 / 60 / 60;
+  if (diff_hours <= 6) {
+    return true;
+  }
+  return false;
 }
