@@ -59,8 +59,8 @@ $(() => {
   }
 
   console.log("999");
-  let token = readToken();
-  let email = readEmail();
+  let token = readUserToken();
+  let email = readUserEmail();
   console.log("data was read");
   console.log(token);
   console.log(email);
