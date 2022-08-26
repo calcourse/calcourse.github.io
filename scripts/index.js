@@ -10,17 +10,17 @@ $(() => {
     $("#wechat-message").removeClass("hidden");
     return;
   }
-  console.log("111");
+
   $("#login-wrapper").removeClass("hidden");
-  console.log("222");
+
   $("#email-code-button").on("click", sendEmailCode);
-  console.log("333");
+
   $("#email-login-button").on("click", onEmailSignIn);
-  console.log("444");
+
   $("#search-input").on("input", () => {
     filter();
   });
-  console.log("555");
+
   $(".about-toggle").on("click", () => {
     $("#about-container").toggleClass("hidden");
   });
@@ -40,11 +40,11 @@ $(() => {
     }
     $("#help-container").toggleClass("hidden");
   });
-  console.log("666");
+
   $(".auth-option").on("click", () => {
     errorRestore("我们需要验证你的学生身份");
   });
-  console.log("777");
+
   $.urlParam = (name) => {
     let results = new RegExp("[?&]" + name + "=([^&#]*)").exec(
       window.location.href
@@ -53,7 +53,7 @@ $(() => {
       return results[1] || 0;
     }
   };
-  console.log("888");
+
   if ($.urlParam("timeout")) {
     $("#login-wrapper>div:first-child").text("会话过期，请重新登陆。");
   }
@@ -61,8 +61,12 @@ $(() => {
   console.log("999");
   let token = readToken();
   let email = readEmail();
+  console.log(token);
+  console.log(email);
   if (token && email) {
+    console.log("111");
     if (checkValidToken()) {
+      console.log("222");
       loadCourses(email, token);
     }
   }
@@ -344,7 +348,6 @@ function onEmailSignIn() {
         // createToken(token);
 
         let access_token = response["access_token"];
-        console.log("now saving token to cookies");
         saveDataToLocalStorage(USER_EMAIL, access_token);
         loadCourses(USER_EMAIL, access_token);
       },
@@ -682,20 +685,12 @@ function deleteCookie(name) {
 
 
 function saveDataToLocalStorage(email, token) {
-  console.log("invoked");
   localStorage.setItem("user_email", email);
   localStorage.setItem("user_token", token);
   let currentTime = new Date();
-  console.log(currentTime.getUTCFullYear());
-  console.log(currentTime.getUTCMonth());
-  console.log(currentTime.getUTCDate());
-  console.log(currentTime.getUTCHours());
   let currentTimeList = [currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours()];
   localStorage.setItem("user_token_time", JSON.stringify(currentTimeList));
-  console.log("token saved");
-  console.log(readUserEmail());
-  console.log(readUserToken());
-  console.log(readUserTokenTime());
+  console.log("email and token saved");
 }
 
 function readUserEmail() {
