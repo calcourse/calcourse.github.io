@@ -551,7 +551,7 @@ function loadCourses(email, access_token) {
        </div>`);
       $("#card-container").append(logoutButton);
       logoutButton.on("click", () => {
-        deleteToken();
+        deleteLocalStorage();
         location.reload();
       });
       let termsArray = [];
@@ -684,6 +684,14 @@ function saveDataToLocalStorage(email, token) {
   let currentTimeList = [currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours()];
   localStorage.setItem("user_token_time", JSON.stringify(currentTimeList));
   console.log("email and token saved to local storage");
+}
+
+
+function deleteLocalStorage() {
+  localStorage.removeItem("user_email");
+  localStorage.removeItem("user_token");
+  localStorage.removeItem("user_token_time");
+  console.log("local storage cleared");
 }
 
 function readUserEmail() {
