@@ -585,8 +585,11 @@ function loadCourses(email, access_token) {
       termsArray.sort((a, b) => {
         return termToInt(b) - termToInt(a);
       });
+      console.log(termsArray);
       for (let term of termsArray) {
+        console.log(term);
         let termId = term.replace(/ /gi, "-");
+        console.log(termId);
         let radio = $(`
                 <input type="radio" name="term" id="term-${termId}" data-term="${term}" />
                 <label for="term-${termId}">${term}</label>
