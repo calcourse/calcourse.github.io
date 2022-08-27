@@ -465,12 +465,14 @@ function parseTerm(x) {
 // Manually filter out only the most current three terms.
 // Need to change the value every semester
 function filterMostCurrentThreeTerm(x) {
-  if (x == "Fa22" || x == "Sp23" || x == "Su23" || x == "Lf22") {
+// TODO: can use new Date().getFullYear() to get the current year, and start from there.
+  if (x == "Fa22" || x == "Sp23" || x == "Su23" || x == "Lf22" || x == "Mj01") {
     return true;
   } else {
     return false;
   }
 }
+
 function loadCourses(email, access_token) {
   $("#main-container").addClass("logged-in");
   $("#card-container").html(
@@ -585,11 +587,10 @@ function loadCourses(email, access_token) {
       termsArray.sort((a, b) => {
         return termToInt(b) - termToInt(a);
       });
-      console.log(termsArray);
+      let major_index = termsArray.findIndex("Major 2001");
+      termsArray.unshift(termsArray.splice(major_index, 1)[0]);
       for (let term of termsArray) {
-        console.log(term);
         let termId = term.replace(/ /gi, "-");
-        console.log(termId);
         let radio = $(`
                 <input type="radio" name="term" id="term-${termId}" data-term="${term}" />
                 <label for="term-${termId}">${term}</label>
