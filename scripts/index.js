@@ -442,7 +442,7 @@ function filter() {
 }
 
 function parseTerm(x) {
-  if (/^(FA|SP|SU|Fa|Sp|Su|Lf)(\d\d)$/gi.test(x)) {
+  if (/^(FA|SP|SU|Fa|Sp|Su|Lf|Mj)(\d\d)$/gi.test(x)) {
     let season = {
       FA: "Fall",
       SP: "Spring",
@@ -451,6 +451,7 @@ function parseTerm(x) {
       Sp: "Spring",
       Su: "Summer",
       Lf: "Cal Life",
+      Mj: "Major 专业群",
     };
     let year = (y) => {
       return String(2000 + parseInt(y));
@@ -589,6 +590,7 @@ function loadCourses(email, access_token) {
       });
       let major_index = termsArray.findIndex("Major 2001");
       termsArray.unshift(termsArray.splice(major_index, 1)[0]);
+      // termsArray[0] = "Major 专业群";
       for (let term of termsArray) {
         let termId = term.replace(/ /gi, "-");
         let radio = $(`
