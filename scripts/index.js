@@ -447,6 +447,9 @@ function cardClick(e) {
 function filter() {
   substring = $("#search-input").val().toLowerCase();
   let term = $("input[type='radio']:checked").data("term");
+  if (term === "Major 专业群") {
+    term = "Major 专业群 2001";
+  }
   for (let id of ids) {
     let card = $(`.card[data-id="${id}"]`);
     if (
