@@ -461,7 +461,7 @@ function filter() {
       card.removeClass("hidden");
     }
   }
-  // let request_button_card = $(`.card_function_button[id="request-button"]`);
+  // let request_button_card = $(`.card function-button[id="request-button"]`);
   // if (term === "Major 专业群 2001") {
   //   request_button_card.addClass("hidden");
   // } else {
@@ -530,7 +530,7 @@ function loadCourses(email, access_token) {
         }
       }
       let requestButton = $(`
-       <div id="request-button" class="card_function_button">
+       <div id="request-button" class="card function-button">
            <div>
                <div>&#128195</div>
                <div>申请建群</div>
@@ -546,7 +546,7 @@ function loadCourses(email, access_token) {
       });
 
       // let addButton = $(`
-      //  <div id="add-button" class="card_function_button">
+      //  <div id="add-button" class="card function-button">
       //      <div>
       //          <div>&#11014</div>
       //          <div>上传临时二维码</div>
@@ -562,7 +562,7 @@ function loadCourses(email, access_token) {
       // });
 
       let reportButton = $(`
-       <div id="report-button" class="card_function_button">
+       <div id="report-button" class="card function-button">
            <div>
                <div>&#11014</div>
                <div>故障报告</div>
@@ -574,7 +574,7 @@ function loadCourses(email, access_token) {
       });
 
       let logoutButton = $(`
-       <div id="logout-button" class="card_function_button">
+       <div id="logout-button" class="card function-button">
            <div>
                <div>&#128274</div>
                <div>退出登录</div>
