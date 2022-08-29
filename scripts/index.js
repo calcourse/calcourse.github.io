@@ -588,9 +588,9 @@ function loadCourses(email, access_token) {
       termsArray.sort((a, b) => {
         return termToInt(b) - termToInt(a);
       });
-      let major_index = termsArray.indexOf("Major 2001");
+      let major_index = termsArray.indexOf("Major 专业群 2001");
       termsArray.unshift(termsArray.splice(major_index, 1)[0]);
-      // termsArray[0] = "Major 专业群";
+      termsArray[0] = "Major 专业群";
       for (let term of termsArray) {
         let termId = term.replace(/ /gi, "-");
         let radio = $(`
