@@ -363,13 +363,30 @@ function escapeHtml(string) {
 
 function addCard(id, name, url, term) {
   ids.push(id);
-  let lastSpace = name.lastIndexOf(" ");
-  let codePart = escapeHtml(
-    lastSpace == -1 ? "" : name.substring(0, lastSpace)
-  );
-  let numPart = escapeHtml(name.substring(lastSpace + 1, name.length));
-  let newCard = $(
-    `<div class="card" data-id="${id}" data-name="${name}"
+  if (term === "Major 专业群") {
+    let codePart = escapeHtml(name.substring(4, name.length));
+    let newCard = $(
+      `<div class="card" data-id="${id}" data-name="${name}"
+                           data-url="${url}" data-term="${term}">
+            <div class="id-wrapper">
+                <div class="id">
+                    <span>
+                        ${codePart} 
+                    </span>
+                </div>
+            </div>
+            <div class="qrcode"></div>
+            <div class="desc">${escapeHtml(id)}</div>
+        </div>`
+    );
+  } else {
+    let lastSpace = name.lastIndexOf(" ");
+    let codePart = escapeHtml(
+      lastSpace == -1 ? "" : name.substring(0, lastSpace)
+    );
+    let numPart = escapeHtml(name.substring(lastSpace + 1, name.length));
+    let newCard = $(
+      `<div class="card" data-id="${id}" data-name="${name}"
                            data-url="${url}" data-term="${term}">
             <div class="id-wrapper">
                 <div class="id">
@@ -381,7 +398,8 @@ function addCard(id, name, url, term) {
             <div class="qrcode"></div>
             <div class="desc">${escapeHtml(id)}</div>
         </div>`
-  );
+    );
+  }
   $("#card-container").append(newCard);
 
   newCard.on("mouseenter", cardEnter);
