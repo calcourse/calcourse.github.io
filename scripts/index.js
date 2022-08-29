@@ -461,12 +461,12 @@ function filter() {
       card.removeClass("hidden");
     }
   }
-  let request_button_card = $(`.card_function_button[id="request-button"]`);
-  if (term === "Major 专业群 2001") {
-    request_button_card.addClass("hidden");
-  } else {
-    request_button_card.removeClass("hidden");
-  }
+  // let request_button_card = $(`.card_function_button[id="request-button"]`);
+  // if (term === "Major 专业群 2001") {
+  //   request_button_card.addClass("hidden");
+  // } else {
+  //   request_button_card.removeClass("hidden");
+  // }
 }
 
 function parseTerm(x) {
