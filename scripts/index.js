@@ -366,14 +366,14 @@ function addCard(id, name, url, term) {
   ids.push(id);
   if (term === "Major 专业群 2001") {
     let codePart = escapeHtml(name);
-    let numPart = "1111";
+    let numPart = "";
     newCard = $(
       `<div class="card" data-id="${id}" data-name="${name}"
                            data-url="${url}" data-term="${term}">
             <div class="id-wrapper">
                 <div class="id">
                     <span>
-                        ${codePart} <span>${numPart}</span>
+                        ${codePart}
                     </span>
                 </div>
             </div>
