@@ -362,10 +362,11 @@ function escapeHtml(string) {
 }
 
 function addCard(id, name, url, term) {
+  let newCard;
   ids.push(id);
   if (term === "Major 专业群") {
     let codePart = escapeHtml(name.substring(4, name.length));
-    let newCard = $(
+    newCard = $(
       `<div class="card" data-id="${id}" data-name="${name}"
                            data-url="${url}" data-term="${term}">
             <div class="id-wrapper">
@@ -385,7 +386,7 @@ function addCard(id, name, url, term) {
       lastSpace == -1 ? "" : name.substring(0, lastSpace)
     );
     let numPart = escapeHtml(name.substring(lastSpace + 1, name.length));
-    let newCard = $(
+    newCard = $(
       `<div class="card" data-id="${id}" data-name="${name}"
                            data-url="${url}" data-term="${term}">
             <div class="id-wrapper">
