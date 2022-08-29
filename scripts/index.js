@@ -364,7 +364,7 @@ function escapeHtml(string) {
 function addCard(id, name, url, term) {
   let newCard;
   ids.push(id);
-  if (term === "Major 专业群 2021") {
+  if (term === "Major 专业群 2001") {
     let codePart = escapeHtml(name);
     let numPart = "1111";
     newCard = $(
