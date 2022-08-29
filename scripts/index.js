@@ -333,7 +333,7 @@ function onEmailSignIn() {
       contentType: false,
       success: (response) => {
         console.log(response);
-        
+
         $("#email-login-ani").hide();
         $("#email-login-button").show();
 
@@ -461,6 +461,12 @@ function filter() {
       card.removeClass("hidden");
     }
   }
+  let request_button_card = $(`.card_function_button[id="request-button"]`);
+  if (term === "Major 专业群 2001") {
+    request_button_card.addClass("hidden");
+  } else {
+    request_button_card.removeClass("hidden");
+  }
 }
 
 function parseTerm(x) {
@@ -488,7 +494,7 @@ function parseTerm(x) {
 // Manually filter out only the most current three terms.
 // Need to change the value every semester
 function filterMostCurrentThreeTerm(x) {
-// TODO: can use new Date().getFullYear() to get the current year, and start from there.
+  // TODO: can use new Date().getFullYear() to get the current year, and start from there.
   if (x == "Fa22" || x == "Sp23" || x == "Su23" || x == "Lf22" || x == "Mj01") {
     return true;
   } else {
@@ -524,7 +530,7 @@ function loadCourses(email, access_token) {
         }
       }
       let requestButton = $(`
-       <div id="request-button" class="card function-button">
+       <div id="request-button" class="card_function_button">
            <div>
                <div>&#128195</div>
                <div>申请建群</div>
@@ -540,7 +546,7 @@ function loadCourses(email, access_token) {
       });
 
       // let addButton = $(`
-      //  <div id="add-button" class="card function-button">
+      //  <div id="add-button" class="card_function_button">
       //      <div>
       //          <div>&#11014</div>
       //          <div>上传临时二维码</div>
@@ -556,7 +562,7 @@ function loadCourses(email, access_token) {
       // });
 
       let reportButton = $(`
-       <div id="report-button" class="card function-button">
+       <div id="report-button" class="card_function_button">
            <div>
                <div>&#11014</div>
                <div>故障报告</div>
@@ -568,7 +574,7 @@ function loadCourses(email, access_token) {
       });
 
       let logoutButton = $(`
-       <div id="logout-button" class="card function-button">
+       <div id="logout-button" class="card_function_button">
            <div>
                <div>&#128274</div>
                <div>退出登录</div>
@@ -639,19 +645,17 @@ function loadCourses(email, access_token) {
 }
 
 function createToken(token) {
-  if(navigator.cookieEnabled) {
+  if (navigator.cookieEnabled) {
     createCookie("token", token, 1440);
-  }
-  else {
+  } else {
     createSession("token", token);
   }
 }
 
 function readToken() {
-  if(navigator.cookieEnabled) {
+  if (navigator.cookieEnabled) {
     return readCookie("token");
-  }
-  else {
+  } else {
     return readSession("token");
   }
 }
@@ -685,12 +689,17 @@ function createCookie(name, value, minutes) {
   let date = new Date();
   date.setTime(date.getTime() + minutes * 60 * 1000);
   let expires = "; expires=" + date.toUTCString();
-  document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+  document.cookie =
+    encodeURIComponent(name) +
+    "=" +
+    encodeURIComponent(value) +
+    expires +
+    "; path=/";
 }
 
 function readCookie(name) {
   name = encodeURIComponent(name) + "=";
-  for (c of document.cookie.split(';')) {
+  for (c of document.cookie.split(";")) {
     c = c.trim();
     if (c.indexOf(name) === 0) {
       return decodeURIComponent(c.substring(name.length, c.length));
@@ -701,19 +710,22 @@ function readCookie(name) {
 
 function deleteCookie(name) {
   let expires = "; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-  document.cookie = encodeURIComponent(name) + "=/"  + expires + "; path=/";
+  document.cookie = encodeURIComponent(name) + "=/" + expires + "; path=/";
 }
-
 
 function saveDataToLocalStorage(email, token) {
   localStorage.setItem("user_email", email);
   localStorage.setItem("user_token", token);
   let currentTime = new Date();
-  let currentTimeList = [currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours()];
+  let currentTimeList = [
+    currentTime.getUTCFullYear(),
+    currentTime.getUTCMonth(),
+    currentTime.getUTCDate(),
+    currentTime.getUTCHours(),
+  ];
   localStorage.setItem("user_token_time", JSON.stringify(currentTimeList));
   console.log("email and token saved to local storage");
 }
-
 
 function deleteLocalStorage() {
   localStorage.removeItem("user_email");
@@ -739,7 +751,6 @@ function readUserTokenTime() {
   }
 }
 
-
 function checkValidToken() {
   let timeList = readUserTokenTime();
   if (timeList === null) {
@@ -747,7 +758,15 @@ function checkValidToken() {
   }
   let currentTime = new Date();
   // let currentTimeUTC = Data.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours());
-  let tokenTime = Date.UTC(timeList[0], timeList[1], timeList[2], timeList[3], 0, 0, 0);
+  let tokenTime = Date.UTC(
+    timeList[0],
+    timeList[1],
+    timeList[2],
+    timeList[3],
+    0,
+    0,
+    0
+  );
   let diff_ms = currentTime.getTime() - tokenTime;
   // token is valid for 6 hours
   let diff_hours = diff_ms / 1000 / 60 / 60;
