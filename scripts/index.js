@@ -362,14 +362,32 @@ function escapeHtml(string) {
 }
 
 function addCard(id, name, url, term) {
+  let newCard;
   ids.push(id);
-  let lastSpace = name.lastIndexOf(" ");
-  let codePart = escapeHtml(
-    lastSpace == -1 ? "" : name.substring(0, lastSpace)
-  );
-  let numPart = escapeHtml(name.substring(lastSpace + 1, name.length));
-  let newCard = $(
-    `<div class="card" data-id="${id}" data-name="${name}"
+  if (term === "Major 专业群 2001") {
+    let codePart = escapeHtml(name.substring(4, name.length - 1));
+    newCard = $(
+      `<div class="card" data-id="${id}" data-name="${name}"
+                           data-url="${url}" data-term="${term}">
+            <div class="id-wrapper">
+                <div class="id">
+                    <span>
+                        ${codePart}
+                    </span>
+                </div>
+            </div>
+            <div class="qrcode"></div>
+            <div class="desc">${escapeHtml(id)}</div>
+        </div>`
+    );
+  } else {
+    let lastSpace = name.lastIndexOf(" ");
+    let codePart = escapeHtml(
+      lastSpace == -1 ? "" : name.substring(0, lastSpace)
+    );
+    let numPart = escapeHtml(name.substring(lastSpace + 1, name.length));
+    newCard = $(
+      `<div class="card" data-id="${id}" data-name="${name}"
                            data-url="${url}" data-term="${term}">
             <div class="id-wrapper">
                 <div class="id">
@@ -381,7 +399,8 @@ function addCard(id, name, url, term) {
             <div class="qrcode"></div>
             <div class="desc">${escapeHtml(id)}</div>
         </div>`
-  );
+    );
+  }
   $("#card-container").append(newCard);
 
   newCard.on("mouseenter", cardEnter);
@@ -427,6 +446,9 @@ function cardClick(e) {
 function filter() {
   substring = $("#search-input").val().toLowerCase();
   let term = $("input[type='radio']:checked").data("term");
+  if (term === "Major 专业群") {
+    term = "Major 专业群 2001";
+  }
   for (let id of ids) {
     let card = $(`.card[data-id="${id}"]`);
     if (
@@ -442,7 +464,7 @@ function filter() {
 }
 
 function parseTerm(x) {
-  if (/^(FA|SP|SU|Fa|Sp|Su|Lf)(\d\d)$/gi.test(x)) {
+  if (/^(FA|SP|SU|Fa|Sp|Su|Lf|Mj)(\d\d)$/gi.test(x)) {
     let season = {
       FA: "Fall",
       SP: "Spring",
@@ -451,6 +473,7 @@ function parseTerm(x) {
       Sp: "Spring",
       Su: "Summer",
       Lf: "Cal Life",
+      Mj: "Major 专业群",
     };
     let year = (y) => {
       return String(2000 + parseInt(y));
@@ -465,12 +488,14 @@ function parseTerm(x) {
 // Manually filter out only the most current three terms.
 // Need to change the value every semester
 function filterMostCurrentThreeTerm(x) {
-  if (x == "Fa22" || x == "Sp23" || x == "Su23" || x == "Lf22") {
+// TODO: can use new Date().getFullYear() to get the current year, and start from there.
+  if (x == "Fa22" || x == "Sp23" || x == "Su23" || x == "Lf22" || x == "Mj01") {
     return true;
   } else {
     return false;
   }
 }
+
 function loadCourses(email, access_token) {
   $("#main-container").addClass("logged-in");
   $("#card-container").html(
@@ -585,6 +610,9 @@ function loadCourses(email, access_token) {
       termsArray.sort((a, b) => {
         return termToInt(b) - termToInt(a);
       });
+      let major_index = termsArray.indexOf("Major 专业群 2001");
+      termsArray.unshift(termsArray.splice(major_index, 1)[0]);
+      termsArray[0] = "Major 专业群";
       for (let term of termsArray) {
         let termId = term.replace(/ /gi, "-");
         let radio = $(`
