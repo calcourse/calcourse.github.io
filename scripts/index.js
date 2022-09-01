@@ -117,10 +117,6 @@ function handleCredentialResponse(response) {
     success: (response) => {
       console.log(response);
 
-      //TODO: Add Token to Cookies
-      // let token = "user_token";
-      // createToken(token);
-
       let access_token = response["access_token"];
 
       saveDataToLocalStorage(email_address, access_token);
@@ -336,10 +332,6 @@ function onEmailSignIn() {
 
         $("#email-login-ani").hide();
         $("#email-login-button").show();
-
-        //TODO: Add token to Cookies
-        // let token = "user_token";
-        // createToken(token);
 
         let access_token = response["access_token"];
         saveDataToLocalStorage(USER_EMAIL, access_token);
@@ -644,74 +636,74 @@ function loadCourses(email, access_token) {
   });
 }
 
-function createToken(token) {
-  if (navigator.cookieEnabled) {
-    createCookie("token", token, 1440);
-  } else {
-    createSession("token", token);
-  }
-}
+// function createToken(token) {
+//   if (navigator.cookieEnabled) {
+//     createCookie("token", token, 1440);
+//   } else {
+//     createSession("token", token);
+//   }
+// }
 
-function readToken() {
-  if (navigator.cookieEnabled) {
-    return readCookie("token");
-  } else {
-    return readSession("token");
-  }
-}
+// function readToken() {
+//   if (navigator.cookieEnabled) {
+//     return readCookie("token");
+//   } else {
+//     return readSession("token");
+//   }
+// }
 
-function deleteToken() {
-  deleteSession("token");
-  deleteCookie("token");
-}
+// function deleteToken() {
+//   deleteSession("token");
+//   deleteCookie("token");
+// }
 
-function createSession(name, value) {
-  sessionStorage.setItem(encodeURIComponent(name), encodeURIComponent(value));
-}
+// function createSession(name, value) {
+//   sessionStorage.setItem(encodeURIComponent(name), encodeURIComponent(value));
+// }
 
-function readSession(name) {
-  name = encodeURIComponent(name);
-  if (sessionStorage.hasOwnProperty(name)) {
-    return sessionStorage.getItem(name);
-  } else {
-    return null;
-  }
-}
+// function readSession(name) {
+//   name = encodeURIComponent(name);
+//   if (sessionStorage.hasOwnProperty(name)) {
+//     return sessionStorage.getItem(name);
+//   } else {
+//     return null;
+//   }
+// }
 
-function deleteSession(name) {
-  name = encodeURIComponent(name);
-  if (sessionStorage.hasOwnProperty(name)) {
-    return sessionStorage.removeItem(name);
-  }
-}
+// function deleteSession(name) {
+//   name = encodeURIComponent(name);
+//   if (sessionStorage.hasOwnProperty(name)) {
+//     return sessionStorage.removeItem(name);
+//   }
+// }
 
-function createCookie(name, value, minutes) {
-  let date = new Date();
-  date.setTime(date.getTime() + minutes * 60 * 1000);
-  let expires = "; expires=" + date.toUTCString();
-  document.cookie =
-    encodeURIComponent(name) +
-    "=" +
-    encodeURIComponent(value) +
-    expires +
-    "; path=/";
-}
+// function createCookie(name, value, minutes) {
+//   let date = new Date();
+//   date.setTime(date.getTime() + minutes * 60 * 1000);
+//   let expires = "; expires=" + date.toUTCString();
+//   document.cookie =
+//     encodeURIComponent(name) +
+//     "=" +
+//     encodeURIComponent(value) +
+//     expires +
+//     "; path=/";
+// }
 
-function readCookie(name) {
-  name = encodeURIComponent(name) + "=";
-  for (c of document.cookie.split(";")) {
-    c = c.trim();
-    if (c.indexOf(name) === 0) {
-      return decodeURIComponent(c.substring(name.length, c.length));
-    }
-  }
-  return null;
-}
+// function readCookie(name) {
+//   name = encodeURIComponent(name) + "=";
+//   for (c of document.cookie.split(";")) {
+//     c = c.trim();
+//     if (c.indexOf(name) === 0) {
+//       return decodeURIComponent(c.substring(name.length, c.length));
+//     }
+//   }
+//   return null;
+// }
 
-function deleteCookie(name) {
-  let expires = "; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-  document.cookie = encodeURIComponent(name) + "=/" + expires + "; path=/";
-}
+// function deleteCookie(name) {
+//   let expires = "; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+//   document.cookie = encodeURIComponent(name) + "=/" + expires + "; path=/";
+// }
 
 function saveDataToLocalStorage(email, token) {
   localStorage.setItem("user_email", email);
