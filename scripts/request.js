@@ -214,35 +214,6 @@ function completeLecCode(value) {
     return "0".repeat(3 - value.length) + value;
 }
 
-function cleanLowerCase(value) {
-    value = value.replaceAll("a", "A");
-    value = value.replaceAll("b", "B");
-    value = value.replaceAll("c", "C");
-    value = value.replaceAll("d", "D");
-    value = value.replaceAll("e", "E");
-    value = value.replaceAll("f", "F");
-    value = value.replaceAll("g", "G");
-    value = value.replaceAll("h", "H");
-    value = value.replaceAll("i", "I");
-    value = value.replaceAll("j", "J");
-    value = value.replaceAll("k", "K");
-    value = value.replaceAll("l", "L");
-    value = value.replaceAll("m", "M");
-    value = value.replaceAll("n", "N");
-    value = value.replaceAll("o", "O");
-    value = value.replaceAll("p", "P");
-    value = value.replaceAll("q", "Q");
-    value = value.replaceAll("r", "R");
-    value = value.replaceAll("s", "S");
-    value = value.replaceAll("t", "T");
-    value = value.replaceAll("u", "U");
-    value = value.replaceAll("v", "V");
-    value = value.replaceAll("w", "W");
-    value = value.replaceAll("x", "X");
-    value = value.replaceAll("y", "Y");
-    value = value.replaceAll("z", "Z");
-    return value;
-}
 
 function inputClean(FLAG, input_id, entry) {
     entry = entry.toUpperCase();
@@ -381,7 +352,7 @@ function confirmSubmit() {
             <div></div><div></div><div></div><div></div>
         </div>`);
     let dep_code = course_entries[0]["dep"];
-    dep_code = cleanLowerCase(dep_code);
+    dep_code = dep_code.toUpperCase();
     dep_code = completeDepCode(dep_code);
     let course_code = course_entries[0]["code"];
     let lec_id = course_entries[0]["lec"];
