@@ -4,6 +4,7 @@ let cookiesLoaded = false;
 let helpLoaded = false;
 let hoverTimer;
 let hoverDelay = 50;
+let allTerms = new Set();
 
 $(() => {
   if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
@@ -495,6 +496,9 @@ function filterMostCurrentThreeTerm(x) {
 }
 
 function loadCourses(email, access_token) {
+  if (allTerms.size !== 0) {
+    return;
+  }
   $("#main-container").addClass("logged-in");
   $("#card-container").html(
     `<div class="load-ani">
@@ -507,7 +511,6 @@ function loadCourses(email, access_token) {
     success: (response) => {
       $("#card-container").html("");
       $("#main-container").addClass("loaded");
-      let allTerms = new Set();
       for (let course of response) {
         let term = parseTerm(course.course_term);
         if (filterMostCurrentThreeTerm(course.course_term)) {
