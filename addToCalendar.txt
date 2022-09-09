@@ -1,0 +1,150 @@
+// script inspired by Intel, https://github.com/intelc/pathatpenncal/blob/main/script.js
+// https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server
+function download(filename, text) {
+    let element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
+
+// https://ical.marudot.com/
+const prefix =
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ical.marudot.com//iCal Event Maker
+CALSCALE:GREGORIAN
+BEGIN:VTIMEZONE
+TZID:America/Los_Angeles
+LAST-MODIFIED:20201011T015911Z
+TZURL:http://tzurl.org/zoneinfo-outlook/America/Los_Angeles
+X-LIC-LOCATION:America/Los_Angeles
+BEGIN:DAYLIGHT
+TZNAME:PDT
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZNAME:PST
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE\n`;
+
+const suffix = 'END:VCALENDAR';
+
+// https://bobbyhadz.com/blog/javascript-get-current-date-and-time-in-utc
+const isoStr = new Date().toISOString().replaceAll("-", "").replaceAll(":", "").replaceAll(".", "");
+const currentUTC = isoStr.slice(0, isoStr.length - 4) + "Z";
+
+// https://github.com/30-seconds/30-seconds-of-code/blob/master/snippets/UUIDGeneratorBrowser.md
+const UUIDGeneratorBrowser = () =>
+  ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+    (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+  );
+
+// convert collegeScheduler time format to UTC (substring) format
+function timeConversion(clean_input) {
+  if (String(clean_input).includes("pm")) {
+      let clean_input_list = clean_input.replaceAll("pm", "").split(":");
+      if (clean_input_list[0] == 12) {
+        clean_input = String(Number(clean_input_list[0])) + clean_input_list[1];
+      } else {
+        clean_input = String(Number(clean_input_list[0]) + 12) + clean_input_list[1];
+      }
+  } else {
+      let clean_input_list = clean_input.replaceAll("am", "").split(":");
+      if (Number(clean_input_list[0])<10){
+        clean_input = String("0" + clean_input_list[0] + clean_input_list[1]);
+      } else {
+        clean_input = String(clean_input_list[0] + clean_input_list[1]);
+      }
+  }
+  return clean_input;
+}
+
+// initial date designation.
+function getInitDate(input) {
+  if (input === "M") {
+    return "0829";
+  } else if (input === "T") {
+    return "0830";
+  } else if (input === "W") {
+    return "0831";
+  } else if (input === "Th") {
+    return "0901";
+  } else if (input === "F") {
+    return "0902";
+  }
+}
+
+// setting up the file content
+let cal_str = prefix;
+let event_str = "";
+
+// scrape data from the collegescheduler page
+const a = document.querySelectorAll('body > section > div > main > div > div > div > div > table > thead > tr > th')[3].textContent;
+const b = Array.from(document.querySelectorAll('body > section > div > main > div > div > div > div > table > tbody'));
+
+for (let i = 0; i < b.length; i++) {
+  const c = b[i].childNodes[0].querySelectorAll('td');
+  let subject, course, daysAndLocations;
+
+  // separate enrolled classes from shopping cart
+  if (a === 'Status') {
+    subject = c[5].textContent;
+    course = c[6].textContent;
+    daysAndLocations = c[11].textContent.split(' ');
+  } else {
+    subject = c[4].textContent;
+    course = c[5].textContent;
+    daysAndLocations = c[10].textContent.split(' ');
+  }
+
+  let classLocation = '';
+  for (let j = 5; j < daysAndLocations.length; j++) {
+    classLocation = classLocation + ' ' + daysAndLocations[j];
+  }
+  classLocation = classLocation.slice(1);
+
+  let days = [];
+  while (daysAndLocations[0]) {
+    const fc = daysAndLocations[0][0];
+    const sc = daysAndLocations[0][1];
+    if (fc === 'T' && sc === 'h') {
+      days.push("Th");
+      daysAndLocations[0] = daysAndLocations[0].slice(2);
+    } else {
+      days.push(fc);
+      daysAndLocations[0] = daysAndLocations[0].slice(1);
+    }
+  }
+
+  // write class into event
+  while (days.length > 0) {
+    const day = days.shift();
+    event_str =
+`BEGIN:VEVENT
+DTSTAMP:${currentUTC}
+UID:${UUIDGeneratorBrowser()}
+DTSTART;TZID=America/Los_Angeles:2022${getInitDate(day)}T${timeConversion(daysAndLocations[1])}00
+RRULE:FREQ=DAILY;INTERVAL=7;COUNT=16
+DTEND;TZID=America/Los_Angeles:2022${getInitDate(day)}T${timeConversion(daysAndLocations[3])}00
+SUMMARY:${subject + ' - ' + course}
+LOCATION:${classLocation}
+END:VEVENT\n`;
+    cal_str = cal_str + event_str;
+  }
+}
+
+// finish the content with some suffix
+cal_str = cal_str + suffix;
+
+// start file download
+download("course_calendar.ics", cal_str);
