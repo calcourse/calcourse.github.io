@@ -5,6 +5,7 @@ let helpLoaded = false;
 let hoverTimer;
 let hoverDelay = 50;
 let allTerms = new Set();
+let entryCount = 0;
 
 $(() => {
   if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
@@ -496,6 +497,9 @@ function filterMostCurrentThreeTerm(x) {
 }
 
 function loadCourses(email, access_token) {
+  if (entryCount !== 0) {
+    return;
+  }
   if (allTerms.size !== 0) {
     return;
   }
@@ -522,6 +526,7 @@ function loadCourses(email, access_token) {
             term
           );
           allTerms.add(term);
+          entryCount +=1;
         }
       }
       let requestButton = $(`
@@ -678,6 +683,23 @@ function readUserTokenTime() {
   }
 }
 
+
+function readAnnouncementStatus() {
+  let result = localStorage.getItem("announcement_status");
+  if (result === null) {
+    return false;
+  } else {
+    return result;
+  }
+}
+
+//TODO: if the version didn't match, fetch the new announcement from google doc. 
+function checkAnnouncementStaus() {
+  let announcement_status = readAnnouncementStatus();
+
+}
+
+
 function checkValidToken() {
   let timeList = readUserTokenTime();
   if (timeList === null) {
@@ -701,4 +723,9 @@ function checkValidToken() {
     return true;
   }
   return false;
+}
+
+
+function checkNewAnnouncement() {
+
 }
