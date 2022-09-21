@@ -421,13 +421,13 @@ function addCard(id, name, url, term) {
   }
   $("#card-container").append(newCard);
 
+  newCard.on("mouseenter", cardEnter);
+  newCard.on("mouseleave", cardLeave);
   if (name === "Coding Lounge") {
     newCard.on("click", () => {
       location.href = "https://forms.gle/56fJyQtw24JTaA2i9";
     });
   } else {
-    newCard.on("mouseenter", cardEnter);
-    newCard.on("mouseleave", cardLeave);
     newCard.on("click", cardClick);
   }
 }
