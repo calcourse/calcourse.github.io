@@ -5,7 +5,6 @@ let helpLoaded = false;
 let hoverTimer;
 let hoverDelay = 50;
 let allTerms = new Set();
-let entryCount = 0;
 
 $(() => {
   if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
@@ -358,20 +357,45 @@ function escapeHtml(string) {
 function addCard(id, name, url, term) {
   let newCard;
   ids.push(id);
-  if (term === "Major 专业群 2001") {
-    let codePart = escapeHtml(name.substring(4, name.length - 1));
+  // let lastSpace = name.lastIndexOf(" ");
+  // let codePart = escapeHtml(
+  //   lastSpace == -1 ? "" : name.substring(0, lastSpace)
+  // );
+  // let numPart = escapeHtml(name.substring(lastSpace + 1, name.length));
+  // newCard = $(
+  //   `<div class="card" data-id="${id}" data-name="${name}"
+  //                        data-url="${url}" data-term="${term}">
+  //         <div class="id-wrapper">
+  //             <div class="id">
+  //                 <span>
+  //                     ${codePart} <span>${numPart}</span>
+  //                 </span>
+  //             </div>
+  //         </div>
+  //         <div class="qrcode"></div>
+  //         <div class="desc">${escapeHtml(id)}</div>
+  //     </div>`
+  // );
+  if (
+    term === "专业群 2001" ||
+    term === "学术资源 2001" ||
+    term === "Cal Life 2022"
+  ) {
+    if (term === "专业群 2001") {
+      name = escapeHtml(name.substring(4, name.length - 1));
+    }
     newCard = $(
       `<div class="card" data-id="${id}" data-name="${name}"
                            data-url="${url}" data-term="${term}">
             <div class="id-wrapper">
                 <div class="id">
                     <span>
-                        ${codePart}
+                        ${name}
                     </span>
                 </div>
             </div>
             <div class="qrcode"></div>
-            <div class="desc">${escapeHtml(id)}</div>
+            <div class="desc"></div>
         </div>`
     );
   } else {
@@ -397,9 +421,15 @@ function addCard(id, name, url, term) {
   }
   $("#card-container").append(newCard);
 
-  newCard.on("mouseenter", cardEnter);
-  newCard.on("mouseleave", cardLeave);
-  newCard.on("click", cardClick);
+  if (name === "Coding Lounge") {
+    newCard.on("click", () => {
+      location.href = "https://forms.gle/56fJyQtw24JTaA2i9";
+    });
+  } else {
+    newCard.on("mouseenter", cardEnter);
+    newCard.on("mouseleave", cardLeave);
+    newCard.on("click", cardClick);
+  }
 }
 
 function cardEnter(e) {
@@ -440,15 +470,18 @@ function cardClick(e) {
 function filter() {
   substring = $("#search-input").val().toLowerCase();
   let term = $("input[type='radio']:checked").data("term");
-  if (term === "Major 专业群") {
-    term = "Major 专业群 2001";
+  if (term === "专业群") {
+    term = "专业群 2001";
+  }
+  if (term === "学术资源") {
+    term = "学术资源 2001";
   }
   for (let id of ids) {
     let card = $(`.card[data-id="${id}"]`);
     if (
+      term !== card.data("term") ||
       (String(id).indexOf(substring) == -1 &&
-        card.data("name").toLowerCase().indexOf(substring) == -1) ||
-      term !== card.data("term")
+        card.data("name").toLowerCase().indexOf(substring) == -1)
     ) {
       card.addClass("hidden");
     } else {
@@ -456,7 +489,7 @@ function filter() {
     }
   }
   // let request_button_card = $(`.card function-button[id="request-button"]`);
-  // if (term === "Major 专业群 2001") {
+  // if (term === "专业群 2001") {
   //   request_button_card.addClass("hidden");
   // } else {
   //   request_button_card.removeClass("hidden");
@@ -464,7 +497,7 @@ function filter() {
 }
 
 function parseTerm(x) {
-  if (/^(FA|SP|SU|Fa|Sp|Su|Lf|Mj)(\d\d)$/gi.test(x)) {
+  if (/^(FA|SP|SU|Fa|Sp|Su|Lf|Mj|Ar)(\d\d)$/gi.test(x)) {
     let season = {
       FA: "Fall",
       SP: "Spring",
@@ -473,7 +506,8 @@ function parseTerm(x) {
       Sp: "Spring",
       Su: "Summer",
       Lf: "Cal Life",
-      Mj: "Major 专业群",
+      Mj: "专业群",
+      Ar: "学术资源",
     };
     let year = (y) => {
       return String(2000 + parseInt(y));
@@ -489,7 +523,14 @@ function parseTerm(x) {
 // Need to change the value every semester
 function filterMostCurrentThreeTerm(x) {
   // TODO: can use new Date().getFullYear() to get the current year, and start from there.
-  if (x == "Fa22" || x == "Sp23" || x == "Su23" || x == "Lf22" || x == "Mj01") {
+  if (
+    x == "Fa22" ||
+    x == "Sp23" ||
+    x == "Su23" ||
+    x == "Lf22" ||
+    x == "Mj01" ||
+    x == "Ar01"
+  ) {
     return true;
   } else {
     return false;
@@ -497,9 +538,6 @@ function filterMostCurrentThreeTerm(x) {
 }
 
 function loadCourses(email, access_token) {
-  if (entryCount !== 0) {
-    return;
-  }
   if (allTerms.size !== 0) {
     return;
   }
@@ -526,7 +564,6 @@ function loadCourses(email, access_token) {
             term
           );
           allTerms.add(term);
-          entryCount +=1;
         }
       }
       let requestButton = $(`
@@ -616,9 +653,11 @@ function loadCourses(email, access_token) {
       termsArray.sort((a, b) => {
         return termToInt(b) - termToInt(a);
       });
-      let major_index = termsArray.indexOf("Major 专业群 2001");
+      let major_index = termsArray.indexOf("专业群 2001");
       termsArray.unshift(termsArray.splice(major_index, 1)[0]);
-      termsArray[0] = "Major 专业群";
+      termsArray[0] = "专业群";
+      let academic_index = termsArray.indexOf("学术资源 2001");
+      termsArray[academic_index] = "学术资源";
       for (let term of termsArray) {
         let termId = term.replace(/ /gi, "-");
         let radio = $(`
@@ -643,7 +682,6 @@ function loadCourses(email, access_token) {
     },
   });
 }
-
 
 function saveDataToLocalStorage(email, token) {
   localStorage.setItem("user_email", email);
@@ -683,23 +721,6 @@ function readUserTokenTime() {
   }
 }
 
-
-function readAnnouncementStatus() {
-  let result = localStorage.getItem("announcement_status");
-  if (result === null) {
-    return false;
-  } else {
-    return result;
-  }
-}
-
-//TODO: if the version didn't match, fetch the new announcement from google doc. 
-function checkAnnouncementStaus() {
-  let announcement_status = readAnnouncementStatus();
-
-}
-
-
 function checkValidToken() {
   let timeList = readUserTokenTime();
   if (timeList === null) {
@@ -723,9 +744,4 @@ function checkValidToken() {
     return true;
   }
   return false;
-}
-
-
-function checkNewAnnouncement() {
-
 }
