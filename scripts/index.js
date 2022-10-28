@@ -426,7 +426,7 @@ function addCard(id, name, url, term) {
   if (name === "Coding Lounge") {
     newCard.on("click", () => {
       location.href =
-        "https://www.signupgenius.com/go/10c0f4fafa828abffc07-1023";
+        "https://www.signupgenius.com/go/10c0f4fafa828abffc07-116";
     });
   } else {
     newCard.on("click", cardClick);
