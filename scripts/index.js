@@ -379,7 +379,7 @@ function addCard(id, name, url, term) {
   if (
     term === "专业群 2001" ||
     term === "学术资源 2001" ||
-    term === "Cal Life 2022"
+    term === "Cal Life"
   ) {
     if (term === "专业群 2001") {
       name = escapeHtml(name.substring(4, name.length - 1));
@@ -498,7 +498,10 @@ function filter() {
 }
 
 function parseTerm(x) {
-  if (/^(FA|SP|SU|Fa|Sp|Su|Lf|Mj|Ar)(\d\d)$/gi.test(x)) {
+  if (x === "Lf22") {
+    return "Cal Life";
+  }
+  if (/^(FA|SP|SU|Fa|Sp|Su|Mj|Ar)(\d\d)$/gi.test(x)) {
     let season = {
       FA: "Fall",
       SP: "Spring",
@@ -506,7 +509,6 @@ function parseTerm(x) {
       Fa: "Fall",
       Sp: "Spring",
       Su: "Summer",
-      Lf: "Cal Life",
       Mj: "专业群",
       Ar: "学术资源",
     };
@@ -520,12 +522,11 @@ function parseTerm(x) {
   }
 }
 
-// Manually filter out only the most current three terms.
-// Need to change the value every semester
+// FIXME
 function filterMostCurrentThreeTerm(x) {
   // TODO: can use new Date().getFullYear() to get the current year, and start from there.
   if (
-    x == "Fa22" ||
+    x == "Fa23" ||
     x == "Sp23" ||
     x == "Su23" ||
     x == "Lf22" ||
