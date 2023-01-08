@@ -498,6 +498,7 @@ function filter() {
 }
 
 function parseTerm(x) {
+  x = x.substring(4);
   if (x === "Lf22") {
     return "Cal Life";
   }
@@ -556,17 +557,17 @@ function loadCourses(email, access_token) {
       $("#card-container").html("");
       $("#main-container").addClass("loaded");
       for (let course of response) {
-        let term = parseTerm(course.course_term);
-        if (filterMostCurrentThreeTerm(course.course_term)) {
-          // Only display courses that's in the current term.
-          addCard(
-            course.course_id,
-            course.course_name,
-            course.course_qr_code_url,
-            term
-          );
-          allTerms.add(term);
-        }
+        let term = parseTerm(course.school_name_and_term);
+        if (filterMostCurrentThreeTerm(course.school_name_and_term)) {
+					// Only display courses that's in the current term.
+					addCard(
+						course.course_id,
+						course.course_name,
+						course.course_qr_code_url,
+						term
+					);
+					allTerms.add(term);
+				}
       }
       let requestButton = $(`
        <div id="request-button" class="card function-button">
