@@ -537,11 +537,12 @@ function filterMostCurrentThreeTerm(x) {
 }
 
 function loadCourses(email, access_token) {
-  if (email.endsWith("@berkeley.edu")) {
-    var school = "UCB";
-  } else if (email.endsWith("@USC.edu")) {
-    var school = "USC";
-  } 
+	if (email.endsWith("@berkeley.edu")) {
+	  var school = "UCB";
+	} else if (email.endsWith("@USC.edu")) {
+	  var school = "USC";
+	} 
+	console.log(school);
 	if (allTerms.size !== 0) {
 		return;
 	}
@@ -574,12 +575,13 @@ function loadCourses(email, access_token) {
 				}
 			}
 			let requestButton = $(`
-       <div id="request-button" class="card function-button">
-           <div>
-               <div>&#128195</div>
-               <div>申请建群</div>
-           </div>
-       </div>`);
+				<div id="request-button" class="card function-button">
+					<div>
+						<div>&#128195</div>
+						<div>申请建群</div>
+					</div>
+				</div>`
+			);
 			$("#card-container").append(requestButton);
 			requestButton.on("click", () => {
 				if (readUserToken()) {
@@ -606,39 +608,41 @@ function loadCourses(email, access_token) {
 			// });
 
 			let reportButton = $(`
-       <div id="report-button" class="card function-button">
-           <div>
-               <div>&#11014</div>
-               <div>故障报告</div>
-           </div>
-       </div>`);
+				<div id="report-button" class="card function-button">
+					<div>
+						<div>&#11014</div>
+						<div>故障报告</div>
+					</div>
+				</div>`
+			);
 			$("#card-container").append(reportButton);
 			reportButton.on("click", () => {
 				location.href = "https://forms.gle/56fJyQtw24JTaA2i9";
 			});
 
 			let logoutButton = $(`
-       <div id="logout-button" class="card function-button">
-           <div>
-               <div>&#128274</div>
-               <div>退出登录</div>
-           </div>
-       </div>`);
+				<div id="logout-button" class="card function-button">
+					<div>
+						<div>&#128274</div>
+						<div>退出登录</div>
+					</div>
+				</div>`
+			);
 			$("#card-container").append(logoutButton);
 			logoutButton.on("click", () => {
 				deleteLocalStorage();
 				location.reload();
-      });
+    		});
       
 			let termsArray = [];
 			for (let x of allTerms) {
 				termsArray.push(x);
-      }
+      		}
       
-      let termToInt = (x) => {
-        if (isNaN(x.slice(-2))) {
-          return -1;
-        }
+			let termToInt = (x) => {
+				if (isNaN(x.slice(-2))) {
+					return -1;
+				}
 				let separator = x.indexOf(" ");
 				if (separator == -1) {
 					return -1;
@@ -661,29 +665,29 @@ function loadCourses(email, access_token) {
 					}
 					return year * 3 + seasonInt;
 				}
-      };
-      
+			};
+			
 			termsArray.sort((a, b) => {
 				return termToInt(b) - termToInt(a);
-      });
-      
-      let major_index = termsArray.indexOf("专业群");
-      if (major_index === -1) {
-        termsArray.unshift(termsArray.splice(major_index, 1)[0]);
-        termsArray[0] = "专业群";
-      }
+			});
 			
-      let academic_index = termsArray.indexOf("学术资源");
-      if (academic_index === -1) {
-        termsArray[academic_index] = "学术资源";
-      }
+			let major_index = termsArray.indexOf("专业群");
+			if (major_index !== -1) {
+				termsArray.unshift(termsArray.splice(major_index, 1)[0]);
+				termsArray[0] = "专业群";
+			}
+					
+			let academic_index = termsArray.indexOf("学术资源");
+			if (academic_index !== -1) {
+				termsArray[academic_index] = "学术资源";
+			}
 
 			for (let term of termsArray) {
 				let termId = term.replace(/ /gi, "-");
 				let radio = $(`
                 <input type="radio" name="term" id="term-${termId}" data-term="${term}" />
                 <label for="term-${termId}">${term}</label>
-            `);
+            	`);
 				$("#term-container").append(radio);
 				$(radio[0]).on("change", (e) => {
 					filter();
