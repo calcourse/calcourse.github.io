@@ -525,6 +525,7 @@ function parseTerm(x) {
 
 // FIXME
 function filterMostCurrentThreeTerm(x) {
+	x = x.substring(4);
 	// TODO: can use new Date().getFullYear() to get the current year, and start from there.
 	if (
 		x == "Fa23" ||
