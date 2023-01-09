@@ -3,6 +3,7 @@ let cookiesLoaded = false;
 let helpLoaded = false;
 let term = undefined;
 let course_entries = []
+let school = undefined;
 
 $(() => {
     let token = readUserEmail();
@@ -354,6 +355,7 @@ function confirmSubmit() {
     let dep_code = course_entries[0]["dep"];
     dep_code = dep_code.toUpperCase();
     dep_code = completeDepCode(dep_code);
+    dep_code = school + " " + dep_code;
     let course_code = course_entries[0]["code"];
     let lec_id = course_entries[0]["lec"];
     lec_id = completeLecCode(lec_id);
@@ -385,7 +387,13 @@ function confirmSubmit() {
 
 
 function readUserEmail() {
-  return localStorage.getItem("user_email");
+    let email = localStorage.getItem("user_email");
+    if (email.endsWith("@berkeley.edu")) {
+        school = "UCB";
+    } else if (email.endsWith("@usc.edu")) {
+        school = "USC";
+    } 
+    return email;
 }
 
 function readUserToken() {
