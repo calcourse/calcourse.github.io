@@ -491,17 +491,19 @@ function filter() {
 }
 
 function parseTerm(x) {
-  x = x.substring(4);
-  switch (x) {
-    case "Lf22":
-      return "Cal Life";
-    case "Mj01":
-      return "专业群";
-    case "Ar01":
-      return "学术资源";
-    default:
-      break;
-  }
+	console.log(x);
+	x = x.substring(4);
+	console.log(x);
+  	switch (x) {
+		case "Lf22":
+			return "Cal Life";
+		case "Mj01":
+			return "专业群";
+		case "Ar01":
+			return "学术资源";
+		default:
+			break;
+  	}
 	if (/^(FA|SP|SU|Fa|Sp|Su)(\d\d)$/gi.test(x)) {
 		let season = {
 			FA: "Fall",
@@ -573,6 +575,7 @@ function loadCourses(email, access_token) {
 				console.log(term)
 				console.log("------");
 				if (filterMostCurrentThreeTerm(course.school_name_and_term)) {
+					console.log("yes")
 					// Only display courses that's in the current term.
 					addCard(
 						course.course_id,
