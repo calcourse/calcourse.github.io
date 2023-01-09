@@ -551,7 +551,7 @@ function loadCourses(email, access_token) {
 	} else if (email.endsWith("@usc.edu")) {
 		school = "USC";
 	} 
-	console.log(school);
+	console.log("Current school: " + school);
 	if (allTerms.size !== 0) {
 		return;
 	}
