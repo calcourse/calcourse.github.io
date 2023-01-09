@@ -560,6 +560,7 @@ function loadCourses(email, access_token) {
 			console.log(response);
 			for (let course of response) {
 				let term = parseTerm(course.school_name_and_term);
+				console.log(term)
 				if (filterMostCurrentThreeTerm(course.school_name_and_term)) {
 					// Only display courses that's in the current term.
 					addCard(
