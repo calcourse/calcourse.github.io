@@ -537,10 +537,11 @@ function filterMostCurrentThreeTerm(x) {
 }
 
 function loadCourses(email, access_token) {
+	let school;
 	if (email.endsWith("@berkeley.edu")) {
-	  var school = "UCB";
+		school = "UCB";
 	} else if (email.endsWith("@USC.edu")) {
-	  var school = "USC";
+		school = "USC";
 	} 
 	console.log(school);
 	if (allTerms.size !== 0) {
@@ -637,7 +638,8 @@ function loadCourses(email, access_token) {
 			let termsArray = [];
 			for (let x of allTerms) {
 				termsArray.push(x);
-      		}
+			}
+			console.log(termsArray);
       
 			let termToInt = (x) => {
 				if (isNaN(x.slice(-2))) {
