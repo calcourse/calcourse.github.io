@@ -540,11 +540,6 @@ function filterMostCurrentThreeTerm(x) {
 }
 
 function loadCourses(email, access_token) {
-	console.log("hiii");
-	let hans = "Spring 2025啊啊";
-	let mao = hans.slice(0, -2);
-	console.log(hans);
-	console.log(mao); //FIXME
 	if (debugMode === true) {
 		if (email !== "huanzhimao@berkeley.edu") {
 			window.location.href = "notice.html";
