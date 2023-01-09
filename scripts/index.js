@@ -544,7 +544,7 @@ function loadCourses(email, access_token) {
 	let hans = "Spring 2025啊啊";
 	let mao = hans.slice(0, -2);
 	console.log(hans);
-	console.log(mao);
+	console.log(mao); //FIXME
 	if (debugMode === true) {
 		if (email !== "huanzhimao@berkeley.edu") {
 			window.location.href = "notice.html";
@@ -653,7 +653,6 @@ function loadCourses(email, access_token) {
 
 			let termToInt = (x) => {
 				if (x.length < 6 || isNaN(x.slice(-6, -2))) {
-					console.log(x);
 					return -1;
 				}
 				x = x.slice(0, -2); // Get rid of the word课群
@@ -682,7 +681,7 @@ function loadCourses(email, access_token) {
 			};
 			
 			let termCompareFunction = (a, b) => {
-				return termToInt(a) - termToInt(b);
+				return termToInt(b) - termToInt(a);
 			};
 			termsArray.sort(termCompareFunction);
 			
