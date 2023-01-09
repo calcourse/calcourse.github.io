@@ -359,7 +359,7 @@ function escapeHtml(string) {
 	});
 }
 
-function addCard(id, name, url, term) {
+function addCard(id, name, url, term, school) {
 	let newCard;
 	ids.push(id);
 	// let lastSpace = name.lastIndexOf(" ");
@@ -382,26 +382,24 @@ function addCard(id, name, url, term) {
 	//     </div>`
 	// );
 	if (
-		term === "专业群 2001" ||
-		term === "学术资源 2001" ||
+		school === "USC" ||
+		term === "专业群" ||
+		term === "学术资源" ||
 		term === "Cal Life"
 	) {
-		if (term === "专业群 2001") {
-			name = escapeHtml(name.substring(4, name.length - 1));
-		}
 		newCard = $(
 			`<div class="card" data-id="${id}" data-name="${name}"
                            data-url="${url}" data-term="${term}">
-            <div class="id-wrapper">
-                <div class="id">
-                    <span>
-                        ${name}
-                    </span>
-                </div>
-            </div>
-            <div class="qrcode"></div>
-            <div class="desc"></div>
-        </div>`
+				<div class="id-wrapper">
+					<div class="id">
+						<span>
+							${name}
+						</span>
+					</div>
+				</div>
+				<div class="qrcode"></div>
+				<div class="desc"></div>
+				</div>`
 		);
 	} else {
 		let lastSpace = name.lastIndexOf(" ");
@@ -492,7 +490,6 @@ function filter() {
 
 function parseTerm(x) {
   x = x.substring(4);
-  console.log(x); // FIXME
   switch (x) {
     case "Lf22":
       return "Cal Life";
@@ -568,7 +565,8 @@ function loadCourses(email, access_token) {
 						course.course_id,
 						course.course_name,
 						course.course_qr_code_url,
-						term
+						term,
+						school
 					);
 					allTerms.add(term);
 				}
