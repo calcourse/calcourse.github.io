@@ -651,6 +651,7 @@ function loadCourses(email, access_token) {
 					console.log(x);
 					return -1;
 				}
+				x = x.slice(0, -2); // Get rid of the word课群
 				let separator = x.indexOf(" ");
 				if (separator == -1) {
 					return -1;
