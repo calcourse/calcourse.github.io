@@ -289,7 +289,7 @@ input:-webkit-autofill:active
 }
 
 #term-container label {
-    width: 140px;
+    width: 160px;
     min-width: 140px;
     background-color: var(--p-bg);
     transition: background-color 0.2s;
