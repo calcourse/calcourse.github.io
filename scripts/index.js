@@ -1,4 +1,6 @@
 // New API socket
+let debugMode = true;  // Set to true to enable debug mode
+
 let api = "https://j2xnmuiw4k.execute-api.us-west-1.amazonaws.com/CalCourse";
 let cookiesLoaded = false;
 let helpLoaded = false;
@@ -537,6 +539,11 @@ function filterMostCurrentThreeTerm(x) {
 }
 
 function loadCourses(email, access_token) {
+	if (debugMode === true) {
+		if (email !== "huanzhimao@berkeley.edu") {
+			window.location.href = "notice.html";
+		}
+	}
 	let school;
 	if (email.endsWith("@berkeley.edu")) {
 		school = "UCB";
@@ -669,9 +676,11 @@ function loadCourses(email, access_token) {
 				}
 			};
 			
-			termsArray.sort((a, b) => {
+			let termCompareFunction = (a, b) => {
+				if (termToInt(a) === -1 && termToInt(b) === -1)
 				return termToInt(b) - termToInt(a);
-			});
+			};
+			termsArray.sort(termCompareFunction);
 			
 			let major_index = termsArray.indexOf("专业群");
 			if (major_index !== -1) {
