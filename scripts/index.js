@@ -1,5 +1,6 @@
 // New API socket
 let debugMode = false;  // FIXME: Set to true to enable debug mode
+let bannedList = [];  // Ban list for users
 
 let api = "https://j2xnmuiw4k.execute-api.us-west-1.amazonaws.com/CalCourse";
 let cookiesLoaded = false;
@@ -540,6 +541,8 @@ function filterMostCurrentThreeTerm(x) {
 }
 
 function loadCourses(email, access_token) {
+	checkBannedList(email);
+	checkDebugMode(email);
 	if (debugMode === true) {
 		if (email !== "huanzhimao@berkeley.edu") {
 			window.location.href = "notice.html";
@@ -772,4 +775,18 @@ function checkValidToken() {
 		return true;
 	}
 	return false;
+}
+
+function checkDebugMode(email) {
+	if (debugMode === true) {
+		if (email !== "huanzhimao@berkeley.edu") {
+			window.location.href = "notice.html";
+		}
+	}
+}
+
+function checkBannedList(email) {
+	if (bannedList.includes(email)) {
+		window.location.href = "blacklist.html";
+	}
 }
