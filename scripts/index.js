@@ -648,6 +648,7 @@ function loadCourses(email, access_token) {
 
 			let termToInt = (x) => {
 				if (x.length < 6 || isNaN(x.slice(-6, -2))) {
+					console.log(x);
 					return -1;
 				}
 				let separator = x.indexOf(" ");
