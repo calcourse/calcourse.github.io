@@ -1,5 +1,5 @@
 // New API socket
-let debugMode = true;  // FIXME: Set to true to enable debug mode
+let debugMode = false;  // FIXME: Set to true to enable debug mode
 
 let api = "https://j2xnmuiw4k.execute-api.us-west-1.amazonaws.com/CalCourse";
 let cookiesLoaded = false;
@@ -491,9 +491,7 @@ function filter() {
 }
 
 function parseTerm(x) {
-	console.log(x);
 	x = x.substring(4);
-	console.log(x);
   	switch (x) {
 		case "Lf22":
 			return "Cal Life";
@@ -569,14 +567,9 @@ function loadCourses(email, access_token) {
 		success: (response) => {
 			$("#card-container").html("");
 			$("#main-container").addClass("loaded");
-			console.log(response);
 			for (let course of response) {
 				let term = parseTerm(course.school_name_and_term);
-				console.log("------")
-				console.log(term)
-				console.log("------");
 				if (filterMostCurrentThreeTerm(course.school_name_and_term)) {
-					console.log("yes")
 					// Only display courses that's in the current term.
 					addCard(
 						course.course_id,
