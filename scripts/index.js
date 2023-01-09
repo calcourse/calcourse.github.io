@@ -131,7 +131,7 @@ function handleCredentialResponse(response) {
 			console.log(response);
 			if (
 				email_address.endsWith("@berkeley.edu") ||
-				email_address.endsWith("@USC.edu")
+				email_address.endsWith("@usc.edu")
 			) {
 				errorAlert("服务器错误, 请稍后重试");
 			} else {
@@ -256,7 +256,7 @@ function toggleGoogleAuthDisabled() {
 
 async function sendEmailCode() {
 	let emailInput = $("#email-input").val();
-	let emailReg = new RegExp("^[A-Za-z0-9._-]+@(?:berkeley|USC).edu$");
+	let emailReg = new RegExp("^[A-Za-z0-9._-]+@(?:berkeley|usc).edu$");
 	if (!emailInput) {
 		errorAlert("请填写edu结尾邮箱地址");
 	} else if (!emailReg.test(emailInput)) {
@@ -514,7 +514,7 @@ function parseTerm(x) {
 		let year = (y) => {
 			return String(2000 + parseInt(y));
 		};
-		return season[x.substring(0, 2)] + " " + year(x.substring(2));
+		return season[x.substring(0, 2)] + " " + year(x.substring(2)) + "课群";
 	} else {
 		let cap = x.substring(0, 1).toUpperCase();
 		return cap + x.substring(1).toLowerCase();
@@ -548,7 +548,7 @@ function loadCourses(email, access_token) {
 	let school;
 	if (email.endsWith("@berkeley.edu")) {
 		school = "UCB";
-	} else if (email.endsWith("@USC.edu")) {
+	} else if (email.endsWith("@usc.edu")) {
 		school = "USC";
 	} 
 	console.log(school);
@@ -647,7 +647,7 @@ function loadCourses(email, access_token) {
 			}
 
 			let termToInt = (x) => {
-				if (isNaN(x.slice(-2))) {
+				if (x.length < 6 || isNaN(x.slice(-6, -2))) {
 					return -1;
 				}
 				let separator = x.indexOf(" ");
@@ -675,7 +675,7 @@ function loadCourses(email, access_token) {
 			};
 			
 			let termCompareFunction = (a, b) => {
-				return termToInt(b) - termToInt(a);
+				return termToInt(a) - termToInt(b);
 			};
 			termsArray.sort(termCompareFunction);
 			
@@ -683,11 +683,6 @@ function loadCourses(email, access_token) {
 			if (major_index !== -1) {
 				termsArray.unshift(termsArray.splice(major_index, 1)[0]);
 				termsArray[0] = "专业群";
-			}
-					
-			let academic_index = termsArray.indexOf("学术资源");
-			if (academic_index !== -1) {
-				termsArray[academic_index] = "学术资源";
 			}
 
 			for (let term of termsArray) {
