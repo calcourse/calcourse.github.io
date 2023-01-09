@@ -557,8 +557,9 @@ function loadCourses(email, access_token) {
 		success: (response) => {
 			$("#card-container").html("");
 			$("#main-container").addClass("loaded");
+			console.log(response);
 			for (let course of response) {
-        let term = parseTerm(course.school_name_and_term);
+				let term = parseTerm(course.school_name_and_term);
 				if (filterMostCurrentThreeTerm(course.school_name_and_term)) {
 					// Only display courses that's in the current term.
 					addCard(
