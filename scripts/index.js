@@ -493,7 +493,7 @@ function filter() {
 function parseTerm(x) {
 	x = x.substring(4);
   	switch (x) {
-		case "Lf22":
+		case "Lf01":
 			return "Cal Life";
 		case "Mj01":
 			return "专业群";
@@ -521,7 +521,7 @@ function parseTerm(x) {
 	}
 }
 
-// FIXME
+
 function filterMostCurrentThreeTerm(x) {
 	x = x.substring(4);
 	// TODO: can use new Date().getFullYear() to get the current year, and start from there.
@@ -529,7 +529,7 @@ function filterMostCurrentThreeTerm(x) {
 		x == "Fa23" ||
 		x == "Sp23" ||
 		x == "Su23" ||
-		x == "Lf22" ||
+		x == "Lf01" ||
 		x == "Mj01" ||
 		x == "Ar01"
 	) {
@@ -645,8 +645,7 @@ function loadCourses(email, access_token) {
 			for (let x of allTerms) {
 				termsArray.push(x);
 			}
-			console.log(termsArray);
-			console.log(allTerms)
+
 			let termToInt = (x) => {
 				if (isNaN(x.slice(-2))) {
 					return -1;
@@ -676,7 +675,6 @@ function loadCourses(email, access_token) {
 			};
 			
 			let termCompareFunction = (a, b) => {
-				if (termToInt(a) === -1 && termToInt(b) === -1)
 				return termToInt(b) - termToInt(a);
 			};
 			termsArray.sort(termCompareFunction);
