@@ -1,4 +1,6 @@
 // New API socket
+let debugMode = false;  // FIXME: Set to true to enable debug mode
+
 let api = "https://j2xnmuiw4k.execute-api.us-west-1.amazonaws.com/CalCourse";
 let cookiesLoaded = false;
 let helpLoaded = false;
@@ -129,7 +131,7 @@ function handleCredentialResponse(response) {
 			console.log(response);
 			if (
 				email_address.endsWith("@berkeley.edu") ||
-				email_address.endsWith("@USC.edu")
+				email_address.endsWith("@usc.edu")
 			) {
 				errorAlert("服务器错误, 请稍后重试");
 			} else {
@@ -254,7 +256,7 @@ function toggleGoogleAuthDisabled() {
 
 async function sendEmailCode() {
 	let emailInput = $("#email-input").val();
-	let emailReg = new RegExp("^[A-Za-z0-9._-]+@(?:berkeley|USC).edu$");
+	let emailReg = new RegExp("^[A-Za-z0-9._-]+@(?:berkeley|usc).edu$");
 	if (!emailInput) {
 		errorAlert("请填写edu结尾邮箱地址");
 	} else if (!emailReg.test(emailInput)) {
@@ -489,17 +491,17 @@ function filter() {
 }
 
 function parseTerm(x) {
-  x = x.substring(4);
-  switch (x) {
-    case "Lf22":
-      return "Cal Life";
-    case "Mj01":
-      return "专业群";
-    case "Ar01":
-      return "学术资源";
-    default:
-      break;
-  }
+	x = x.substring(4);
+  	switch (x) {
+		case "Lf01":
+			return "Cal Life";
+		case "Mj01":
+			return "专业群";
+		case "Ar01":
+			return "学术资源";
+		default:
+			break;
+  	}
 	if (/^(FA|SP|SU|Fa|Sp|Su)(\d\d)$/gi.test(x)) {
 		let season = {
 			FA: "Fall",
@@ -512,21 +514,22 @@ function parseTerm(x) {
 		let year = (y) => {
 			return String(2000 + parseInt(y));
 		};
-		return season[x.substring(0, 2)] + " " + year(x.substring(2));
+		return season[x.substring(0, 2)] + " " + year(x.substring(2)) + "课群";
 	} else {
 		let cap = x.substring(0, 1).toUpperCase();
 		return cap + x.substring(1).toLowerCase();
 	}
 }
 
-// FIXME
+
 function filterMostCurrentThreeTerm(x) {
+	x = x.substring(4);
 	// TODO: can use new Date().getFullYear() to get the current year, and start from there.
 	if (
 		x == "Fa23" ||
 		x == "Sp23" ||
 		x == "Su23" ||
-		x == "Lf22" ||
+		x == "Lf01" ||
 		x == "Mj01" ||
 		x == "Ar01"
 	) {
@@ -537,11 +540,18 @@ function filterMostCurrentThreeTerm(x) {
 }
 
 function loadCourses(email, access_token) {
-  if (email.endsWith("@berkeley.edu")) {
-    var school = "UCB";
-  } else if (email.endsWith("@USC.edu")) {
-    var school = "USC";
-  } 
+	if (debugMode === true) {
+		if (email !== "huanzhimao@berkeley.edu") {
+			window.location.href = "notice.html";
+		}
+	}
+	let school;
+	if (email.endsWith("@berkeley.edu")) {
+		school = "UCB";
+	} else if (email.endsWith("@usc.edu")) {
+		school = "USC";
+	} 
+	console.log("Current school: " + school);
 	if (allTerms.size !== 0) {
 		return;
 	}
@@ -558,7 +568,7 @@ function loadCourses(email, access_token) {
 			$("#card-container").html("");
 			$("#main-container").addClass("loaded");
 			for (let course of response) {
-        let term = parseTerm(course.school_name_and_term);
+				let term = parseTerm(course.school_name_and_term);
 				if (filterMostCurrentThreeTerm(course.school_name_and_term)) {
 					// Only display courses that's in the current term.
 					addCard(
@@ -572,12 +582,13 @@ function loadCourses(email, access_token) {
 				}
 			}
 			let requestButton = $(`
-       <div id="request-button" class="card function-button">
-           <div>
-               <div>&#128195</div>
-               <div>申请建群</div>
-           </div>
-       </div>`);
+				<div id="request-button" class="card function-button">
+					<div>
+						<div>&#128195</div>
+						<div>申请建群</div>
+					</div>
+				</div>`
+			);
 			$("#card-container").append(requestButton);
 			requestButton.on("click", () => {
 				if (readUserToken()) {
@@ -604,39 +615,42 @@ function loadCourses(email, access_token) {
 			// });
 
 			let reportButton = $(`
-       <div id="report-button" class="card function-button">
-           <div>
-               <div>&#11014</div>
-               <div>故障报告</div>
-           </div>
-       </div>`);
+				<div id="report-button" class="card function-button">
+					<div>
+						<div>&#11014</div>
+						<div>故障报告</div>
+					</div>
+				</div>`
+			);
 			$("#card-container").append(reportButton);
 			reportButton.on("click", () => {
 				location.href = "https://forms.gle/56fJyQtw24JTaA2i9";
 			});
 
 			let logoutButton = $(`
-       <div id="logout-button" class="card function-button">
-           <div>
-               <div>&#128274</div>
-               <div>退出登录</div>
-           </div>
-       </div>`);
+				<div id="logout-button" class="card function-button">
+					<div>
+						<div>&#128274</div>
+						<div>退出登录</div>
+					</div>
+				</div>`
+			);
 			$("#card-container").append(logoutButton);
 			logoutButton.on("click", () => {
 				deleteLocalStorage();
 				location.reload();
-      });
+    		});
       
 			let termsArray = [];
 			for (let x of allTerms) {
 				termsArray.push(x);
-      }
-      
-      let termToInt = (x) => {
-        if (isNaN(x.slice(-2))) {
-          return -1;
-        }
+			}
+
+			let termToInt = (x) => {
+				if (x.length < 6 || isNaN(x.slice(-6, -2))) {
+					return -1;
+				}
+				x = x.slice(0, -2); // Get rid of the word课群
 				let separator = x.indexOf(" ");
 				if (separator == -1) {
 					return -1;
@@ -659,29 +673,25 @@ function loadCourses(email, access_token) {
 					}
 					return year * 3 + seasonInt;
 				}
-      };
-      
-			termsArray.sort((a, b) => {
-				return termToInt(b) - termToInt(a);
-      });
-      
-      let major_index = termsArray.indexOf("专业群");
-      if (major_index === -1) {
-        termsArray.unshift(termsArray.splice(major_index, 1)[0]);
-        termsArray[0] = "专业群";
-      }
+			};
 			
-      let academic_index = termsArray.indexOf("学术资源");
-      if (academic_index === -1) {
-        termsArray[academic_index] = "学术资源";
-      }
+			let termCompareFunction = (a, b) => {
+				return termToInt(b) - termToInt(a);
+			};
+			termsArray.sort(termCompareFunction);
+			
+			let major_index = termsArray.indexOf("专业群");
+			if (major_index !== -1) {
+				termsArray.unshift(termsArray.splice(major_index, 1)[0]);
+				termsArray[0] = "专业群";
+			}
 
 			for (let term of termsArray) {
 				let termId = term.replace(/ /gi, "-");
 				let radio = $(`
                 <input type="radio" name="term" id="term-${termId}" data-term="${term}" />
                 <label for="term-${termId}">${term}</label>
-            `);
+            	`);
 				$("#term-container").append(radio);
 				$(radio[0]).on("change", (e) => {
 					filter();
