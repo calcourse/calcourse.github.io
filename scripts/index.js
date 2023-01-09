@@ -1,5 +1,5 @@
 // New API socket
-let debugMode = true;  // Set to true to enable debug mode
+let debugMode = true;  // FIXME: Set to true to enable debug mode
 
 let api = "https://j2xnmuiw4k.execute-api.us-west-1.amazonaws.com/CalCourse";
 let cookiesLoaded = false;
@@ -569,7 +569,9 @@ function loadCourses(email, access_token) {
 			console.log(response);
 			for (let course of response) {
 				let term = parseTerm(course.school_name_and_term);
+				console.log("------")
 				console.log(term)
+				console.log("------");
 				if (filterMostCurrentThreeTerm(course.school_name_and_term)) {
 					// Only display courses that's in the current term.
 					addCard(
@@ -647,7 +649,7 @@ function loadCourses(email, access_token) {
 				termsArray.push(x);
 			}
 			console.log(termsArray);
-      
+			console.log(allTerms)
 			let termToInt = (x) => {
 				if (isNaN(x.slice(-2))) {
 					return -1;
