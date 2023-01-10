@@ -1,5 +1,3 @@
-const { del } = require("request");
-
 // New API socket
 let debugMode = false; // FIXME: Set to true to enable debug mode
 let bannedList = []; // Ban list for users
