@@ -476,7 +476,7 @@ function download(url, name) {
 	return false;
 }
 
-function openWindow(base64ImageData, name) {
+function openWindow(base64ImageData) {
 	let contentType = "image/png";
 
 	let byteCharacters = atob(
@@ -499,8 +499,8 @@ function openWindow(base64ImageData, name) {
 	let blob = new Blob(byteArrays, { type: contentType });
 	let blobUrl = URL.createObjectURL(blob);
 	
-	// window.location.href = blobUrl;
-	window.open(blobUrl, name);
+	// window.location.href = blobUrl;  // Redirect in current tab
+	window.open(blobUrl, "_blank");  // Open in new window/tab
 }
 
 function cardClick(e) {
@@ -510,7 +510,7 @@ function cardClick(e) {
 	let imgURL = $(e.currentTarget).find("img").attr("src");
 	let imgName = e.currentTarget.dataset.name;
 	download(imgURL, imgName);
-	// openWindow(imgURL, imgName);
+	// openWindow(imgURL);
 }
 
 function filter() {
