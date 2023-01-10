@@ -1,6 +1,6 @@
 // New API socket
-let debugMode = false;  // FIXME: Set to true to enable debug mode
-let bannedList = [];  // Ban list for users
+let debugMode = false; // FIXME: Set to true to enable debug mode
+let bannedList = []; // Ban list for users
 
 let api = "https://j2xnmuiw4k.execute-api.us-west-1.amazonaws.com/CalCourse";
 let cookiesLoaded = false;
@@ -110,7 +110,7 @@ function parseJwt(token) {
 function handleCredentialResponse(response) {
 	let parsed_response = parseJwt(response.credential);
 	let verified = parsed_response["email_verified"];
-  let email_address = parsed_response["email"];
+	let email_address = parsed_response["email"];
 	let user_name = parsed_response["name"];
 	$.ajax({
 		url:
@@ -267,7 +267,7 @@ async function sendEmailCode() {
 	} else {
 		$("#email-code-button").hide();
 		$("#email-code-ani").show();
-    USER_EMAIL = emailInput;
+		USER_EMAIL = emailInput;
 		let form = new FormData();
 		form.append("email", USER_EMAIL);
 		$.ajax({
@@ -466,36 +466,50 @@ function cardLeave(e) {
 		}, 2000)
 	);
 }
-function download(url) {
-	const a = document.createElement("a");
+function download(url, name) {
+	let a = document.createElement("a");
 	a.href = url;
-	a.download = url.split("/").pop();
+	a.download = name;
 	document.body.appendChild(a);
 	a.click();
 	document.body.removeChild(a);
+	return false;
+}
+
+function openWindow(base64ImageData, name) {
+	let contentType = "image/png";
+
+	let byteCharacters = atob(
+		base64ImageData.substr(`data:${contentType};base64,`.length)
+	);
+	let byteArrays = [];
+
+	for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+		let slice = byteCharacters.slice(offset, offset + 1024);
+
+		let byteNumbers = new Array(slice.length);
+		for (let i = 0; i < slice.length; i++) {
+			byteNumbers[i] = slice.charCodeAt(i);
+		}
+
+		let byteArray = new Uint8Array(byteNumbers);
+
+		byteArrays.push(byteArray);
+	}
+	let blob = new Blob(byteArrays, { type: contentType });
+	let blobUrl = URL.createObjectURL(blob);
+
+	window.open(blobUrl, "_blank");
 }
 
 function cardClick(e) {
 	alert(
 		"请保存图片, 在微信扫一扫中选择相册打开。\n如果二维码显示“群已满”, 请联系管理员Hans拉你进群 (微信号username__null)。微信群人数超过200人后二维码就失效了, 暂时无解, 对此造成的不便深表歉意。\n\n请不要把任何CalCourse上的群二维码发到任何群内, 只给他们CalCourse的链接即可, 防止代写跳过CalCourse的身份验证直接扫码加群.\n谢谢配合!"
 	);
-	let img = $(e.currentTarget).find("img").attr("src");
-	// console.log(img);
-	download(img);
-	// img = img.replace("data:image/png;base64,", "");
-	// img = img.replace(" ", "+");
-	// let decodeData = atob(img);
-	// console.log(decodeData);
-	// function save() {
-	// 	var image = document.getElementById("20816");
-	// 	html2canvas(image, {
-	// 		onrendered: function (canvas) {
-	// 			// use "Canvas to PhotoLibrary [Phonegap]" on the canvas variable
-	// 		},
-	// 	});
-	// }
-	// save();
-	// window.location.href = decodeData; //FIXME
+	let imgURL = $(e.currentTarget).find("img").attr("src");
+	let imgName = e.currentTarget.dataset.name;
+	download(imgURL, imgName);
+	openWindow(imgURL, imgName);
 }
 
 function filter() {
@@ -517,7 +531,7 @@ function filter() {
 
 function parseTerm(x) {
 	x = x.substring(4);
-  	switch (x) {
+	switch (x) {
 		case "Lf01":
 			return "Cal Life";
 		case "Mj01":
@@ -526,7 +540,7 @@ function parseTerm(x) {
 			return "学术资源";
 		default:
 			break;
-  	}
+	}
 	if (/^(FA|SP|SU|Fa|Sp|Su)(\d\d)$/gi.test(x)) {
 		let season = {
 			FA: "Fall",
@@ -545,7 +559,6 @@ function parseTerm(x) {
 		return cap + x.substring(1).toLowerCase();
 	}
 }
-
 
 function filterMostCurrentThreeTerm(x) {
 	x = x.substring(4);
@@ -576,7 +589,7 @@ function loadCourses(email, access_token) {
 		school = "UCB";
 	} else if (email.endsWith("@usc.edu")) {
 		school = "USC";
-	} 
+	}
 	console.log("Current school: " + school);
 	if (allTerms.size !== 0) {
 		return;
@@ -613,8 +626,7 @@ function loadCourses(email, access_token) {
 						<div>&#128195</div>
 						<div>申请建群</div>
 					</div>
-				</div>`
-			);
+				</div>`);
 			$("#card-container").append(requestButton);
 			requestButton.on("click", () => {
 				if (readUserToken()) {
@@ -646,8 +658,7 @@ function loadCourses(email, access_token) {
 						<div>&#11014</div>
 						<div>故障报告</div>
 					</div>
-				</div>`
-			);
+				</div>`);
 			$("#card-container").append(reportButton);
 			reportButton.on("click", () => {
 				location.href = "https://forms.gle/56fJyQtw24JTaA2i9";
@@ -659,14 +670,13 @@ function loadCourses(email, access_token) {
 						<div>&#128274</div>
 						<div>退出登录</div>
 					</div>
-				</div>`
-			);
+				</div>`);
 			$("#card-container").append(logoutButton);
 			logoutButton.on("click", () => {
 				deleteLocalStorage();
 				location.reload();
-    		});
-      
+			});
+
 			let termsArray = [];
 			for (let x of allTerms) {
 				termsArray.push(x);
@@ -700,12 +710,12 @@ function loadCourses(email, access_token) {
 					return year * 3 + seasonInt;
 				}
 			};
-			
+
 			let termCompareFunction = (a, b) => {
 				return termToInt(b) - termToInt(a);
 			};
 			termsArray.sort(termCompareFunction);
-			
+
 			let major_index = termsArray.indexOf("专业群");
 			if (major_index !== -1) {
 				termsArray.unshift(termsArray.splice(major_index, 1)[0]);
