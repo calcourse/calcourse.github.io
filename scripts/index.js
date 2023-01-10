@@ -10,7 +10,6 @@ let hoverDelay = 50;
 let allTerms = new Set();
 let school;
 let targetQRCode = null;
-deleteLocalStorage();
 
 $(() => {
 	if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
@@ -65,6 +64,7 @@ $(() => {
 		$("#login-wrapper>div:first-child").text("会话过期, 请重新登陆。");
 	}
 
+	deleteLocalStorage(); //FIXME
 	let token = readUserToken();
 	let email = readUserEmail();
 	if (token && email) {
@@ -500,7 +500,7 @@ function openWindow(base64ImageData, name) {
 	let blob = new Blob(byteArrays, { type: contentType });
 	let blobUrl = URL.createObjectURL(blob);
 
-	window.open(blobUrl, "_blank");
+	window.open(blobUrl, name);
 }
 
 function cardClick(e) {
