@@ -67,7 +67,7 @@ $(() => {
 	if (debugMode) {
 		deleteLocalStorage();
 	}
-	deleteLocalStorage(); //FIXME 
+	
 	let token = readUserToken();
 	let email = readUserEmail();
 	if (token && email) {
