@@ -174,9 +174,9 @@ input:-webkit-autofill:active
     display: none;
 }
 
-.course-container {
+/* .course-container {
     margin-top: 18px;
-}
+} */
 
 .course-input-default {
     border-bottom: solid 2px var(--s-bg);

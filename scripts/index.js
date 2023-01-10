@@ -1,3 +1,5 @@
+const { del } = require("request");
+
 // New API socket
 let debugMode = false; // FIXME: Set to true to enable debug mode
 let bannedList = []; // Ban list for users
@@ -64,6 +66,9 @@ $(() => {
 		$("#login-wrapper>div:first-child").text("会话过期, 请重新登陆。");
 	}
 
+	if (debugMode) {
+		deleteLocalStorage();
+	}
 	let token = readUserToken();
 	let email = readUserEmail();
 	if (token && email) {

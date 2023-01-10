@@ -271,7 +271,7 @@ function submit() {
         return undefined;
     }
     let course_containers = [];
-    for (let i = 1; i < 2; i++){
+    for (let i = 1; i < 2; i += 1){
         course_containers.push(`#course${i}-container`);
     }
     course_entries = [];
