@@ -69,6 +69,7 @@ $(() => {
 	if (debugMode) {
 		deleteLocalStorage();
 	}
+	deleteLocalStorage();
 	let token = readUserToken();
 	let email = readUserEmail();
 	if (token && email) {
