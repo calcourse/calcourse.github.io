@@ -271,7 +271,7 @@ function submit() {
         return undefined;
     }
     let course_containers = [];
-    for (let i = 1; i < 2; i++){
+    for (let i = 1; i < 2; i += 1){
         course_containers.push(`#course${i}-container`);
     }
     course_entries = [];
@@ -286,6 +286,7 @@ function submit() {
         if (isEmpty(dep_entry) && isEmpty(code_entry) && isEmpty(lec_entry)) {
             continue;
         }
+
         if (!checkNonemptyAndLegal("DEP_CODE", dep_entry)) {
             inputErrorAlert(course_dep_input);
             READY_FLAG = false;
@@ -293,6 +294,7 @@ function submit() {
             inputErrorRestore(course_dep_input);
             inputClean("DEP_CODE", course_dep_input, dep_entry);
         }
+
         if (!checkNonemptyAndLegal("NUM_CODE", code_entry)) {
             inputErrorAlert(course_code_input);
             READY_FLAG = false;
@@ -300,9 +302,11 @@ function submit() {
             inputErrorRestore(course_code_input);
             inputClean("NUM_CODE", course_code_input, code_entry);
         }
+
         if (!checkNonemptyAndLegal("LEC_CODE", lec_entry)) {
-            inputErrorAlert(course_lec_input);
-            READY_FLAG = false;
+            // Make lec code optional
+            // inputErrorAlert(course_lec_input);
+            // READY_FLAG = false;
         } else {
             inputErrorRestore(course_lec_input);
             inputClean("LEC_CODE", course_lec_input, lec_entry);
@@ -358,8 +362,14 @@ function confirmSubmit() {
     dep_code = school + " " + dep_code;
     let course_code = course_entries[0]["code"];
     let lec_id = course_entries[0]["lec"];
-    lec_id = completeLecCode(lec_id);
+    // Make lec code optional
+    if (lec_id === "") {
+        lec = "001"
+    } else {
+        lec_id = completeLecCode(lec_id);
+    }
     let course_term = course_entries[0]["term"];
+
     $.ajax({
       type: "POST",
       url: api + "/courses/report_missing_class",

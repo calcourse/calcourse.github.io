@@ -77,7 +77,8 @@ input:-webkit-autofill:active
     top: 27vh;
     left: 0;
     right: 0;
-    height: 350px;
+    /* I increment the height by 100px to give more room to the term container */
+    height: 450px;  
     width: 90vw;
     max-width: 700px;
     text-align: center;
