@@ -64,7 +64,6 @@ $(() => {
 		$("#login-wrapper>div:first-child").text("会话过期, 请重新登陆。");
 	}
 
-	deleteLocalStorage(); //FIXME
 	let token = readUserToken();
 	let email = readUserEmail();
 	if (token && email) {
