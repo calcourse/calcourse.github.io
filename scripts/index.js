@@ -11,6 +11,7 @@ let allTerms = new Set();
 let school;
 let targetQRCode = null;
 deleteLocalStorage();
+
 $(() => {
 	if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
 		$("#wechat-message").removeClass("hidden");
