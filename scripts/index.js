@@ -8,6 +8,8 @@ let helpLoaded = false;
 let hoverTimer;
 let hoverDelay = 50;
 let allTerms = new Set();
+let school;
+let targetQRCode = null;
 
 $(() => {
 	if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
@@ -64,12 +66,12 @@ $(() => {
 
 	let token = readUserToken();
 	let email = readUserEmail();
-  if (token && email) {
-    if (email.endsWith(".edu")) {
-      if (checkValidToken()) {
-			loadCourses(email, token);
-		  }
-    }
+	if (token && email) {
+		if (email.endsWith(".edu")) {
+			if (checkValidToken()) {
+				loadCourses(email, token);
+			}
+		}
 	}
 });
 
@@ -445,7 +447,7 @@ function cardEnter(e) {
 		clearTimeout(x.data("timer"));
 		x.data("timer", null);
 	} else {
-		new QRCode(x.find(".qrcode")[0], {
+		targetQRCode = new QRCode(x.find(".qrcode")[0], {
 			text: x.data("url"),
 			colorDark: "#333333",
 			colorLight: "#da8388",
@@ -464,14 +466,36 @@ function cardLeave(e) {
 		}, 2000)
 	);
 }
+function download(url) {
+	const a = document.createElement("a");
+	a.href = url;
+	a.download = url.split("/").pop();
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
+}
 
 function cardClick(e) {
 	alert(
 		"请保存图片, 在微信扫一扫中选择相册打开。\n如果二维码显示“群已满”, 请联系管理员Hans拉你进群 (微信号username__null)。微信群人数超过200人后二维码就失效了, 暂时无解, 对此造成的不便深表歉意。\n\n请不要把任何CalCourse上的群二维码发到任何群内, 只给他们CalCourse的链接即可, 防止代写跳过CalCourse的身份验证直接扫码加群.\n谢谢配合!"
 	);
 	let img = $(e.currentTarget).find("img").attr("src");
-	// img = img.substring(img.indexOf(",") + 1);
-	window.location.href = img;
+	// console.log(img);
+	download(img);
+	// img = img.replace("data:image/png;base64,", "");
+	// img = img.replace(" ", "+");
+	// let decodeData = atob(img);
+	// console.log(decodeData);
+	// function save() {
+	// 	var image = document.getElementById("20816");
+	// 	html2canvas(image, {
+	// 		onrendered: function (canvas) {
+	// 			// use "Canvas to PhotoLibrary [Phonegap]" on the canvas variable
+	// 		},
+	// 	});
+	// }
+	// save();
+	// window.location.href = decodeData; //FIXME
 }
 
 function filter() {
@@ -548,7 +572,6 @@ function loadCourses(email, access_token) {
 			window.location.href = "notice.html";
 		}
 	}
-	let school;
 	if (email.endsWith("@berkeley.edu")) {
 		school = "UCB";
 	} else if (email.endsWith("@usc.edu")) {
@@ -736,7 +759,15 @@ function deleteLocalStorage() {
 }
 
 function readUserEmail() {
-	return localStorage.getItem("user_email");
+	let email = localStorage.getItem("user_email");
+	if (email !== null) {
+		if (email.endsWith("@berkeley.edu")) {
+			school = "UCB";
+		} else if (email.endsWith("@usc.edu")) {
+			school = "USC";
+		}
+	}
+	return email;
 }
 
 function readUserToken() {

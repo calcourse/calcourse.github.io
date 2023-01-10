@@ -387,13 +387,15 @@ function confirmSubmit() {
 
 
 function readUserEmail() {
-    let email = localStorage.getItem("user_email");
-    if (email.endsWith("@berkeley.edu")) {
-        school = "UCB";
-    } else if (email.endsWith("@usc.edu")) {
-        school = "USC";
-    } 
-    return email;
+	let email = localStorage.getItem("user_email");
+	if (email !== null) {
+		if (email.endsWith("@berkeley.edu")) {
+			school = "UCB";
+		} else if (email.endsWith("@usc.edu")) {
+			school = "USC";
+		}
+	}
+	return email;
 }
 
 function readUserToken() {
