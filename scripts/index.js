@@ -500,8 +500,8 @@ function openWindow(base64ImageData, name) {
 	let blob = new Blob(byteArrays, { type: contentType });
 	let blobUrl = URL.createObjectURL(blob);
 	
-	window.location.href(blobUrl);
-	// window.open(blobUrl, name);
+	// window.location.href = blobUrl;
+	window.open(blobUrl, name);
 }
 
 function cardClick(e) {
@@ -511,7 +511,7 @@ function cardClick(e) {
 	let imgURL = $(e.currentTarget).find("img").attr("src");
 	let imgName = e.currentTarget.dataset.name;
 	download(imgURL, imgName);
-	openWindow(imgURL, imgName);
+	// openWindow(imgURL, imgName);
 }
 
 function filter() {
