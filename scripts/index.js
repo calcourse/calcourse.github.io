@@ -499,8 +499,9 @@ function openWindow(base64ImageData, name) {
 	}
 	let blob = new Blob(byteArrays, { type: contentType });
 	let blobUrl = URL.createObjectURL(blob);
-
-	window.open(blobUrl, name);
+	
+	window.location.href(blobUrl);
+	// window.open(blobUrl, name);
 }
 
 function cardClick(e) {
