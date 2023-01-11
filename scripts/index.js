@@ -509,7 +509,7 @@ function openWindow(base64ImageData) {
 
 function cardClick(e) {
 	alert(
-		"请保存图片, 在微信扫一扫中选择相册打开。\n如果二维码显示“群已满”, 请联系管理员Hans拉你进群 (微信号username__null)。微信群人数超过200人后二维码就失效了, 暂时无解, 对此造成的不便深表歉意。\n\n请不要把任何CalCourse上的群二维码发到任何群内, 只给他们CalCourse的链接即可, 防止代写跳过CalCourse的身份验证直接扫码加群.\n谢谢配合!"
+		"二维码已保存到本地, 请在微信扫一扫中选择相册打开。\n如果二维码显示“群已满”, 请联系管理员Hans拉你进群 (微信号username__null)。微信群人数超过200人后二维码就失效了, 暂时无解, 对此造成的不便深表歉意。\n\n请不要把任何CalCourse上的群二维码发到任何群内, 只给他们CalCourse的链接即可, 防止代写跳过CalCourse的身份验证直接扫码加群.\n谢谢配合!"
 	);
 	let imgURL = $(e.currentTarget).find("img").attr("src");
 	let imgName = e.currentTarget.dataset.name;
