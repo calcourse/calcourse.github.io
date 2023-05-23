@@ -570,7 +570,7 @@ function filterMostCurrentThreeTerm(x) {
 	// TODO: can use new Date().getFullYear() to get the current year, and start from there.
 	if (
 		x == "Fa23" ||
-		x == "Sp23" ||
+		x == "Sp24" ||
 		x == "Su23" ||
 		x == "Lf01" ||
 		x == "Mj01" ||
@@ -719,7 +719,9 @@ function loadCourses(email, access_token) {
 			let termCompareFunction = (a, b) => {
 				return termToInt(b) - termToInt(a);
 			};
+			console.log(termsArray);
 			termsArray.sort(termCompareFunction);
+			console.log(termsArray);
 
 			let major_index = termsArray.indexOf("专业群");
 			if (major_index !== -1) {
