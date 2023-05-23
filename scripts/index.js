@@ -698,8 +698,6 @@ function loadCourses(email, access_token) {
 				} else {
 					let season = x.substring(0, separator);
 					let year = x.substring(separator + 1, x.length);
-					console.log(separator);
-					console.log(season, year);
 					let seasonInt;
 					switch (season.toLowerCase()) {
 						case "spring":
@@ -719,13 +717,9 @@ function loadCourses(email, access_token) {
 			};
 
 			let termCompareFunction = (a, b) => {
-				console.log(a, b);
-				console.log(termToInt(a), termToInt(b))
 				return termToInt(b) - termToInt(a);
 			};
-			console.log(termsArray);
 			termsArray.sort(termCompareFunction);
-			console.log(termsArray);
 
 			let major_index = termsArray.indexOf("专业群");
 			if (major_index !== -1) {
