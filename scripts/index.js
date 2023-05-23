@@ -558,7 +558,7 @@ function parseTerm(x) {
 		let year = (y) => {
 			return String(2000 + parseInt(y));
 		};
-		return season[x.substring(0, 2)] + " " + year(x.substring(2)) + "课群";
+		return season[x.substring(0, 2)] + " " + year(x.substring(2));
 	} else {
 		let cap = x.substring(0, 1).toUpperCase();
 		return cap + x.substring(1).toLowerCase();
@@ -691,7 +691,7 @@ function loadCourses(email, access_token) {
 				if (x.length < 6 || isNaN(x.slice(-6, -2))) {
 					return -1;
 				}
-				x = x.slice(0, -2); // Get rid of the word课群
+				// x = x.slice(0, -2); // Get rid of the word课群
 				let separator = x.indexOf(" ");
 				if (separator == -1) {
 					return -1;
