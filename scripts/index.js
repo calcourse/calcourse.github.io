@@ -698,7 +698,8 @@ function loadCourses(email, access_token) {
 				} else {
 					let season = x.substring(0, separator);
 					let year = x.substring(separator + 1, x.length);
-					console.log(season, year)
+					console.log(separator);
+					console.log(season, year);
 					let seasonInt;
 					switch (season.toLowerCase()) {
 						case "spring":
