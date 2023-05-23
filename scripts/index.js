@@ -717,6 +717,8 @@ function loadCourses(email, access_token) {
 			};
 
 			let termCompareFunction = (a, b) => {
+				console.log(a, b);
+				console.log(termToInt(a), termToInt(b))
 				return termToInt(b) - termToInt(a);
 			};
 			console.log(termsArray);
