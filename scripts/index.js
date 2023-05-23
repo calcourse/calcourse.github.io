@@ -688,7 +688,7 @@ function loadCourses(email, access_token) {
 			}
 
 			let termToInt = (x) => {
-				if (x.length < 6 || isNaN(x.slice(-6, -2))) {
+				if (x.length < 6 || isNaN(x.slice(-4))) {
 					return -1;
 				}
 				// x = x.slice(0, -2); // Get rid of the word课群
@@ -698,6 +698,7 @@ function loadCourses(email, access_token) {
 				} else {
 					let season = x.substring(0, separator);
 					let year = x.substring(separator + 1, x.length);
+					console.log(season, year)
 					let seasonInt;
 					switch (season.toLowerCase()) {
 						case "spring":
