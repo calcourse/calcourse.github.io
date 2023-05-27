@@ -558,7 +558,7 @@ function parseTerm(x) {
 		let year = (y) => {
 			return String(2000 + parseInt(y));
 		};
-		return season[x.substring(0, 2)] + " " + year(x.substring(2)) + "课群";
+		return season[x.substring(0, 2)] + " " + year(x.substring(2));
 	} else {
 		let cap = x.substring(0, 1).toUpperCase();
 		return cap + x.substring(1).toLowerCase();
@@ -570,7 +570,7 @@ function filterMostCurrentThreeTerm(x) {
 	// TODO: can use new Date().getFullYear() to get the current year, and start from there.
 	if (
 		x == "Fa23" ||
-		x == "Sp23" ||
+		x == "Sp24" ||
 		x == "Su23" ||
 		x == "Lf01" ||
 		x == "Mj01" ||
@@ -615,8 +615,10 @@ function loadCourses(email, access_token) {
 				let term = parseTerm(course.school_name_and_term);
 				if (filterMostCurrentThreeTerm(course.school_name_and_term)) {
 					// Only display courses that's in the current term.
+					// Need to change id here to prevent two classes in different semester having the same id.
+					let id = course.school_name_and_term.substring(4) + "_" + course.course_id;
 					addCard(
-						course.course_id,
+						id,
 						course.course_name,
 						course.course_qr_code_url,
 						term,
@@ -688,10 +690,10 @@ function loadCourses(email, access_token) {
 			}
 
 			let termToInt = (x) => {
-				if (x.length < 6 || isNaN(x.slice(-6, -2))) {
+				if (x.length < 6 || isNaN(x.slice(-4))) {
 					return -1;
 				}
-				x = x.slice(0, -2); // Get rid of the word课群
+				// x = x.slice(0, -2); // Get rid of the word课群
 				let separator = x.indexOf(" ");
 				if (separator == -1) {
 					return -1;
