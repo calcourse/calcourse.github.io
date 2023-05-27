@@ -615,8 +615,10 @@ function loadCourses(email, access_token) {
 				let term = parseTerm(course.school_name_and_term);
 				if (filterMostCurrentThreeTerm(course.school_name_and_term)) {
 					// Only display courses that's in the current term.
+					// Need to change id here to prevent two classes in different semester having the same id.
+					let id = course.school_name_and_term.substring(4) + "_" + course.course_id;
 					addCard(
-						course.course_id,
+						id,
 						course.course_name,
 						course.course_qr_code_url,
 						term,
