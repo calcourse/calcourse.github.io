@@ -1,5 +1,5 @@
 // New API socket
-let debugMode = false; // FIXME: Set to true to enable debug mode
+let debugMode = true; // FIXME: Set to true to enable debug mode
 let bannedList = []; // Ban list for users
 
 let api = "https://j2xnmuiw4k.execute-api.us-west-1.amazonaws.com/CalCourse";
